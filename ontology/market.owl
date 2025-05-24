@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://example.org/twinize_group_abox"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://example.org/twinize_group_abox">
+
+  <!-- Import schema -->
+  <owl:imports rdf:resource="http://example.org/kyc_ontology"/>
+
+  <!-- ======================================== -->
+  <!-- Individuals: Companies and People        -->
+  <!-- ======================================== -->
+
+  <!-- Companies -->
+  <Declaration><NamedIndividual IRI="#Twinize"/></Declaration>
+  <ClassAssertion><Class IRI="kyc:Company"/><NamedIndividual IRI="#Twinize"/></ClassAssertion>
+  <DataPropertyAssertion><DataProperty IRI="kyc:legalName"/><NamedIndividual IRI="#Twinize"/><Literal>"Twinize"</Literal></DataPropertyAssertion>
+
+  <Declaration><NamedIndividual IRI="#Deepin"/></Declaration>
+  <ClassAssertion><Class IRI="kyc:Company"/><NamedIndividual IRI="#Deepin"/></ClassAssertion>
+  <DataPropertyAssertion><DataProperty IRI="kyc:legalName"/><NamedIndividual IRI="#Deepin"/><Literal>"Deepin"</Literal></DataPropertyAssertion>
+
+  <Declaration><NamedIndividual IRI="#Galaksiya"/></Declaration>
+  <ClassAssertion><Class IRI="kyc:Company"/><NamedIndividual IRI="#Galaksiya"/></ClassAssertion>
+  <DataPropertyAssertion><DataProperty IRI="kyc:legalName"/><NamedIndividual IRI="#Galaksiya"/><Literal>"Galaksiya"</Literal></DataPropertyAssertion>
+
+  <!-- Persons -->
+  <Declaration><NamedIndividual IRI="#Cetin"/></Declaration>
+  <ClassAssertion><Class IRI="kyc:Shareholder"/><NamedIndividual IRI="#Cetin"/></ClassAssertion>
+  <DataPropertyAssertion><DataProperty IRI="kyc:firstName"/><NamedIndividual IRI="#Cetin"/><Literal>"Çetin"</Literal></DataPropertyAssertion>
+
+  <Declaration><NamedIndividual IRI="#Sebnem"/></Declaration>
+  <ClassAssertion><Class IRI="kyc:Shareholder"/><NamedIndividual IRI="#Sebnem"/></ClassAssertion>
+  <DataPropertyAssertion><DataProperty IRI="kyc:firstName"/><NamedIndividual IRI="#Sebnem"/><Literal>"Şebnem"</Literal></DataPropertyAssertion>
+
+  <Declaration><NamedIndividual IRI="#Adem"/></Declaration>
+  <ClassAssertion><Class IRI="kyc:Shareholder"/><NamedIndividual IRI="#Adem"/></ClassAssertion>
+  <DataPropertyAssertion><DataProperty IRI="kyc:firstName"/><NamedIndividual IRI="#Adem"/><Literal>"Adem"</Literal></DataPropertyAssertion>
+
+  <Declaration><NamedIndividual IRI="#IsmailCan"/></Declaration>
+  <ClassAssertion><Class IRI="kyc:Shareholder"/><NamedIndividual IRI="#IsmailCan"/></ClassAssertion>
+  <DataPropertyAssertion><DataProperty IRI="kyc:firstName"/><NamedIndividual IRI="#IsmailCan"/><Literal>"İsmail Can"</Literal></DataPropertyAssertion>
+
+  <Declaration><NamedIndividual IRI="#Tayfun"/></Declaration>
+  <ClassAssertion><Class IRI="kyc:Shareholder"/><NamedIndividual IRI="#Tayfun"/></ClassAssertion>
+  <DataPropertyAssertion><DataProperty IRI="kyc:firstName"/><NamedIndividual IRI="#Tayfun"/><Literal>"Tayfun"</Literal></DataPropertyAssertion>
+
+  <Declaration><NamedIndividual IRI="#Erdem"/></Declaration>
+  <ClassAssertion><Class IRI="kyc:Shareholder"/><NamedIndividual IRI="#Erdem"/></ClassAssertion>
+  <DataPropertyAssertion><DataProperty IRI="kyc:firstName"/><NamedIndividual IRI="#Erdem"/><Literal>"Erdem"</Literal></DataPropertyAssertion>
+
+  <!-- ======================================== -->
+  <!-- Ownership relationships                  -->
+  <!-- ======================================== -->
+
+  <!-- Twinize Owners -->
+  <NamedIndividual IRI="#Own_Twinize_Deepin"/>
+  <ClassAssertion><Class IRI="kyc:Ownership"/><NamedIndividual IRI="#Own_Twinize_Deepin"/></ClassAssertion>
+  <ObjectPropertyAssertion><ObjectProperty IRI="kyc:hasOwnership"/><NamedIndividual IRI="#Twinize"/><NamedIndividual IRI="#Own_Twinize_Deepin"/></ObjectPropertyAssertion>
+  <ObjectPropertyAssertion><ObjectProperty IRI="kyc:hasShareholder"/><NamedIndividual IRI="#Own_Twinize_Deepin"/><NamedIndividual IRI="#Deepin"/></ObjectPropertyAssertion>
+  <DataPropertyAssertion><DataProperty IRI="kyc:sharePercentage"/><NamedIndividual IRI="#Own_Twinize_Deepin"/><Literal datatypeIRI="xsd:decimal">70.0</Literal></DataPropertyAssertion>
+
+  <NamedIndividual IRI="#Own_Twinize_Cetin"/>
+  <ClassAssertion><Class IRI="kyc:Ownership"/><NamedIndividual IRI="#Own_Twinize_Cetin"/></ClassAssertion>
+  <ObjectPropertyAssertion><ObjectProperty IRI="kyc:hasOwnership"/><NamedIndividual IRI="#Twinize"/><NamedIndividual IRI="#Own_Twinize_Cetin"/></ObjectPropertyAssertion>
+  <ObjectPropertyAssertion><ObjectProperty IRI="kyc:hasShareholder"/><NamedIndividual IRI="#Own_Twinize_Cetin"/><NamedIndividual IRI="#Cetin"/></ObjectPropertyAssertion>
+  <DataPropertyAssertion><DataProperty IRI="kyc:sharePercentage"/><NamedIndividual IRI="#Own_Twinize_Cetin"/><Literal datatypeIRI="xsd:decimal">20.0</Literal></DataPropertyAssertion>
+
+  <NamedIndividual IRI="#Own_Twinize_Sebnem"/>
+  <ClassAssertion><Class IRI="kyc:Ownership"/><NamedIndividual IRI="#Own_Twinize_Sebnem"/></ClassAssertion>
+  <ObjectPropertyAssertion><ObjectProperty IRI="kyc:hasOwnership"/><NamedIndividual IRI="#Twinize"/><NamedIndividual IRI="#Own_Twinize_Sebnem"/></ObjectPropertyAssertion>
+  <ObjectPropertyAssertion><ObjectProperty IRI="kyc:hasShareholder"/><NamedIndividual IRI="#Own_Twinize_Sebnem"/><NamedIndividual IRI="#Sebnem"/></ObjectPropertyAssertion>
+  <DataPropertyAssertion><DataProperty IRI="kyc:sharePercentage"/><NamedIndividual IRI="#Own_Twinize_Sebnem"/><Literal datatypeIRI="xsd:decimal">5.0</Literal></DataPropertyAssertion>
+
+  <NamedIndividual IRI="#Own_Twinize_Adem"/>
+  <ClassAssertion><Class IRI="kyc:Ownership"/><NamedIndividual IRI="#Own_Twinize_Adem"/></ClassAssertion>
+  <ObjectPropertyAssertion><ObjectProperty IRI="kyc:hasOwnership"/><NamedIndividual IRI="#Twinize"/><NamedIndividual IRI="#Own_Twinize_Adem"/></ObjectPropertyAssertion>
+  <ObjectPropertyAssertion><ObjectProperty IRI="kyc:hasShareholder"/><NamedIndividual IRI="#Own_Twinize_Adem"/><NamedIndividual IRI="#Adem"/></ObjectPropertyAssertion>
+  <DataPropertyAssertion><DataProperty IRI="kyc:sharePercentage"/><NamedIndividual IRI="#Own_Twinize_Adem"/><Literal datatypeIRI="xsd:decimal">5.0</Literal></DataPropertyAssertion>
+
+  <!-- Deepin Owners -->
+  <NamedIndividual IRI="#Own_Deepin_Galaksiya"/>
+  <ClassAssertion><Class IRI="kyc:Ownership"/><NamedIndividual IRI="#Own_Deepin_Galaksiya"/></ClassAssertion>
+  <ObjectPropertyAssertion><ObjectProperty IRI="kyc:hasOwnership"/><NamedIndividual IRI="#Deepin"/><NamedIndividual IRI="#Own_Deepin_Galaksiya"/></ObjectPropertyAssertion>
+  <ObjectPropertyAssertion><ObjectProperty IRI="kyc:hasShareholder"/><NamedIndividual IRI="#Own_Deepin_Galaksiya"/><NamedIndividual IRI="#Galaksiya"/></ObjectPropertyAssertion>
+  <DataPropertyAssertion><DataProperty IRI="kyc:sharePercentage"/><NamedIndividual IRI="#Own_Deepin_Galaksiya"/><Literal datatypeIRI="xsd:decimal">60.0</Literal></DataPropertyAssertion>
+
+  <NamedIndividual IRI="#Own_Deepin_IsmailCan"/>
+  <ClassAssertion><Class IRI="kyc:Ownership"/><NamedIndividual IRI="#Own_Deepin_IsmailCan"/></ClassAssertion>
+  <ObjectPropertyAssertion><ObjectProperty IRI="kyc:hasOwnership"/><NamedIndividual IRI="#Deepin"/><NamedIndividual IRI="#Own_Deepin_IsmailCan"/></ObjectPropertyAssertion>
+  <ObjectPropertyAssertion><ObjectProperty IRI="kyc:hasShareholder"/><NamedIndividual IRI="#Own_Deepin_IsmailCan"/><NamedIndividual IRI="#IsmailCan"/></ObjectPropertyAssertion>
+  <DataPropertyAssertion><DataProperty IRI="kyc:sharePercentage"/><NamedIndividual IRI="#Own_Deepin_IsmailCan"/><Literal datatypeIRI="xsd:decimal">40.0</Literal></DataPropertyAssertion>
+
+  <!-- Galaksiya Owners -->
+  <NamedIndividual IRI="#Own_Galaksiya_Tayfun"/>
+  <ClassAssertion><Class IRI="kyc:Ownership"/><NamedIndividual IRI="#Own_Galaksiya_Tayfun"/></ClassAssertion>
+  <ObjectPropertyAssertion><ObjectProperty IRI="kyc:hasOwnership"/><NamedIndividual IRI="#Galaksiya"/><NamedIndividual IRI="#Own_Galaksiya_Tayfun"/></ObjectPropertyAssertion>
+  <ObjectPropertyAssertion><ObjectProperty IRI="kyc:hasShareholder"/><NamedIndividual IRI="#Own_Galaksiya_Tayfun"/><NamedIndividual IRI="#Tayfun"/></ObjectPropertyAssertion>
+  <DataPropertyAssertion><DataProperty IRI="kyc:sharePercentage"/><NamedIndividual IRI="#Own_Galaksiya_Tayfun"/><Literal datatypeIRI="xsd:decimal">10.0</Literal></DataPropertyAssertion>
+
+  <NamedIndividual IRI="#Own_Galaksiya_Erdem"/>
+  <ClassAssertion><Class IRI="kyc:Ownership"/><NamedIndividual IRI="#Own_Galaksiya_Erdem"/></ClassAssertion>
+  <ObjectPropertyAssertion><ObjectProperty IRI="kyc:hasOwnership"/><NamedIndividual IRI="#Galaksiya"/><NamedIndividual IRI="#Own_Galaksiya_Erdem"/></ObjectPropertyAssertion>
+  <ObjectPropertyAssertion><ObjectProperty IRI="kyc:hasShareholder"/><NamedIndividual IRI="#Own_Galaksiya_Erdem"/><NamedIndividual IRI="#Erdem"/></ObjectPropertyAssertion>
+  <DataPropertyAssertion><DataProperty IRI="kyc:sharePercentage"/><NamedIndividual IRI="#Own_Galaksiya_Erdem"/><Literal datatypeIRI="xsd:decimal">90.0</Literal></DataPropertyAssertion>
+
+</Ontology>

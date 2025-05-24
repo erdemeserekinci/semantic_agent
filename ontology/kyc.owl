@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://example.org/kyc_ontology"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://example.org/kyc_ontology">
+
+  <!-- ======================================== -->
+  <!-- 1. CLASS DEFINITIONS AND HIERARCHY      -->
+  <!-- ======================================== -->
+
+  <Declaration><Class IRI="#LegalEntity"/></Declaration>
+  <Declaration><Class IRI="#Person"/></Declaration>
+  <Declaration><Class IRI="#Company"/></Declaration>
+  <Declaration><Class IRI="#Shareholder"/></Declaration>
+  <Declaration><Class IRI="#AuthorizedSignatory"/></Declaration>
+  <Declaration><Class IRI="#Ownership"/></Declaration>
+  <Declaration><Class IRI="#PowerOfAttorney"/></Declaration>
+  <Declaration><Class IRI="#AuthorizationType"/></Declaration>
+
+  <SubClassOf><Class IRI="#Person"/><Class IRI="#LegalEntity"/></SubClassOf>
+  <SubClassOf><Class IRI="#Company"/><Class IRI="#LegalEntity"/></SubClassOf>
+  <SubClassOf><Class IRI="#Shareholder"/><Class IRI="#Person"/></SubClassOf>
+  <SubClassOf><Class IRI="#AuthorizedSignatory"/><Class IRI="#Person"/></SubClassOf>
+
+  <!-- ======================================== -->
+  <!-- 2. OBJECT PROPERTIES, DOMAINS & RANGES  -->
+  <!-- ======================================== -->
+
+  <Declaration><ObjectProperty IRI="#hasOwnership"/></Declaration>
+  <Domain><ObjectProperty IRI="#hasOwnership"/><Class IRI="#Company"/></Domain>
+  <Range><ObjectProperty IRI="#hasOwnership"/><Class IRI="#Ownership"/></Range>
+
+  <Declaration><ObjectProperty IRI="#hasShareholder"/></Declaration>
+  <Domain><ObjectProperty IRI="#hasShareholder"/><Class IRI="#Ownership"/></Domain>
+  <Range><ObjectProperty IRI="#hasShareholder"/><Class IRI="#Shareholder"/></Range>
+
+  <Declaration><ObjectProperty IRI="#hasAuthorizedSignatory"/></Declaration>
+  <Domain><ObjectProperty IRI="#hasAuthorizedSignatory"/><Class IRI="#Company"/></Domain>
+  <Range><ObjectProperty IRI="#hasAuthorizedSignatory"/><Class IRI="#AuthorizedSignatory"/></Range>
+
+  <Declaration><ObjectProperty IRI="#hasPowerOfAttorney"/></Declaration>
+  <Domain><ObjectProperty IRI="#hasPowerOfAttorney"/><Class IRI="#AuthorizedSignatory"/></Domain>
+  <Range><ObjectProperty IRI="#hasPowerOfAttorney"/><Class IRI="#PowerOfAttorney"/></Range>
+
+  <Declaration><ObjectProperty IRI="#ofAuthorizationType"/></Declaration>
+  <Domain><ObjectProperty IRI="#ofAuthorizationType"/><Class IRI="#PowerOfAttorney"/></Domain>
+  <Range><ObjectProperty IRI="#ofAuthorizationType"/><Class IRI="#AuthorizationType"/></Range>
+
+  <Declaration><ObjectProperty IRI="#representsCompany"/></Declaration>
+  <Domain><ObjectProperty IRI="#representsCompany"/><Class IRI="#PowerOfAttorney"/></Domain>
+  <Range><ObjectProperty IRI="#representsCompany"/><Class IRI="#Company"/></Range>
+
+  <!-- ======================================== -->
+  <!-- 3. INVERSE PROPERTIES + DOMAINS/RANGES  -->
+  <!-- ======================================== -->
+
+  <Declaration><ObjectProperty IRI="#isOwnershipOf"/></Declaration>
+  <InverseObjectProperties>
+    <ObjectProperty IRI="#hasOwnership"/>
+    <ObjectProperty IRI="#isOwnershipOf"/>
+  </InverseObjectProperties>
+  <Domain><ObjectProperty IRI="#isOwnershipOf"/><Class IRI="#Ownership"/></Domain>
+  <Range><ObjectProperty IRI="#isOwnershipOf"/><Class IRI="#Company"/></Range>
+
+  <Declaration><ObjectProperty IRI="#isShareholderOf"/></Declaration>
+  <InverseObjectProperties>
+    <ObjectProperty IRI="#hasShareholder"/>
+    <ObjectProperty IRI="#isShareholderOf"/>
+  </InverseObjectProperties>
+  <Domain><ObjectProperty IRI="#isShareholderOf"/><Class IRI="#Shareholder"/></Domain>
+  <Range><ObjectProperty IRI="#isShareholderOf"/><Class IRI="#Ownership"/></Range>
+
+  <Declaration><ObjectProperty IRI="#isAuthorizedSignatoryOf"/></Declaration>
+  <InverseObjectProperties>
+    <ObjectProperty IRI="#hasAuthorizedSignatory"/>
+    <ObjectProperty IRI="#isAuthorizedSignatoryOf"/>
+  </InverseObjectProperties>
+  <Domain><ObjectProperty IRI="#isAuthorizedSignatoryOf"/><Class IRI="#AuthorizedSignatory"/></Domain>
+  <Range><ObjectProperty IRI="#isAuthorizedSignatoryOf"/><Class IRI="#Company"/></Range>
+
+  <Declaration><ObjectProperty IRI="#isPowerOfAttorneyOf"/></Declaration>
+  <InverseObjectProperties>
+    <ObjectProperty IRI="#hasPowerOfAttorney"/>
+    <ObjectProperty IRI="#isPowerOfAttorneyOf"/>
+  </InverseObjectProperties>
+  <Domain><ObjectProperty IRI="#isPowerOfAttorneyOf"/><Class IRI="#PowerOfAttorney"/></Domain>
+  <Range><ObjectProperty IRI="#isPowerOfAttorneyOf"/><Class IRI="#AuthorizedSignatory"/></Range>
+
+  <Declaration><ObjectProperty IRI="#isTypeOf"/></Declaration>
+  <InverseObjectProperties>
+    <ObjectProperty IRI="#ofAuthorizationType"/>
+    <ObjectProperty IRI="#isTypeOf"/>
+  </InverseObjectProperties>
+  <Domain><ObjectProperty IRI="#isTypeOf"/><Class IRI="#AuthorizationType"/></Domain>
+  <Range><ObjectProperty IRI="#isTypeOf"/><Class IRI="#PowerOfAttorney"/></Range>
+
+  <Declaration><ObjectProperty IRI="#isRepresentedBy"/></Declaration>
+  <InverseObjectProperties>
+    <ObjectProperty IRI="#representsCompany"/>
+    <ObjectProperty IRI="#isRepresentedBy"/>
+  </InverseObjectProperties>
+  <Domain><ObjectProperty IRI="#isRepresentedBy"/><Class IRI="#Company"/></Domain>
+  <Range><ObjectProperty IRI="#isRepresentedBy"/><Class IRI="#PowerOfAttorney"/></Range>
+
+  <!-- ======================================== -->
+  <!-- 4. DATA PROPERTIES + DOMAINS/RANGES     -->
+  <!-- ======================================== -->
+
+  <Declaration><DataProperty IRI="#sharePercentage"/></Declaration>
+  <Domain><DataProperty IRI="#sharePercentage"/><Class IRI="#Ownership"/></Domain>
+  <Range><DataProperty IRI="#sharePercentage"/><Datatype IRI="&xsd;decimal"/></Range>
+
+  <Declaration><DataProperty IRI="#startDate"/></Declaration>
+  <Domain><DataProperty IRI="#startDate"/><Class IRI="#PowerOfAttorney"/></Domain>
+  <Range><DataProperty IRI="#startDate"/><Datatype IRI="&xsd;date"/></Range>
+
+  <Declaration><DataProperty IRI="#endDate"/></Declaration>
+  <Domain><DataProperty IRI="#endDate"/><Class IRI="#PowerOfAttorney"/></Domain>
+  <Range><DataProperty IRI="#endDate"/><Datatype IRI="&xsd;date"/></Range>
+
+  <Declaration><DataProperty IRI="#legalName"/></Declaration>
+  <Domain><DataProperty IRI="#legalName"/><Class IRI="#LegalEntity"/></Domain>
+  <Range><DataProperty IRI="#legalName"/><Datatype IRI="&xsd;string"/></Range>
+
+  <Declaration><DataProperty IRI="#firstName"/></Declaration>
+  <Domain><DataProperty IRI="#firstName"/><Class IRI="#Person"/></Domain>
+  <Range><DataProperty IRI="#firstName"/><Datatype IRI="&xsd;string"/></Range>
+
+  <Declaration><DataProperty IRI="#lastName"/></Declaration>
+  <Domain><DataProperty IRI="#lastName"/><Class IRI="#Person"/></Domain>
+  <Range><DataProperty IRI="#lastName"/><Datatype IRI="&xsd;string"/></Range>
+
+</Ontology>
