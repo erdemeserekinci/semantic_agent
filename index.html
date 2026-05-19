@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetilen Etmen Mimarisi - Kurumsal Strateji Sunumu</title>
+    
+    <!-- Profesyonel ve keskin tipografi için Inter ve teknik detaylar için JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        corporate: {
+                            50: '#F8FAFC',
+                            100: '#F1F5F9',
+                            200: '#E2E8F0',
+                            300: '#CBD5E1',
+                            400: '#94A3B8',
+                            500: '#64748B',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1E293B',
+                            900: '#0F172A',
+                            950: '#020617',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0F172A;
+            color: #F8FAFC;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .slide-deck-wrapper {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 3rem;
+            position: relative;
+        }
+
+        .slide-viewport {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            perspective: 1200px;
+        }
+
+        /* Kurumsal standartlarda geniş ve dolgun yerleşim alanı */
+        .slide-card {
+            width: 100%;
+            max-width: 1560px;
+            height: 100%;
+            max-height: 840px;
+            background-color: #020617;
+            border: 2px solid #1E293B;
+            border-radius: 16px;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+            padding: 3.5rem;
+            position: absolute;
+            opacity: 0;
+            transform: scale(0.98) translateY(10px);
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .slide-card.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        /* Çizim elemanları etkileşim ve animasyonları */
+        .interactive-node {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+        }
+        .interactive-node:hover {
+            stroke: #38BDF8;
+            fill: #0F172A;
+            filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.4));
+        }
+
+        .grid-blueprint {
+            background-image: radial-gradient(#1E293B 1.5px, transparent 1.5px);
+            background-size: 32px 32px;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased grid-blueprint">
+
+    <div class="slide-deck-wrapper">
+        <!-- ÜST BİLGİ ALANI -->
+        <header class="flex justify-between items-center border-b-2 border-corporate-800 pb-4 z-50">
+            <div class="flex items-center gap-6">
+                <span class="text-sm font-mono tracking-widest text-corporate-400 uppercase font-bold">// YÖNETİM KURULU STRATEJİ RAPORU</span>
+                <div class="h-5 w-[1px] bg-corporate-800"></div>
+                <span class="text-sm font-mono text-sky-400 font-bold">YÖNETİLEN KURUMSAL ETMEN SİSTEMLERİ</span>
+            </div>
+            <div class="flex items-center gap-8">
+                <span class="text-sm font-mono text-corporate-400 font-medium">HEDEF: CIO, CTO VE BAŞ MİMARLAR</span>
+                <span class="bg-corporate-900 border border-corporate-800 text-xs font-mono px-3 py-1.5 rounded text-sky-400 font-bold tracking-wider">SIFIR-GÜVEN UYUMLU</span>
+            </div>
+        </header>
+
+        <!-- ANA SLAYT ALANI -->
+        <main class="slide-viewport my-4">
+
+            <!-- SLAYT 1: DURUM ANALİZİ -->
+            <div class="slide-card active" id="slide-0">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-sm font-mono text-sky-400 tracking-wider uppercase font-bold">// SLAYT 01: DURUM ANALİZİ</span>
+                        <h1 class="text-5xl font-bold tracking-tight mt-2 text-white">Kurumsal Problem Alanı Değişti</h1>
+                        <p class="text-corporate-300 mt-3 text-lg max-w-4xl leading-relaxed">Eski nesil otomasyon insan davranışlarını taklit ediyordu. Yeni nesil sistemler ise doğrudan anlamsal veri, kurumsal yetenekler ve iş servisleri üzerinde çalışır.</p>
+                    </div>
+                    <span class="text-sm font-mono text-corporate-550 font-bold">DOK_REF: STRAT-01</span>
+                </div>
+
+                <div class="grid grid-cols-12 gap-10 my-auto items-stretch">
+                    <!-- Sol: Eski Yaklaşım -->
+                    <div class="col-span-5 bg-slate-950/60 border border-slate-900 rounded-xl p-8 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                                <span class="font-mono text-xs uppercase tracking-wider text-slate-400 font-bold">Geçmiş: RPA Yaklaşımı (UI Odaklı)</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-slate-200 mb-2">İnsan Davranışının Takliti</h3>
+                            <p class="text-sm text-slate-400 leading-relaxed">Ekran piksellerine, DOM ağaçlarına ve simüle edilmiş kullanıcı girdilerine dayanır. Arayüz değişikliklerine karşı son derece kırılgan ve operasyonel olarak kördür.</p>
+                        </div>
+
+                        <!-- Teknik Şema: Kırılgan Akış -->
+                        <div class="mt-8 border border-slate-900 rounded-lg bg-slate-950 p-5 flex justify-center">
+                            <svg viewBox="0 0 400 130" class="w-full max-w-[340px] h-auto">
+                                <!-- UI Ekranları -->
+                                <rect x="10" y="10" width="100" height="70" rx="4" fill="#020617" stroke="#334155" stroke-width="1.5" />
+                                <line x1="10" y1="25" x2="110" y2="25" stroke="#334155" stroke-width="1.2" />
+                                <circle cx="20" cy="18" r="2" fill="#334155" />
+                                <circle cx="28" cy="18" r="2" fill="#334155" />
+                                <rect x="25" y="40" width="40" height="8" rx="1.5" fill="none" stroke="#334155" stroke-width="1.2" />
+
+                                <rect x="50" y="30" width="100" height="70" rx="4" fill="#090d16" stroke="#ef4444" stroke-width="1.5" />
+                                <line x1="50" y1="45" x2="150" y2="45" stroke="#ef4444" stroke-width="1.2" />
+                                <rect x="65" y="60" width="50" height="8" rx="1.5" fill="none" stroke="#ef4444" stroke-width="1.2" />
+                                <rect x="65" y="75" width="30" height="8" rx="1.5" fill="none" stroke="#ef4444" stroke-width="1.2" />
+
+                                <!-- Simüle Robot Tıklaması -->
+                                <path d="M 230,100 L 105,75" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4 2" />
+                                <polygon points="105,75 115,72 112,82" fill="#ef4444" />
+                                <circle cx="105" cy="75" r="3.5" fill="none" stroke="#ef4444" stroke-width="1.2" />
+                                <text x="145" y="115" font-family="JetBrains Mono" font-size="9" fill="#ef4444" text-anchor="middle">Manuel Arayüz Takliti</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Orta Bağlantı / Dönüşüm Sinyali -->
+                    <div class="col-span-2 flex flex-col justify-center items-center">
+                        <div class="h-16 w-[1.5px] bg-slate-800"></div>
+                        <span class="font-mono text-xs my-4 text-sky-500 uppercase tracking-widest font-bold">PARADİGMA KAYMASI</span>
+                        <div class="h-16 w-[1.5px] bg-slate-800"></div>
+                    </div>
+
+                    <!-- Sağ: Yeni Yaklaşım -->
+                    <div class="col-span-5 bg-slate-950/60 border border-sky-950/40 rounded-xl p-8 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span class="font-mono text-xs uppercase tracking-wider text-sky-400 font-bold">Gelecek: Kurumsal Etmenler</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-2">Anlamsal Yürütme (API ve Servis Odaklı)</h3>
+                            <p class="text-sm text-slate-400 leading-relaxed">Süreçleri doğrudan işlem uç noktaları (endpoints) ve semantik modeller üzerinden yürütür. Kullanıcı arayüzlerini tamamen devre dışı bırakarak deterministik çalışır.</p>
+                        </div>
+
+                        <!-- Teknik Şema: Güvenli Entegrasyon -->
+                        <div class="mt-8 border border-sky-950/60 rounded-lg bg-slate-950 p-5 flex justify-center">
+                            <svg viewBox="0 0 400 130" class="w-full max-w-[340px] h-auto">
+                                <!-- Merkez Etmen Düğümü -->
+                                <circle cx="200" cy="65" r="28" fill="#020617" stroke="#38bdf8" stroke-width="2.5" />
+                                <text x="200" y="69" font-family="JetBrains Mono" font-size="10" font-weight="bold" fill="#38bdf8" text-anchor="middle">ETMEN</text>
+
+                                <!-- Yetenek Bağlantıları -->
+                                <g stroke="#334155" stroke-width="1.8">
+                                    <line x1="200" y1="37" x2="200" y2="15" />
+                                    <line x1="172" y1="65" x2="140" y2="65" />
+                                    <line x1="228" y1="65" x2="260" y2="65" />
+                                    <line x1="200" y1="93" x2="200" y2="115" />
+                                </g>
+
+                                <!-- Diğer Düğümler -->
+                                <rect x="175" y="3" width="50" height="15" rx="3" fill="#020617" stroke="#10b981" stroke-width="1.2" />
+                                <text x="200" y="13" font-family="JetBrains Mono" font-size="8" fill="#10b981" text-anchor="middle">API'ler</text>
+
+                                <rect x="90" y="57" width="50" height="15" rx="3" fill="#020617" stroke="#10b981" stroke-width="1.2" />
+                                <text x="115" y="67" font-family="JetBrains Mono" font-size="8" fill="#10b981" text-anchor="middle">Servisler</text>
+
+                                <rect x="260" y="57" width="50" height="15" rx="3" fill="#020617" stroke="#10b981" stroke-width="1.2" />
+                                <text x="285" y="67" font-family="JetBrains Mono" font-size="8" fill="#10b981" text-anchor="middle">Kurallar</text>
+
+                                <rect x="175" y="112" width="50" height="15" rx="3" fill="#020617" stroke="#10b981" stroke-width="1.2" />
+                                <text x="200" y="122" font-family="JetBrains Mono" font-size="8" fill="#10b981" text-anchor="middle">Grafik</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center border-t-2 border-corporate-800 pt-4 mt-auto">
+                    <span class="text-sm font-mono text-sky-500/80">MİMARİ ETKİ: “Kullanıcı arayüzü (UI) sistemin yalnızca dış yüzeyidir.”</span>
+                    <span class="text-sm font-mono text-corporate-550">SLAYT 01 / 07</span>
+                </div>
+            </div>
+
+            <!-- SLAYT 2: ETMEN DÜNYASININ EVRİMİ -->
+            <div class="slide-card" id="slide-1">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-sm font-mono text-sky-400 tracking-wider uppercase font-bold">// SLAYT 02: EVRİM SÜRECİ</span>
+                        <h1 class="text-5xl font-bold tracking-tight mt-2 text-white">Etmen Teknolojisinin Olgunluk Eğrisi</h1>
+                        <p class="text-corporate-300 mt-3 text-lg max-w-4xl leading-relaxed">Pasif ve basit sohbet modellerinden, kurumsal düzeyde yönetilen ve denetlenebilen otonom akıl yürütme mimarisine geçiş.</p>
+                    </div>
+                    <span class="text-sm font-mono text-corporate-550 font-bold">DOK_REF: EVOL-02</span>
+                </div>
+
+                <!-- Zaman Çizelgesi Şeması -->
+                <div class="my-auto">
+                    <div class="relative w-full py-4">
+                        <!-- Çizelge Bağlantı Çizgisi -->
+                        <div class="absolute top-[52px] left-0 right-0 h-[2px] bg-slate-800 z-0"></div>
+                        
+                        <!-- Duraklar -->
+                        <div class="grid grid-cols-5 gap-6 relative z-10">
+                            
+                            <!-- Aşama 1: Sohbet Robotları (CLI Terminal İkonu) -->
+                            <div class="bg-slate-950 border border-slate-900 rounded-xl p-6 flex flex-col justify-between min-h-[350px] transition-all hover:border-slate-700">
+                                <div>
+                                    <div class="flex justify-between items-start mb-6">
+                                        <span class="font-mono text-xs text-corporate-500 font-bold">01 / REAKTİF</span>
+                                        <!-- CLI Terminal SVG -->
+                                        <svg class="w-14 h-14 text-slate-500 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.2">
+                                            <rect x="2" y="4" width="20" height="16" rx="2" />
+                                            <path d="M6 9l3 3-3 3M12 15h6" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-lg font-bold text-slate-200">Sohbet Robotları</h4>
+                                    <p class="text-sm text-slate-400 mt-3 leading-relaxed">Sınırlı kurallara dayalı, sadece statik Soru-Cevap gerçekleştiren metin sistemleri.</p>
+                                </div>
+                                <div class="border-t border-slate-900 pt-3 flex items-center gap-2">
+                                    <span class="text-xs font-mono text-corporate-400 font-bold uppercase">SOHBET</span>
+                                </div>
+                            </div>
+
+                            <!-- Aşama 2: RPA Sistemleri (Mekanik Dişli Çark & İmleç) -->
+                            <div class="bg-slate-950 border border-slate-900 rounded-xl p-6 flex flex-col justify-between min-h-[350px] transition-all hover:border-slate-700">
+                                <div>
+                                    <div class="flex justify-between items-start mb-6">
+                                        <span class="font-mono text-xs text-corporate-400 font-bold">02 / MEKANİK</span>
+                                        <!-- Dişli ve İmleç SVG -->
+                                        <svg class="w-14 h-14 text-slate-400 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.2">
+                                            <circle cx="10" cy="10" r="3" />
+                                            <path d="M10 2v3M10 15v3M2 10h3M15 10h3M4.5 4.5l2 2M13.5 13.5l2 2M13.5 4.5l-2 2M4.5 13.5l2-2" />
+                                            <path d="M14 14l7 2-2 2 3 3-1.5 1.5-3-3-2 2z" fill="currentColor"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-lg font-bold text-slate-200">RPA Sistemleri</h4>
+                                    <p class="text-sm text-slate-400 mt-3 leading-relaxed">Ekran piksellerini ve kullanıcı tıklamalarını taklit eden kırılgan arayüz otomasyonu.</p>
+                                </div>
+                                <div class="border-t border-slate-900 pt-3 flex items-center gap-2">
+                                    <span class="text-xs font-mono text-corporate-400 font-bold uppercase">ARAYÜZ KOPYASI</span>
+                                </div>
+                            </div>
+
+                            <!-- Aşama 3: LLM + Araç Kullanımı (API Çoklu Hub Portu) -->
+                            <div class="bg-slate-950 border border-slate-800 rounded-xl p-6 flex flex-col justify-between min-h-[350px] transition-all hover:border-slate-600">
+                                <div>
+                                    <div class="flex justify-between items-start mb-6">
+                                        <span class="font-mono text-xs text-sky-400 font-bold">03 / BİLİŞSEL</span>
+                                        <!-- API Port Hub SVG -->
+                                        <svg class="w-14 h-14 text-sky-400 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.2">
+                                            <rect x="3" y="6" width="18" height="12" rx="2" />
+                                            <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+                                            <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+                                            <circle cx="17" cy="12" r="1.5" fill="currentColor" />
+                                            <path d="M7 14v4M12 14v4M17 14v4" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-lg font-bold text-sky-300">LLM + Araç Kullanımı</h4>
+                                    <p class="text-sm text-slate-400 mt-3 leading-relaxed">Dil modellerinin API'ler ve harici araçları dinamik entegrasyonla çağırabilmesi.</p>
+                                </div>
+                                <div class="border-t border-slate-900 pt-3 flex items-center gap-2">
+                                    <span class="text-xs font-mono text-sky-400 font-bold uppercase">ARAÇ ÇAĞIRMA</span>
+                                </div>
+                            </div>
+
+                            <!-- Aşama 4: Çoklu Etmen Sistemleri (Merkeziyetsiz İletişim Ağı) -->
+                            <div class="bg-slate-950 border border-slate-800 rounded-xl p-6 flex flex-col justify-between min-h-[350px] transition-all hover:border-slate-600">
+                                <div>
+                                    <div class="flex justify-between items-start mb-6">
+                                        <span class="font-mono text-xs text-sky-300 font-bold">04 / DELEGE</span>
+                                        <!-- Decentralized Network Mesh SVG -->
+                                        <svg class="w-14 h-14 text-sky-300 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.2">
+                                            <circle cx="12" cy="5" r="2" fill="currentColor"/>
+                                            <circle cx="5" cy="14" r="2" fill="currentColor"/>
+                                            <circle cx="19" cy="14" r="2" fill="currentColor"/>
+                                            <circle cx="12" cy="20" r="2" fill="currentColor"/>
+                                            <path d="M12 7l-5 5.5M12 7l7 5.5M5 14h12M5 14.5l5 4.5M19 14.5l-5 4.5" stroke-dasharray="2 1"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-lg font-bold text-sky-200">Çoklu Etmen</h4>
+                                    <p class="text-sm text-slate-400 mt-3 leading-relaxed">Uzmanlaşmış mikro etmenlerin ortak semantik veri protokolüyle haberleşmesi.</p>
+                                </div>
+                                <div class="border-t border-slate-900 pt-3 flex items-center gap-2">
+                                    <span class="text-xs font-mono text-sky-300 font-bold uppercase">KOORDİNASYON</span>
+                                </div>
+                            </div>
+
+                            <!-- Aşama 5: Yönetilen Kurumsal Etmen -->
+                            <div class="bg-slate-950 border-2 border-emerald-500/80 rounded-xl p-6 flex flex-col justify-between min-h-[350px] shadow-lg shadow-emerald-950/25">
+                                <div>
+                                    <div class="flex justify-between items-start mb-6">
+                                        <span class="font-mono text-xs text-emerald-400 font-bold">05 / YÖNETİLEN</span>
+                                        <!-- Hexagon + Governance Org Chart SVG -->
+                                        <svg class="w-14 h-14 text-emerald-400 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.2">
+                                            <polygon points="12,2 21,6.5 21,17.5 12,22 3,17.5 3,6.5" />
+                                            <circle cx="12" cy="7.5" r="1" fill="currentColor"/>
+                                            <line x1="12" y1="8.5" x2="12" y2="12" />
+                                            <line x1="8.5" y1="12" x2="15.5" y2="12" />
+                                            <line x1="8.5" y1="12" x2="8.5" y2="14" />
+                                            <line x1="15.5" y1="12" x2="15.5" y2="14" />
+                                            <circle cx="8.5" cy="15" r="1" fill="currentColor"/>
+                                            <circle cx="15.5" cy="15" r="1" fill="currentColor"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-lg font-bold text-white">Yönetilen Etmenler</h4>
+                                    <p class="text-sm text-slate-300 mt-3 leading-relaxed">Deterministik akışlar, kurumsal politika kontrolleri ve tam denetlenebilir karar süreçleri.</p>
+                                </div>
+                                <div class="border-t border-emerald-900/60 pt-3 flex items-center gap-2">
+                                    <span class="text-xs font-mono text-emerald-400 uppercase font-bold">YÖNETİLEN AKIL</span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center border-t-2 border-corporate-800 pt-4 mt-auto">
+                    <span class="text-sm font-mono text-slate-400">EVRİM ÖZETİ: "Modern kurumsal etmenler ekranlar yerine sistem yeteneklerini kullanır."</span>
+                    <span class="text-sm font-mono text-corporate-550">SLAYT 02 / 07</span>
+                </div>
+            </div>
+
+            <!-- SLAYT 3: BAĞLAM EN ÖNEMLİ ALTYAPIDIR -->
+            <div class="slide-card" id="slide-2">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-sm font-mono text-sky-400 tracking-wider uppercase font-bold">// SLAYT 03: VERİ ALTYAPISI</span>
+                        <h1 class="text-5xl font-bold tracking-tight mt-2 text-white">Bağlam Yönetimi En Kritik Altyapıdır</h1>
+                        <p class="text-corporate-300 mt-3 text-lg max-w-4xl leading-relaxed">Bilişsel dil modellerinin (LLM) tek başına kurumsal hafızası yoktur. Sistem zekası, etmen etrafında kesintisiz güncellenen operasyonel bağlamdan doğar.</p>
+                    </div>
+                    <span class="text-sm font-mono text-corporate-550 font-bold">DOK_REF: CONTX-03</span>
+                </div>
+
+                <div class="grid grid-cols-12 gap-10 my-auto items-center">
+                    <!-- Sol: Açıklamalar -->
+                    <div class="col-span-5 space-y-6">
+                        <div class="border-l-4 border-sky-500/80 pl-4">
+                            <h4 class="text-lg font-bold text-slate-200 uppercase">// Dinamik Semantik</h4>
+                            <p class="text-sm text-slate-400 mt-2 leading-relaxed">Müşterinin geçmiş işlem detaylarına, risk sinyallerine veya güncel yasal mevzuata göre aynı API çağrısı tamamen farklı süreçleri tetikleyebilir.</p>
+                        </div>
+
+                        <!-- Önemli Vurgu -->
+                        <div class="bg-slate-950 border border-slate-800 p-5 rounded-xl">
+                            <p class="text-sm italic text-slate-300 leading-relaxed font-mono">
+                                “Aynı mesaj, farklı operasyonel bağlamlar altında tamamen farklı eylemler gerektirebilir.”
+                            </p>
+                        </div>
+
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Veri grafiklerine ve anlık bağlama erişimi olmayan modeller yanılsama (halüsinasyon) üretmeye açıktır. Mimari güç, model ağırlıklarında değil, dinamik bağlam yönetimindedir.
+                        </p>
+                    </div>
+
+                    <!-- Sağ: Bağlam Grafik Şeması -->
+                    <div class="col-span-7 flex justify-end">
+                        <div class="w-full max-w-[620px] border border-slate-800 rounded-xl p-6 bg-slate-950/40 relative">
+                            <svg viewBox="0 0 500 320" class="w-full h-auto">
+                                <!-- Orbits -->
+                                <circle cx="250" cy="160" r="130" fill="none" stroke="#1e293b" stroke-width="1.8" stroke-dasharray="6 4" />
+                                <circle cx="250" cy="160" r="80" fill="none" stroke="#1e293b" stroke-width="1.2" stroke-dasharray="4 2" />
+
+                                <!-- Bağlantılar -->
+                                <g stroke="#334155" stroke-width="1.5" stroke-dasharray="2 3">
+                                    <line x1="250" y1="160" x2="110" y2="70" />
+                                    <line x1="250" y1="160" x2="390" y2="70" />
+                                    <line x1="250" y1="160" x2="110" y2="250" />
+                                    <line x1="250" y1="160" x2="390" y2="250" />
+                                    <line x1="250" y1="160" x2="250" y2="30" />
+                                    <line x1="250" y1="160" x2="250" y2="290" />
+                                </g>
+
+                                <!-- Merkez Bağlam Düğümü -->
+                                <rect x="140" y="125" width="220" height="70" rx="6" fill="#090d16" stroke="#38bdf8" stroke-width="2.5" class="interactive-node"/>
+                                <text x="250" y="156" font-family="JetBrains Mono" font-size="12" font-weight="bold" fill="#38bdf8" text-anchor="middle">DİNAMİK OPERASYONEL</text>
+                                <text x="250" y="172" font-family="JetBrains Mono" font-size="12" font-weight="bold" fill="#38bdf8" text-anchor="middle">BAĞLAM MOTORU</text>
+
+                                <!-- Çevre Düğümleri -->
+                                <rect x="40" y="45" width="120" height="42" rx="4" fill="#090d16" stroke="#64748B" stroke-width="1.5" class="interactive-node"/>
+                                <text x="100" y="70" font-family="Inter" font-size="11" font-weight="600" fill="#e2e8f0" text-anchor="middle">Müşteri Geçmişi</text>
+
+                                <rect x="340" y="45" width="120" height="42" rx="4" fill="#090d16" stroke="#64748B" stroke-width="1.5" class="interactive-node"/>
+                                <text x="400" y="70" font-family="Inter" font-size="11" font-weight="600" fill="#e2e8f0" text-anchor="middle">Kurumsal Kurallar</text>
+
+                                <rect x="40" y="230" width="120" height="42" rx="4" fill="#090d16" stroke="#64748B" stroke-width="1.5" class="interactive-node"/>
+                                <text x="100" y="255" font-family="Inter" font-size="11" font-weight="600" fill="#e2e8f0" text-anchor="middle">Risk Sinyalleri</text>
+
+                                <rect x="340" y="230" width="120" height="42" rx="4" fill="#090d16" stroke="#64748B" stroke-width="1.5" class="interactive-node"/>
+                                <text x="400" y="255" font-family="Inter" font-size="11" font-weight="600" fill="#e2e8f0" text-anchor="middle">Dış Sistemler</text>
+
+                                <rect x="190" y="5" width="120" height="42" rx="4" fill="#090d16" stroke="#475569" stroke-width="1.2" class="interactive-node"/>
+                                <text x="250" y="30" font-family="Inter" font-size="11" font-weight="600" fill="#94A3B8" text-anchor="middle">Önceki Eylemler</text>
+
+                                <rect x="190" y="270" width="120" height="42" rx="4" fill="#090d16" stroke="#475569" stroke-width="1.2" class="interactive-node"/>
+                                <text x="250" y="295" font-family="Inter" font-size="11" font-weight="600" fill="#94A3B8" text-anchor="middle">Semantik Bellek</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center border-t-2 border-corporate-800 pt-4 mt-auto">
+                    <span class="text-sm font-mono text-sky-500/80">ALTYAPI GERÇEĞİ: "Bağlam kontrolü olmadan, akıllı modeller operasyonel olarak kördür."</span>
+                    <span class="text-sm font-mono text-corporate-550">SLAYT 03 / 07</span>
+                </div>
+            </div>
+
+            <!-- SLAYT 4: ÇOKLU ETMEN KOORDİNASYONU -->
+            <div class="slide-card" id="slide-3">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-sm font-mono text-sky-400 tracking-wider uppercase font-bold">// SLAYT 04: DAĞITIK ORKESTRASYON</span>
+                        <h1 class="text-5xl font-bold tracking-tight mt-2 text-white">Kurumsal Sorunlar Dağıtıktır</h1>
+                        <p class="text-corporate-300 mt-3 text-lg max-w-4xl leading-relaxed">Bankacılık süreçleri birden fazla bağımsız iş birimini kapsar. Tek parçalı (monolitik) akıllı sistemler başarısız olmaya mahkumdur. Çözüm; semantik olarak koordine olan uzman etmenlerdir.</p>
+                    </div>
+                    <span class="text-sm font-mono text-corporate-550 font-bold">DOK_REF: COORD-04</span>
+                </div>
+
+                <div class="grid grid-cols-12 gap-10 my-auto items-center">
+                    <!-- Sol: Teknik Şema -->
+                    <div class="col-span-7">
+                        <div class="border border-slate-800 rounded-xl p-6 bg-slate-950/40">
+                            <svg viewBox="0 0 600 280" class="w-full h-auto">
+                                <!-- Merkez Koordinatör -->
+                                <rect x="200" y="100" width="200" height="80" rx="6" fill="#090d16" stroke="#38bdf8" stroke-width="2.5" class="interactive-node"/>
+                                <text x="300" y="138" font-family="JetBrains Mono" font-size="13" font-weight="bold" fill="#38bdf8" text-anchor="middle">KOORDİNATÖR</text>
+                                <text x="300" y="154" font-family="JetBrains Mono" font-size="9.5" fill="#64748b" text-anchor="middle">ORTAK BAĞLAM MERKEZİ</text>
+
+                                <!-- Uzman Etmenler -->
+                                <!-- Risk -->
+                                <rect x="15" y="15" width="140" height="55" rx="4" fill="#090d16" stroke="#64748b" stroke-width="1.5" class="interactive-node"/>
+                                <text x="85" y="42" font-family="Inter" font-size="11" font-weight="bold" fill="#e2e8f0" text-anchor="middle">Risk Etmeni</text>
+                                <text x="85" y="54" font-family="JetBrains Mono" font-size="8.5" fill="#64748b" text-anchor="middle">MEVZUAT UYUMU</text>
+
+                                <!-- Uyum -->
+                                <rect x="445" y="15" width="140" height="55" rx="4" fill="#090d16" stroke="#64748b" stroke-width="1.5" class="interactive-node"/>
+                                <text x="515" y="42" font-family="Inter" font-size="11" font-weight="bold" fill="#e2e8f0" text-anchor="middle">Uyum Etmeni</text>
+                                <text x="515" y="54" font-family="JetBrains Mono" font-size="8.5" fill="#64748b" text-anchor="middle">DENETİM SINIRI</text>
+
+                                <!-- Sahtecilik -->
+                                <rect x="15" y="210" width="140" height="55" rx="4" fill="#090d16" stroke="#64748b" stroke-width="1.5" class="interactive-node"/>
+                                <text x="85" y="237" font-family="Inter" font-size="11" font-weight="bold" fill="#e2e8f0" text-anchor="middle">Sahtecilik Etmeni</text>
+                                <text x="85" y="249" font-family="JetBrains Mono" font-size="8.5" fill="#64748b" text-anchor="middle">ANOMALİ TESPİTİ</text>
+
+                                <!-- Belge -->
+                                <rect x="445" y="210" width="140" height="55" rx="4" fill="#090d16" stroke="#64748b" stroke-width="1.5" class="interactive-node"/>
+                                <text x="515" y="237" font-family="Inter" font-size="11" font-weight="bold" fill="#e2e8f0" text-anchor="middle">Belge Etmeni</text>
+                                <text x="515" y="249" font-family="JetBrains Mono" font-size="8.5" fill="#64748b" text-anchor="middle">SEMANTİK ANALİZ</text>
+
+                                <!-- Haberleşme Hatları -->
+                                <g stroke="#38bdf8" stroke-width="1.8" stroke-dasharray="4 2">
+                                    <line x1="155" y1="55" x2="200" y2="110" />
+                                    <line x1="445" y1="55" x2="400" y2="110" />
+                                    <line x1="155" y1="225" x2="200" y2="170" />
+                                    <line x1="445" y1="225" x2="400" y2="170" />
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Sağ: Stratejik Çıkarımlar -->
+                    <div class="col-span-5 space-y-6">
+                        <h3 class="text-2xl font-bold text-slate-200">Ortak Semantik Protokol</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Etmenler arası iletişim salt veritabanı güncellemelerine veya serbest metinlere dayanamaz. Etkileşim için ortak ontolojiler ve tanımlanmış semantik veri yapıları gerekir.
+                        </p>
+                        
+                        <div class="bg-slate-950 p-5 rounded-lg border border-slate-800">
+                            <span class="text-xs font-mono text-red-400 font-bold block uppercase">// OPERASYONEL UYARI</span>
+                            <p class="text-sm text-slate-400 mt-2 leading-relaxed">
+                                "Semantik bütünlük sağlanmadığı sürece, orkestrasyon hızla kaosa dönüşür."
+                            </p>
+                        </div>
+
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Görevleri uzmanlaşmış etmenlere (Mevzuat, Risk, Sahtecilik vb.) bölerek, kurumsal mimarinin temel prensibi olan "sorumlulukların ayrılması" (separation of concerns) ilkesini koruyoruz.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center border-t-2 border-corporate-800 pt-4 mt-auto">
+                    <span class="text-sm font-mono text-sky-500/80">HABERLEŞME STANDARDI: "İnsan-Etmen ve Etmen-Etmen etkileşimleri ortak bir anlamsal şemayı paylaşmalıdır."</span>
+                    <span class="text-sm font-mono text-corporate-550">SLAYT 04 / 07</span>
+                </div>
+            </div>
+
+            <!-- SLAYT 5: RPA ve YETENEK ODAKLI ETMENLER -->
+            <div class="slide-card" id="slide-4">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-sm font-mono text-sky-400 tracking-wider uppercase font-bold">// SLAYT 05: TEKNİK KIYASLAMA TABLOSU</span>
+                        <h1 class="text-5xl font-bold tracking-tight mt-2 text-white">Yetenek Odaklı Etmenler ve Arayüz Otomasyonu</h1>
+                        <p class="text-corporate-300 mt-3 text-lg max-w-4xl leading-relaxed">Kullanıcı arayüzünü (UI) taklit eden süreçler ile doğrudan sistem yeteneklerini ve API sözleşmelerini kullanan mimarilerin karşılaştırması.</p>
+                    </div>
+                    <span class="text-sm font-mono text-corporate-550 font-bold">DOK_REF: COMP-05</span>
+                </div>
+
+                <div class="grid grid-cols-12 gap-10 my-auto items-stretch">
+                    <!-- Sol Sütun: Mimari Farklar -->
+                    <div class="col-span-3 flex flex-col justify-between border-r border-corporate-800 pr-6">
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="text-sm font-mono text-corporate-400 font-bold uppercase">// RPA / UI OTOMASYONU</h4>
+                                <p class="text-xs text-slate-400 leading-relaxed mt-2">Ekrandaki görsel katmanları taklit eder, işlemin altında yatan yapısal veriden habersizdir.</p>
+                            </div>
+                            <div class="h-[1px] bg-slate-800"></div>
+                            <div>
+                                <h4 class="text-sm font-mono text-sky-400 font-bold uppercase">// YETENEK ODAKLI ETMENLER</h4>
+                                <p class="text-xs text-slate-400 leading-relaxed mt-2">Doğrudan işlem API'leri, veri şemaları, mikro servisler ve mantık kuralları üzerinde çalışır.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950 p-4 border border-slate-800 rounded-lg mt-6">
+                            <span class="text-xs font-mono font-bold block text-corporate-500 uppercase">Temel Aksiyom</span>
+                            <span class="text-lg font-bold text-slate-300">"Tıklamalar anlam ifade etmez."</span>
+                        </div>
+                    </div>
+
+                    <!-- Sağ Sütun: Karşılaştırma Matrisi -->
+                    <div class="col-span-9 flex flex-col justify-between">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b-2 border-slate-850">
+                                        <th class="py-3 text-xs font-mono text-slate-500 uppercase font-bold">Kriter</th>
+                                        <th class="py-3 text-xs font-mono text-slate-500 uppercase font-bold px-4">RPA / UI Otomasyonu</th>
+                                        <th class="py-3 text-xs font-mono text-sky-400 uppercase font-bold px-4 bg-sky-950/20 border-x border-t border-slate-850">Yetenek / Araç Kullanımı</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm">
+                                    <tr class="border-b border-slate-850 hover:bg-slate-900/10">
+                                        <td class="py-3 font-semibold text-slate-300">Yürütme Mekanizması</td>
+                                        <td class="py-3 text-slate-400 px-4">Kullanıcı tıklamalarını simüle eder</td>
+                                        <td class="py-3 text-sky-300 px-4 font-bold bg-sky-950/20 border-x border-slate-850">API ve servis sözleşmelerini çağırır</td>
+                                    </tr>
+                                    <tr class="border-b border-slate-850 hover:bg-slate-900/10">
+                                        <td class="py-3 font-semibold text-slate-300">Arayüz Değişiklik Hassasiyeti</td>
+                                        <td class="py-3 text-slate-400 px-4">Son derece kırılgandır (DOM değişimi süreci durdurur)</td>
+                                        <td class="py-3 text-sky-300 px-4 font-bold bg-sky-950/20 border-x border-slate-850">Kararlıdır (sıkı protokollerle korunur)</td>
+                                    </tr>
+                                    <tr class="border-b border-slate-850 hover:bg-slate-900/10">
+                                        <td class="py-3 font-semibold text-slate-300">Bağlam Sınırları</td>
+                                        <td class="py-3 text-slate-400 px-4">Dar kapsamlıdır (yalnızca görsel ekranla sınırlıdır)</td>
+                                        <td class="py-3 text-sky-300 px-4 font-bold bg-sky-950/20 border-x border-slate-850">Geniştir (semantik veritabanının tamamına erişir)</td>
+                                    </tr>
+                                    <tr class="border-b border-slate-850 hover:bg-slate-900/10">
+                                        <td class="py-3 font-semibold text-slate-300">İzlenebilirlik ve Denetim</td>
+                                        <td class="py-3 text-slate-400 px-4">Zayıftır (kara kutu akışlar, ekran logları)</td>
+                                        <td class="py-3 text-sky-300 px-4 font-bold bg-sky-950/20 border-x border-slate-850">Deterministiktir (mantıksal akıl yürütme günlükleri)</td>
+                                    </tr>
+                                    <tr class="border-b border-slate-850 hover:bg-slate-900/10">
+                                        <td class="py-3 font-semibold text-slate-300">Ölçeklenme Maliyeti</td>
+                                        <td class="py-3 text-slate-400 px-4">Yüksektir (VDI oturumları ve sanal makineler gerektirir)</td>
+                                        <td class="py-3 text-sky-300 px-4 font-bold bg-sky-950/20 border-x border-slate-850 border-b">Düşüktür (sunucusuz mikro servis altyapıları)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="flex justify-between items-center mt-6 pt-4 border-t border-slate-850">
+                            <span class="text-[11px] font-mono text-corporate-400 max-w-[650px] leading-relaxed">
+                                <strong class="text-slate-300">Not:</strong> API desteği bulunmayan eski (legacy) sistemler için geçici olarak kullanıcı arayüzü otomasyonları (RPA) kullanılabilir; ancak uzun vadeli stratejik hedef her zaman yetenek odaklı entegrasyonlar olmalıdır.
+                            </span>
+                            <span class="text-base font-bold text-sky-400">"Modern etmenler arayüzlerle değil, yeteneklerle çalışır."</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center border-t-2 border-corporate-800 pt-4 mt-auto">
+                    <span class="text-sm font-mono text-slate-405">STRATEJİK HEDEF: Yetenek odaklı deterministik süreçler.</span>
+                    <span class="text-sm font-mono text-corporate-550">SLAYT 05 / 07</span>
+                </div>
+            </div>
+
+            <!-- SLAYT 6: YÖNETİLEN ETMEN MİMARİSİ -->
+            <div class="slide-card" id="slide-5">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-sm font-mono text-sky-400 tracking-wider uppercase font-bold">// SLAYT 06: REFERANS MİMARİSİ</span>
+                        <h1 class="text-5xl font-bold tracking-tight mt-2 text-white">Yönetilen Etmen Mimarisi</h1>
+                        <p class="text-corporate-300 mt-3 text-lg max-w-4xl leading-relaxed">Deterministik işlem yönetimini, kurumsal politikaları, veri sınırlarını ve açıklanabilir karar süreçlerini garanti altına alan katmanlı referans mimari.</p>
+                    </div>
+                    <span class="text-sm font-mono text-corporate-550 font-bold">DOK_REF: ARCH-06</span>
+                </div>
+
+                <div class="grid grid-cols-12 gap-10 my-auto items-center">
+                    <!-- Sol: Katmanlı Mimari Şeması -->
+                    <div class="col-span-8">
+                        <div class="border border-slate-800 rounded-xl p-6 bg-slate-950/40">
+                            <div class="space-y-3 font-mono">
+                                
+                                <!-- Katman 1 -->
+                                <div class="border border-slate-800 bg-slate-900/10 p-3.5 rounded-lg flex justify-between items-center">
+                                    <div class="flex items-center gap-4">
+                                        <span class="text-xs font-bold bg-slate-800 text-slate-300 px-2.5 py-1 rounded">KATMAN 1</span>
+                                        <span class="text-sm font-bold text-slate-200">İNSAN GÖZETİM KATMANI (Manuel Müdahale ve Limit Onayları)</span>
+                                    </div>
+                                    <span class="text-[10px] text-slate-500 font-bold uppercase">DENETİM</span>
+                                </div>
+
+                                <!-- Katman 2 -->
+                                <div class="border border-slate-850 p-3.5 rounded-lg flex justify-between items-center bg-sky-950/10 border-sky-950">
+                                    <div class="flex items-center gap-4">
+                                        <span class="text-xs font-bold bg-sky-950 text-sky-400 px-2.5 py-1 rounded border border-sky-900">KATMAN 2</span>
+                                        <span class="text-sm font-bold text-slate-200">BİLİŞSEL ETMEN KATMANI (İş Mantığı ve Niyet Çözümleme)</span>
+                                    </div>
+                                    <span class="text-[10px] text-sky-400 font-bold uppercase">AKIL YÜRÜTME</span>
+                                </div>
+
+                                <!-- Katman 3 -->
+                                <div class="border border-slate-800 p-3.5 rounded-lg flex justify-between items-center">
+                                    <div class="flex items-center gap-4">
+                                        <span class="text-xs font-bold bg-slate-900 text-slate-400 px-2.5 py-1 rounded">KATMAN 3</span>
+                                        <span class="text-sm font-bold text-slate-200">DETERMİNİSTİK ORKESTRASYON VE İŞ PLANLAYICI (State Machine)</span>
+                                    </div>
+                                    <span class="text-[10px] text-slate-500 font-bold uppercase">KONTROL</span>
+                                </div>
+
+                                <!-- Katman 4 -->
+                                <div class="border border-slate-800 p-3.5 rounded-lg flex justify-between items-center">
+                                    <div class="flex items-center gap-4">
+                                        <span class="text-xs font-bold bg-slate-900 text-slate-400 px-2.5 py-1 rounded">KATMAN 4</span>
+                                        <span class="text-sm font-bold text-slate-200">GÜVENLİ ARAÇ HAVUZU VE API GEÇİTLERİ (Yetenek Entegrasyonları)</span>
+                                    </div>
+                                    <span class="text-[10px] text-slate-500 font-bold uppercase">YÜRÜTME</span>
+                                </div>
+
+                                <!-- Katman 5 -->
+                                <div class="border border-slate-900 p-3.5 rounded-lg flex justify-between items-center bg-slate-950">
+                                    <div class="flex items-center gap-4">
+                                        <span class="text-xs font-bold bg-slate-950 text-slate-600 px-2.5 py-1 rounded border border-slate-800">KATMAN 5</span>
+                                        <span class="text-sm font-bold text-slate-550">KURUMSAL BİLGİ TABANI VE POLİTİKA VERİTABANI (Graph RAG)</span>
+                                    </div>
+                                    <span class="text-[10px] text-slate-600 font-bold uppercase">VERİ / GERÇEKLİK</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sağ: Stratejik Bilgiler -->
+                    <div class="col-span-4 space-y-6">
+                        <div>
+                            <h4 class="text-sm font-mono text-sky-400 font-bold uppercase">// Model, Sistemin Kendisi Değildir</h4>
+                            <p class="text-sm text-slate-400 mt-2 leading-relaxed">
+                                Dil modelleri (LLM) iş akışını doğrudan koordine etmez. Yalnızca, deterministik sistem sınırları içinde çağrılan anlık ve durumsuz bir akıl yürütme işlemcisidir.
+                            </p>
+                        </div>
+
+                        <div class="border-l-2 border-corporate-800 pl-4 space-y-3 text-sm">
+                            <p class="text-slate-405"><strong class="text-slate-200">Güvenlik:</strong> Her işlem adımında izole yetki doğrulama ve anlamsal erişim denetimleri.</p>
+                            <p class="text-slate-405"><strong class="text-slate-200">Açıklanabilirlik:</strong> Tüm kararların ve çağrılan işlevlerin şeffaf, mantıksal işlem günlükleri.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center border-t-2 border-corporate-800 pt-4 mt-auto">
+                    <span class="text-sm font-mono text-sky-500/80">MİMARİ PRENSİP: "Model sistemin kendisi değil; yönetilen bir mimari içindeki akıl yürütme bileşenlerinden biridir."</span>
+                    <span class="text-sm font-mono text-corporate-550">SLAYT 06 / 07</span>
+                </div>
+            </div>
+
+            <!-- SLAYT 7: GELECEK -->
+            <div class="slide-card" id="slide-6">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-sm font-mono text-sky-400 tracking-wider uppercase font-bold">// SLAYT 07: STRATEJİK GELECEK ÖNGÖRÜSÜ</span>
+                        <h1 class="text-5xl font-bold tracking-tight mt-2 text-white">Yetenek Ağları Paradigması</h1>
+                        <p class="text-corporate-300 mt-3 text-lg max-w-4xl leading-relaxed">Geleceğin kurumsal bilişim mimarileri, sistemler arası veri taşımak için arayüz pencereleri geliştirmek yerine; doğrudan birbiriyle konuşan güvenli semantik yetenek ağları kuracaktır.</p>
+                    </div>
+                    <span class="text-sm font-mono text-corporate-550 font-bold">DOK_REF: FUT-07</span>
+                </div>
+
+                <div class="my-auto grid grid-cols-12 gap-10 items-center">
+                    <div class="col-span-5 space-y-6">
+                        <span class="text-sm font-mono text-sky-400 uppercase font-bold">// PARADİGMA DEĞİŞİMİ</span>
+                        <h2 class="text-3xl font-light text-slate-200 leading-tight">Uygulama Silolarını Ortadan Kaldırmak</h2>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Geçmişte kurumlar, bağımsız veri kaynakları arasında manuel olarak köprü kurmaları için insanlara görsel arayüz pencereleri sundu. Etmen mimarisinde ise bu arayüzler önemini yitiriyor. Sistemler ortak semantik veri şemaları üzerinden doğrudan birbirleriyle konuşuyor.
+                        </p>
+                    </div>
+
+                    <div class="col-span-7 border border-slate-800 bg-slate-950/40 p-6 rounded-xl">
+                        <svg viewBox="0 0 500 220" class="w-full h-auto">
+                            <!-- Sol Blok: UI Siloları -->
+                            <g>
+                                <rect x="20" y="30" width="100" height="30" rx="3" fill="#090d16" stroke="#475569" stroke-width="1.5" />
+                                <text x="70" y="48" font-family="Inter" font-size="9" font-weight="600" fill="#e2e8f0" text-anchor="middle">Silo Portal</text>
+
+                                <rect x="20" y="75" width="100" height="30" rx="3" fill="#090d16" stroke="#475569" stroke-width="1.5" />
+                                <text x="70" y="93" font-family="Inter" font-size="9" font-weight="600" fill="#e2e8f0" text-anchor="middle">Silo Sistem</text>
+
+                                <rect x="20" y="120" width="100" height="30" rx="3" fill="#090d16" stroke="#475569" stroke-width="1.5" />
+                                <text x="70" y="138" font-family="Inter" font-size="9" font-weight="600" fill="#e2e8f0" text-anchor="middle">Eski Uygulama</text>
+
+                                <text x="70" y="175" font-family="JetBrains Mono" font-size="10" font-weight="bold" fill="#64748b" text-anchor="middle">ESKİ DÜNYA</text>
+                            </g>
+
+                            <!-- Geçiş Oku -->
+                            <g stroke="#38bdf8" stroke-width="1.8" fill="none">
+                                <path d="M 145,95 C 185,80 215,110 255,95" stroke-dasharray="4 2"/>
+                                <polygon points="255,95 247,90 249,100" fill="#38bdf8"/>
+                            </g>
+                            <text x="200" y="118" font-family="Inter" font-size="11" fill="#38bdf8" text-anchor="middle">De-kuple UI</text>
+
+                            <!-- Sağ Blok: Yetenek Ağı -->
+                            <g>
+                                <circle cx="340" cy="50" r="14" fill="#090d16" stroke="#38bdf8" stroke-width="1.8" />
+                                <circle cx="430" cy="60" r="14" fill="#090d16" stroke="#38bdf8" stroke-width="1.8" />
+                                <circle cx="380" cy="110" r="18" fill="#10b981" stroke="#10b981" stroke-width="2.5" />
+                                <circle cx="330" cy="160" r="14" fill="#090d16" stroke="#38bdf8" stroke-width="1.8" />
+                                <circle cx="420" cy="150" r="14" fill="#090d16" stroke="#38bdf8" stroke-width="1.8" />
+
+                                <g stroke="#334155" stroke-width="1.8">
+                                    <line x1="340" y1="50" x2="380" y2="110" />
+                                    <line x1="430" y1="60" x2="380" y2="110" />
+                                    <line x1="330" y1="160" x2="380" y2="110" />
+                                    <line x1="420" y1="150" x2="380" y2="110" />
+                                    <line x1="340" y1="50" x2="430" y2="60" stroke-dasharray="2 2" />
+                                    <line x1="330" y1="160" x2="420" y2="150" stroke-dasharray="2 2" />
+                                </g>
+
+                                <text x="380" y="195" font-family="JetBrains Mono" font-size="10" font-weight="bold" fill="#10b981" text-anchor="middle">YETENEK AĞI (SEMANTİK)</text>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="border-t-2 border-corporate-800 pt-5 mt-auto">
+                    <p class="text-base font-light text-center text-slate-300 italic">
+                        "Kurumsal yapay zekanın geleceği daha akıllı arayüzler tasarlamak değildir. Semantik olarak koordine edilmiş yetenek ağları kurmaktır."
+                    </p>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- FOOTER / ETKİLEŞİMLİ SUNUM MOTORU -->
+        <footer class="flex justify-between items-center border-t-2 border-corporate-800 pt-4 z-50">
+            <div class="flex items-center gap-4">
+                <button onclick="changeSlide(-1)" class="w-12 h-12 border border-corporate-800 rounded-xl flex items-center justify-center hover:bg-corporate-900 text-slate-300 transition hover:scale-105" title="Önceki Slayt">
+                    <i class="fa-solid fa-arrow-left text-sm"></i>
+                </button>
+                <button onclick="changeSlide(1)" class="w-12 h-12 border border-corporate-800 rounded-xl flex items-center justify-center hover:bg-corporate-900 text-slate-300 transition hover:scale-105" title="Sonraki Slayt">
+                    <i class="fa-solid fa-arrow-right text-sm"></i>
+                </button>
+            </div>
+
+            <!-- İlerleme Barları -->
+            <div class="flex items-center gap-4">
+                <span class="text-xs font-mono font-bold text-slate-500" id="slide-num-indicator">SLAYT 1 / 7</span>
+                <div class="flex gap-2.5" id="slide-dot-container">
+                    <!-- Dinamik olarak doldurulacaktır -->
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <span class="text-xs font-mono text-slate-500 font-bold uppercase">KLAVYE: [←] GERİ [→] İLERİ • TAM EKRAN: EXPAND</span>
+                <button onclick="toggleFullscreen()" class="w-12 h-12 border border-corporate-800 rounded-xl flex items-center justify-center hover:bg-corporate-900 text-slate-300 transition hover:scale-105" title="Tam Ekran">
+                    <i class="fa-solid fa-expand text-sm"></i>
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const totalSlides = 7;
+        let currentSlide = 0;
+
+        // İlerleme noktalarını dinamik olarak oluşturma
+        const dotContainer = document.getElementById('slide-dot-container');
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = `h-2 w-8 border border-slate-800 rounded transition-all duration-300 ${i === 0 ? 'bg-sky-500 border-sky-500' : 'bg-slate-950'}`;
+            dot.id = `slide-dot-${i}`;
+            dotContainer.appendChild(dot);
+        }
+
+        // Slayt geçiş motoru
+        function updateSlideUI() {
+            for (let i = 0; i < totalSlides; i++) {
+                const slide = document.getElementById(`slide-${i}`);
+                const dot = document.getElementById(`slide-dot-${i}`);
+                if (slide) {
+                    if (i === currentSlide) {
+                        slide.classList.add('active');
+                    } else {
+                        slide.classList.remove('active');
+                    }
+                }
+                if (dot) {
+                    if (i === currentSlide) {
+                        dot.className = 'h-2 w-12 bg-sky-500 border border-sky-500 transition-all duration-300';
+                    } else {
+                        dot.className = 'h-2 w-6 bg-slate-950 border border-slate-800 transition-all duration-300';
+                    }
+                }
+            }
+            document.getElementById('slide-num-indicator').innerText = `SLAYT ${currentSlide + 1} / ${totalSlides}`;
+        }
+
+        function changeSlide(direction) {
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            updateSlideUI();
+        }
+
+        // Klavye dinleyici
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight' || event.key === ' ') {
+                changeSlide(1);
+            } else if (event.key === 'ArrowLeft') {
+                changeSlide(-1);
+            }
+        });
+
+        // Tam Ekran Kontrolü
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error(`Tam ekran modu hatası: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+    </script>
+</body>
+</html>
