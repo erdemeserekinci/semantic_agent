@@ -2,758 +2,920 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yönetilen Etmen Mimarisi - Kurumsal Strateji Sunumu</title>
-    
-    <!-- Üst düzey kurumsal ve teknik yazı tipleri -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
-
+    <title>Ziraat Bankası - Kurumsal Etmen (Agent) Mimarisi Sunumu</title>
     <style>
-        body {
-            background-color: #F1F5F9;
-            color: #0F172A;
-            overflow: hidden;
-            user-select: none;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-
-        .slide-deck-wrapper {
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #111111;
+            overflow: hidden;
             width: 100vw;
             height: 100vh;
+        }
+        .slide-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            padding: 5% 6%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 2.5rem;
-            position: relative;
+            background-color: #ffffff;
         }
-
-        .slide-viewport {
-            flex-grow: 1;
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .slide-header {
+            margin-bottom: 20px;
+        }
+        .brand-badge {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #888888;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+        h1 {
+            font-size: 34px;
+            font-weight: 700;
+            color: #111111;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+        .slide-subtitle {
+            font-size: 15px;
+            color: #555555;
+            margin-top: 6px;
+            font-weight: 400;
+        }
+        .slide-body {
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            min-height: 0;
+        }
+        .text-panel {
+            flex: 1;
+            max-width: 50%;
+        }
+        .visual-panel {
+            flex: 1;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
+            background-color: #fafafa;
+            border: 1px solid #eaeaea;
+            border-radius: 4px;
+            padding: 20px;
+            min-height: 320px;
             position: relative;
-            perspective: 1200px;
         }
-
-        /* Açık Tonlu Executive Slayt Kartı */
-        .slide-card {
+        .full-width-panel {
+            flex: 1;
             width: 100%;
-            max-width: 1512px;
-            height: 100%;
-            max-height: 820px;
-            background-color: #FFFFFF;
-            border: 1px solid #CBD5E1;
-            border-radius: 12px;
-            box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
-            padding: 3.5rem;
-            position: absolute;
-            opacity: 0;
-            transform: scale(0.99) translateY(4px);
-            pointer-events: none;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             flex-direction: column;
+            justify-content: center;
+        }
+        ul {
+            list-style: none;
+        }
+        li {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333333;
+            margin-bottom: 14px;
+            position: relative;
+            padding-left: 20px;
+        }
+        li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: #888888;
+        }
+        .slide-footer {
+            display: flex;
             justify-content: space-between;
-            overflow: hidden;
+            align-items: flex-end;
+            border-top: 1px solid #eeeeee;
+            padding-top: 15px;
         }
-
-        .slide-card.active {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-            pointer-events: auto;
+        .punchline {
+            font-size: 15px;
+            font-weight: 600;
+            color: #111111;
+            border-left: 3px solid #111111;
+            padding-left: 10px;
+        }
+        .footer-meta {
+            font-size: 11px;
+            color: #999999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .diag-s1-container {
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 12px;
+        }
+        .diag-s1-col {
+            width: 42%;
+            text-align: center;
+        }
+        .diag-s1-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #555555;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .diag-s1-box {
+            border: 1px solid #dddddd;
+            background: #ffffff;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 2px;
+        }
+        .diag-s1-arrow {
+            color: #999999;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .diag-s1-badge-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+        .diag-s1-badge {
+            background: #111111;
+            color: #ffffff;
+            padding: 8px;
+            font-weight: 500;
+            border-radius: 2px;
+        }
+        .timeline-container {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            position: relative;
+            padding: 20px 0;
+        }
+        .timeline-line {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #cccccc;
+            z-index: 1;
+        }
+        .timeline-node {
+            position: relative;
+            z-index: 2;
+            width: 18%;
+            background: #fafafa;
+            text-align: center;
+        }
+        .timeline-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid #111111;
+            margin: 0 auto 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .timeline-node.active-node .timeline-icon {
+            background: #111111;
+            color: #ffffff;
+        }
+        .timeline-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .timeline-desc {
+            font-size: 11px;
+            color: #666666;
+            line-height: 1.3;
+        }
+        .context-network {
+            position: relative;
+            width: 100%;
+            height: 280px;
+        }
+        .center-node {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #111111;
+            color: #ffffff;
+            padding: 12px 20px;
+            font-weight: bold;
+            font-size: 14px;
+            border-radius: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             z-index: 10;
+            text-align: center;
         }
-
-        .grid-blueprint {
-            background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
-            background-size: 32px 32px;
+        .satellite-node {
+            position: absolute;
+            background: #ffffff;
+            border: 1px solid #cccccc;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 500;
+            border-radius: 2px;
         }
-
-        .interactive-node {
-            transition: all 0.25s ease;
-            cursor: pointer;
+        .sn1 { top: 15%; left: 15%; }
+        .sn2 { top: 12%; left: 50%; transform: translateX(-50%); }
+        .sn3 { top: 15%; left: 75%; }
+        .sn4 { top: 45%; left: 10%; }
+        .sn5 { top: 45%; left: 80%; }
+        .sn6 { bottom: 15%; left: 12%; }
+        .sn7 { bottom: 10%; left: 50%; transform: translateX(-50%); }
+        .sn8 { bottom: 15%; left: 78%; }
+        .network-bg-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
         }
-        .interactive-node:hover {
-            stroke: #2563EB;
-            fill: #EFF6FF;
+        .ma-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 100%;
+            font-size: 11px;
+        }
+        .ma-box {
+            border: 1px solid #dddddd;
+            background: #ffffff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 2px;
+        }
+        .ma-box-title {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .ma-box-shared {
+            grid-column: span 3;
+            background: #f1f1f1;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 8px;
+            border: 1px dashed #999999;
+        }
+        .ma-box-human {
+            grid-column: span 3;
+            background: #111111;
+            color: #ffffff;
+            font-weight: 600;
+            padding: 8px;
+        }
+        .comp-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            text-align: left;
+            background: #ffffff;
+        }
+        .comp-table th {
+            background: #111111;
+            color: #ffffff;
+            font-weight: 600;
+            padding: 8px 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .comp-table td {
+            padding: 7px 12px;
+            border-bottom: 1px solid #eeeeee;
+            color: #333333;
+        }
+        .comp-table tr:nth-child(even) {
+            background: #fafafa;
+        }
+        .layer-stack {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 6px;
+            font-size: 11px;
+        }
+        .layer-item {
+            background: #ffffff;
+            border: 1px solid #111111;
+            padding: 8px;
+            text-align: center;
+            font-weight: 600;
+            position: relative;
+        }
+        .layer-item-dark {
+            background: #111111;
+            color: #ffffff;
+        }
+        .layer-infra-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+        .infra-item {
+            background: #f1f1f1;
+            border: 1px solid #cccccc;
+            padding: 6px;
+            text-align: center;
+            font-size: 10px;
+        }
+        .cap-container {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            font-size: 11px;
+        }
+        .cap-block {
+            width: 46%;
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            background: #ffffff;
+        }
+        .cap-block-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #111111;
+            padding-bottom: 4px;
+            text-transform: uppercase;
+        }
+        .cap-net-visual {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 15px;
+        }
+        .cap-node {
+            background: #f5f5f5;
+            border: 1px solid #cccccc;
+            padding: 4px 8px;
+            border-radius: 2px;
+        }
+        .cap-node-core {
+            background: #111111;
+            color: #ffffff;
+            border: 1px solid #111111;
+        }
+        .boundary-box {
+            margin-top: 10px;
+            border: 1px dashed #999999;
+            padding: 6px;
+            text-align: center;
+            font-weight: 500;
+            background: #fafafa;
+        }
+        .progress-bar-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #eeeeee;
+            z-index: 100;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #111111;
+            transition: width 0.2s ease;
+        }
+        .controls-hint {
+            position: fixed;
+            bottom: 12px;
+            right: 15px;
+            font-size: 10px;
+            color: #999999;
+            z-index: 100;
+            pointer-events: none;
+        }
+        @media print {
+            body {
+                overflow: visible;
+                height: auto;
+                width: auto;
+                background: #ffffff;
+            }
+            .slide-container {
+                position: static;
+                height: auto;
+                width: auto;
+            }
+            .slide {
+                position: relative;
+                opacity: 1 !important;
+                visibility: visible !important;
+                page-break-after: always;
+                height: 100vh;
+                top: auto;
+                left: auto;
+            }
+            .progress-bar-container, .controls-hint {
+                display: none;
+            }
         }
     </style>
 </head>
-<body class="font-sans antialiased grid-blueprint">
+<body>
 
-    <div class="slide-deck-wrapper">
-        <!-- ÜST MENÜ (SADELEŞTİRİLMİŞ) -->
-        <header class="flex justify-between items-center border-b border-slate-300 pb-4 z-50">
-            <div class="flex items-center gap-4">
-                <span class="text-sm font-mono tracking-widest text-slate-500 uppercase">// KURUMSAL STRATEJİ VE TEKNOLOJİ OTURUMU</span>
-                <div class="h-4 w-[1px] bg-slate-300"></div>
-                <span class="text-sm font-mono text-blue-600 font-semibold">YÖNETİLEN ETMEN SİSTEMLERİ MİMARİSİ</span>
+    <div class="slide-container">
+
+        <!-- SLIDE 1 -->
+        <div class="slide active" id="slide-1">
+            <div class="slide-header">
+                <span class="brand-badge">Ziraat Bankası // Stratejik Dönüşüm</span>
+                <h1>Kurumsal Problemin Yapısı Değişti</h1>
+                <div class="slide-subtitle">Modern operasyonlar yalnızca ekran otomasyonu ile yönetilemeyecek kadar karmaşık hale geldi.</div>
             </div>
-            <span class="text-xs font-mono text-slate-400">YÖNETİM KURULU VE TEKNOLOJİ LİDERLERİ SUNUMU</span>
-        </header>
-
-        <!-- SLAYT ALANI -->
-        <main class="slide-viewport my-4">
-
-            <!-- SLAYT 1: DURUM ANALİZİ -->
-            <div class="slide-card active" id="slide-0">
-                <div>
-                    <span class="text-sm font-mono text-blue-600 font-semibold tracking-wider uppercase">// BÖLÜM 01: DURUM ANALİZİ</span>
-                    <h1 class="text-5xl font-bold tracking-tight mt-2 text-slate-900">Kurumsal Problem Alanı Değişti</h1>
-                    <p class="text-slate-600 mt-3 text-lg max-w-4xl">Kullanıcı arayüzünde insan davranışlarını taklit eden kırılgan robotik süreçler (RPA) yerini, doğrudan kurumsal yetenekleri ve anlamsal veri ağlarını yöneten akıllı etmen mimarisine bırakıyor.</p>
+            <div class="slide-body">
+                <div class="text-panel">
+                    <ul>
+                        <li>Geleneksel otomasyon insan hareketlerini taklit etmeye odaklanıyordu.</li>
+                        <li>Modern operasyonlar çok daha dağıtık ve dinamik hale geldi.</li>
+                        <li>Kurumsal AI yalnızca workflow değil context yönetmek zorunda.</li>
+                        <li>Operasyonel kararlar artık çok katmanlı veri ve anlam gerektiriyor.</li>
+                    </ul>
                 </div>
-
-                <div class="grid grid-cols-12 gap-12 my-auto items-center">
-                    <div class="col-span-5 bg-slate-50 border border-slate-200 rounded-xl p-8 flex flex-col justify-between min-h-[260px]">
-                        <div>
-                            <div class="flex items-center gap-2 mb-3">
-                                <span class="w-3 h-3 rounded-full bg-red-500"></span>
-                                <span class="font-mono text-xs uppercase tracking-wider text-slate-500 font-semibold">Geçmiş: RPA Yaklaşımı</span>
+                <div class="visual-panel">
+                    <div class="diag-s1-container">
+                        <div class="diag-s1-col">
+                            <div class="diag-s1-title">Geleneksel (UI)</div>
+                            <div class="diag-s1-box">Ekran A</div>
+                            <div class="diag-s1-arrow">↓ Tıklama</div>
+                            <div class="diag-s1-box">Ekran B</div>
+                            <div class="diag-s1-arrow">↓ Tıklama</div>
+                            <div class="diag-s1-box">Taklitçi Robot</div>
+                        </div>
+                        <div style="font-size: 20px; color: #cccccc;">→</div>
+                        <div class="diag-s1-col">
+                            <div class="diag-s1-title">Modern (Etmen)</div>
+                            <div class="diag-s1-badge-container">
+                                <div class="diag-s1-badge">Etmen</div>
+                                <div class="diag-s1-badge">API</div>
+                                <div class="diag-s1-badge">Tool</div>
+                                <div class="diag-s1-badge">Servis</div>
                             </div>
-                            <h3 class="text-2xl font-bold text-slate-800 mb-2">Arayüz (UI) Odaklı Tıklama Robotları</h3>
-                            <p class="text-sm text-slate-600 leading-relaxed">İş mantığını anlamadan yalnızca pikseller ve ekran elementleri (DOM) üzerinde çalışır. En ufak arayüz güncellemesinde süreç kilitlenir.</p>
+                            <div class="diag-s1-box" style="margin-top:10px; background:#f5f5f5;">Policy Katmanı</div>
+                            <div class="diag-s1-box" style="background:#f5f5f5;">Context Katmanı</div>
+                            <div class="diag-s1-box" style="background:#f5f5f5;">Knowledge Graph</div>
                         </div>
                     </div>
-
-                    <div class="col-span-2 flex flex-col justify-center items-center">
-                        <div class="h-16 w-[1px] bg-slate-300"></div>
-                        <span class="font-mono text-xs my-4 text-blue-600 font-bold uppercase tracking-widest">PARADİGMA KAYMASI</span>
-                        <div class="h-16 w-[1px] bg-slate-300"></div>
-                    </div>
-
-                    <div class="col-span-5 bg-blue-50/50 border border-blue-200 rounded-xl p-8 flex flex-col justify-between min-h-[260px]">
-                        <div>
-                            <div class="flex items-center gap-2 mb-3">
-                                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-                                <span class="font-mono text-xs uppercase tracking-wider text-blue-600 font-semibold">Gelecek: Yönetilen Kurumsal Etmenler</span>
-                            </div>
-                            <h3 class="text-2xl font-bold text-slate-900 mb-2">Yetenek ve Servis Tabanlı Mimari</h3>
-                            <p class="text-sm text-slate-600 leading-relaxed">Sistem süreçlerini doğrudan API'ler, fonksiyonlar ve doğrulanmış kurumsal yetenekler üzerinden yürütür. Tamamen kararlı ve ölçeklenebilirdir.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex justify-between items-center border-t border-slate-200 pt-4 mt-auto">
-                    <span class="text-sm font-mono text-blue-600 font-medium">STRATEJİK NOT: "Kullanıcı arayüzü yalnızca sistemin dış yüzeyidir. Otomasyon ise doğrudan yetenek katmanında kurulmalıdır."</span>
-                    <span class="text-sm font-mono text-slate-500">01 / 08</span>
                 </div>
             </div>
+            <div class="slide-footer">
+                <div class="punchline">“UI yalnızca sistemin görünen yüzeyidir.”</div>
+                <div class="footer-meta">Slayt 1 / 8</div>
+            </div>
+        </div>
 
-            <!-- SLAYT 2: EVRİMSEL SÜREÇ (YENİLENMİŞ NET İKONLARLA) -->
-            <div class="slide-card" id="slide-1">
-                <div>
-                    <span class="text-sm font-mono text-blue-600 font-semibold tracking-wider uppercase">// BÖLÜM 02: EVRİMSEL SÜREÇ</span>
-                    <h1 class="text-5xl font-bold tracking-tight mt-2 text-slate-900">Etmen Teknolojisinin Olgunluk Eğrisi</h1>
-                    <p class="text-slate-600 mt-3 text-lg max-w-4xl">Basit sohbet arayüzlerinden başlayan yolculuk, çoklu uzman sistemlerin ardından kurumsal kurallar çerçevesinde çalışan yönetilen zekaya evrildi.</p>
+        <!-- SLIDE 2 -->
+        <div class="slide" id="slide-2">
+            <div class="slide-header">
+                <span class="brand-badge">Ziraat Bankası // Stratejik Dönüşüm</span>
+                <h1>Etmen Sistemlerinin Evrimi</h1>
+                <div class="slide-subtitle">Sistemler salt metin üretiminden regüle edilmiş operasyonel zekaya doğru ilerliyor.</div>
+            </div>
+            <div class="slide-body" style="flex-direction: column; justify-content: center;">
+                <div class="full-width-panel" style="margin-bottom: 30px;">
+                    <ul>
+                        <li>Etmen (agent) sistemleri sohbet üretiminden operasyonel koordinasyona evriliyor.</li>
+                        <li>Modern etmen sistemleri ekran yerine doğrudan sistem yeteneklerini (capability) kullanıyor.</li>
+                        <li>Memory, orchestration ve context yönetimi mimarinin merkezine yerleşiyor.</li>
+                    </ul>
                 </div>
-
-                <div class="my-auto relative w-full py-4">
-                    <div class="absolute top-[52px] left-0 right-0 h-[2px] bg-slate-200 z-0"></div>
-                    <div class="grid grid-cols-5 gap-6 relative z-10">
-                        
-                        <!-- 1. Aşama -->
-                        <div class="bg-white border border-slate-200 rounded-xl p-6 flex flex-col justify-between min-h-[350px] shadow-sm">
-                            <div>
-                                <div class="flex justify-between items-start mb-4">
-                                    <span class="font-mono text-xs text-slate-400 font-bold">01 / REAKTİF</span>
-                                    <svg class="w-12 h-12 text-slate-400 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.2">
-                                        <rect x="2" y="4" width="20" height="16" rx="2" />
-                                        <path d="M6 9l3 3-3 3M12 15h6" stroke-linecap="round"/>
-                                    </svg>
-                                </div>
-                                <h4 class="text-lg font-bold text-slate-800">Sohbet Robotları</h4>
-                                <p class="text-xs text-slate-500 mt-3 leading-relaxed">Sınırlı kurallara dayalı, arka plan süreçleri tetikleyemeyen statik Soru-Cevap sistemleri.</p>
-                            </div>
-                            <span class="text-xs font-mono text-slate-400 uppercase font-semibold border-t pt-3">Diyalog</span>
-                        </div>
-
-                        <!-- 2. Aşama -->
-                        <div class="bg-white border border-slate-200 rounded-xl p-6 flex flex-col justify-between min-h-[350px] shadow-sm">
-                            <div>
-                                <div class="flex justify-between items-start mb-4">
-                                    <span class="font-mono text-xs text-slate-500 font-bold">02 / MEKANİK</span>
-                                    <svg class="w-12 h-12 text-slate-500 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.2">
-                                        <circle cx="10" cy="10" r="3" />
-                                        <path d="M10 2v3M10 15v3M2 10h3M15 10h3" />
-                                        <path d="M14 14l7 2-2 2 3 3-1.5 1.5-3-3-2 2z" fill="currentColor"/>
-                                    </svg>
-                                </div>
-                                <h4 class="text-lg font-bold text-slate-800">RPA Sistemleri</h4>
-                                <p class="text-xs text-slate-500 mt-3 leading-relaxed">Ekran piksellerini ve kullanıcı kliklerini taklit eden, kırılgan ve süreç körü otomasyonlar.</p>
-                            </div>
-                            <span class="text-xs font-mono text-slate-500 uppercase font-semibold border-t pt-3">Arayüz Bağımlı</span>
-                        </div>
-
-                        <!-- 3. Aşama -->
-                        <div class="bg-white border border-slate-300 rounded-xl p-6 flex flex-col justify-between min-h-[350px] shadow-sm">
-                            <div>
-                                <div class="flex justify-between items-start mb-4">
-                                    <span class="font-mono text-xs text-blue-600 font-bold">03 / BİLİŞSEL</span>
-                                    <svg class="w-12 h-12 text-blue-600 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.2">
-                                        <rect x="3" y="6" width="18" height="12" rx="2" />
-                                        <circle cx="7" cy="12" r="1.5" fill="currentColor" />
-                                        <circle cx="12" cy="12" r="1.5" fill="currentColor" />
-                                        <circle cx="17" cy="12" r="1.5" fill="currentColor" />
-                                    </svg>
-                                </div>
-                                <h4 class="text-lg font-bold text-blue-900">LLM + Araç Kullanımı</h4>
-                                <p class="text-xs text-slate-600 mt-3 leading-relaxed">Büyük dil modellerinin API'leri ve kurumsal fonksiyonları akıl yürüterek çağırabilmesi.</p>
-                            </div>
-                            <span class="text-xs font-mono text-blue-600 uppercase font-semibold border-t pt-3">Dinamik Entegrasyon</span>
-                        </div>
-
-                        <!-- 4. Aşama -->
-                        <div class="bg-white border border-slate-300 rounded-xl p-6 flex flex-col justify-between min-h-[350px] shadow-sm">
-                            <div>
-                                <div class="flex justify-between items-start mb-4">
-                                    <span class="font-mono text-xs text-blue-600 font-bold">04 / DELEGE</span>
-                                    <svg class="w-12 h-12 text-blue-600 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.2">
-                                        <circle cx="12" cy="5" r="2" fill="currentColor"/>
-                                        <circle cx="5" cy="14" r="2" fill="currentColor"/>
-                                        <circle cx="19" cy="14" r="2" fill="currentColor"/>
-                                        <circle cx="12" cy="20" r="2" fill="currentColor"/>
-                                        <path d="M12 7l-5 5.5M12 7l7 5.5M5 14h12" stroke-dasharray="2 1"/>
-                                    </svg>
-                                </div>
-                                <h4 class="text-lg font-bold text-blue-900">Çoklu Etmen Sistemleri</h4>
-                                <p class="text-xs text-slate-600 mt-3 leading-relaxed">Belirli alanlarda uzmanlaşmış mikro etmenlerin ortak bir protokol üzerinden haberleşmesi.</p>
-                            </div>
-                            <span class="text-xs font-mono text-blue-600 uppercase font-semibold border-t pt-3">Semantik Protokol</span>
-                        </div>
-
-                        <!-- 5. Aşama -->
-                        <div class="bg-emerald-50 border-2 border-emerald-500 rounded-xl p-6 flex flex-col justify-between min-h-[350px] shadow-md">
-                            <div>
-                                <div class="flex justify-between items-start mb-4">
-                                    <span class="font-mono text-xs text-emerald-700 font-bold">05 / KURUMSAL DENETİM</span>
-                                    <svg class="w-12 h-12 text-emerald-600 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.2">
-                                        <polygon points="12,2 21,6.5 21,17.5 12,22 3,17.5 3,6.5" />
-                                        <circle cx="12" cy="7.5" r="1" fill="currentColor"/>
-                                        <line x1="12" y1="8.5" x2="12" y2="12" />
-                                        <line x1="8.5" y1="12" x2="15.5" y2="12" />
-                                        <circle cx="8.5" cy="15" r="1" fill="currentColor"/>
-                                        <circle cx="15.5" cy="15" r="1" fill="currentColor"/>
-                                    </svg>
-                                </div>
-                                <h4 class="text-lg font-bold text-emerald-950">Yönetilen Kurumsal Etmen</h4>
-                                <p class="text-xs text-emerald-900 mt-3 leading-relaxed">Deterministik orkestrasyon, anlamsal bellek sınırları ve kurumsal politika ağaçlarına tam uyum.</p>
-                            </div>
-                            <span class="text-xs font-mono text-emerald-700 uppercase font-bold border-t border-emerald-200 pt-3">Yönetilen Zeka</span>
-                        </div>
-                        
+                <div class="timeline-container">
+                    <div class="timeline-line"></div>
+                    <div class="timeline-node">
+                        <div class="timeline-icon">1</div>
+                        <div class="timeline-title">Conversational AI</div>
+                        <div class="timeline-desc">Konuşma odaklı sistemler</div>
                     </div>
-                </div>
-
-                <div class="flex justify-between items-center border-t border-slate-200 pt-4 mt-auto">
-                    <span class="text-sm font-mono text-slate-600">Ana Odak: Kurumsal yapay zeka, basit bir "sohbet" aracından "koordine edilmiş operasyonel akıl yürütme" altyapısına evrilmiştir.</span>
-                    <span class="text-sm font-mono text-slate-500">02 / 08</span>
+                    <div class="timeline-node">
+                        <div class="timeline-icon">2</div>
+                        <div class="timeline-title">RPA</div>
+                        <div class="timeline-desc">UI tabanlı otomasyon</div>
+                    </div>
+                    <div class="timeline-node">
+                        <div class="timeline-icon">3</div>
+                        <div class="timeline-title">Tool-Enabled AI</div>
+                        <div class="timeline-desc">Function calling ve yetenek erişimi</div>
+                    </div>
+                    <div class="timeline-node">
+                        <div class="timeline-icon">4</div>
+                        <div class="timeline-title">Multi-Agent</div>
+                        <div class="timeline-desc">Uzmanlaşmış koordinasyon (Risk, Fraud, Uyum)</div>
+                    </div>
+                    <div class="timeline-node active-node">
+                        <div class="timeline-icon">5</div>
+                        <div class="timeline-title">Governed Enterprise</div>
+                        <div class="timeline-desc">Governed operational intelligence</div>
+                    </div>
                 </div>
             </div>
+            <div class="slide-footer">
+                <div class="punchline">“Kurumsal AI, sohbetten operasyonel koordinasyona evriliyor.”</div>
+                <div class="footer-meta">Slayt 2 / 8</div>
+            </div>
+        </div>
 
-            <!-- SLAYT 3: BAĞLAM EN ÖNEMLİ ALTYAPIDIR -->
-            <div class="slide-card" id="slide-2">
-                <div>
-                    <span class="text-sm font-mono text-blue-600 font-semibold tracking-wider uppercase">// BÖLÜM 03: VERİ VE ANLAM</span>
-                    <h1 class="text-5xl font-bold tracking-tight mt-2 text-slate-900">Bağlam Oluşturma En Kritik Altyapıdır</h1>
-                    <p class="text-slate-600 mt-3 text-lg max-w-4xl">Modeller tek başına kurumsal süreçleri çözemez. Güvenli ve doğru kararlar, etmenin etrafında anlık olarak inşa edilen dinamik operasyonel bağlamdan doğar.</p>
-                </div>
-
-                <div class="grid grid-cols-12 gap-12 my-auto items-center">
-                    <div class="col-span-5 space-y-6">
-                        <div class="border-l-4 border-blue-600 pl-4">
-                            <h4 class="text-lg font-bold text-slate-900 uppercase">Yapay Zeka Körlüğü</h4>
-                            <p class="text-sm text-slate-600 mt-1.5 leading-relaxed">Kurumsal veriden ve anlık durumdan (state) kopuk bir model, operasyonel olarak kördür. Etmenin başarısı, modele beslenen bağlam mimarisine bağlıdır.</p>
-                        </div>
-                        <div class="border-l-4 border-slate-400 pl-4">
-                            <h4 class="text-lg font-bold text-slate-800 uppercase">Anlamsal Esneklik</h4>
-                            <p class="text-sm text-slate-600 mt-1.5 leading-relaxed">Müşterinin geçmişine, risk skoruna ve güncel yasal mevzuatlara göre aynı talep tamamen farklı operasyonel süreçleri tetiklemek zorundadır.</p>
-                        </div>
-                        <div class="bg-blue-50/60 p-5 border border-blue-100 rounded-xl">
-                            <p class="text-sm italic text-blue-950 font-mono font-medium leading-relaxed">
-                                "Aynı mesaj, farklı operasyonel bağlamlar altında tamamen farklı aksiyonlar ve iş akışları gerektirebilir."
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- CAD Net Bağlam Grafiği -->
-                    <div class="col-span-7 flex justify-end">
-                        <div class="w-full max-w-[620px] border border-slate-200 rounded-xl p-6 bg-slate-50 relative">
-                            <svg viewBox="0 0 500 340" class="w-full h-auto">
-                                <circle cx="250" cy="170" r="130" fill="none" stroke="#E2E8F0" stroke-width="1.5" stroke-dasharray="8 4" />
-                                <circle cx="250" cy="170" r="80" fill="none" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4 2" />
-
-                                <g stroke="#94A3B8" stroke-width="1" stroke-dasharray="3 3">
-                                    <line x1="250" y1="170" x2="105" y2="88" />
-                                    <line x1="250" y1="170" x2="395" y2="88" />
-                                    <line x1="250" y1="170" x2="105" y2="248" />
-                                    <line x1="250" y1="170" x2="395" y2="248" />
-                                    <line x1="250" y1="170" x2="250" y2="48" />
-                                    <line x1="250" y1="170" x2="250" y2="288" />
-                                </g>
-
-                                <rect x="160" y="140" width="180" height="60" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" class="interactive-node"/>
-                                <text x="250" y="168" fill="#1E3A8A" font-family="JetBrains Mono" font-size="11" text-anchor="middle" font-weight="bold">OPERASYONEL</text>
-                                <text x="250" y="182" fill="#2563EB" font-family="JetBrains Mono" font-size="10" text-anchor="middle" font-weight="bold">BAĞLAM MOTORU</text>
-
-                                <rect x="50" y="65" width="110" height="46" rx="6" fill="#FFFFFF" stroke="#475569" stroke-width="1.5" class="interactive-node"/>
-                                <text x="105" y="92" fill="#334155" font-family="Inter" font-size="10" text-anchor="middle" font-weight="semibold">Müşteri Geçmişi</text>
-
-                                <rect x="340" y="65" width="110" height="46" rx="6" fill="#FFFFFF" stroke="#475569" stroke-width="1.5" class="interactive-node"/>
-                                <text x="395" y="92" fill="#334155" font-family="Inter" font-size="10" text-anchor="middle" font-weight="semibold">Politikalar / Mevzuat</text>
-
-                                <rect x="50" y="225" width="110" height="46" rx="6" fill="#FFFFFF" stroke="#475569" stroke-width="1.5" class="interactive-node"/>
-                                <text x="105" y="252" fill="#334155" font-family="Inter" font-size="10" text-anchor="middle" font-weight="semibold">Risk Sinyalleri</text>
-
-                                <rect x="340" y="225" width="110" height="46" rx="6" fill="#FFFFFF" stroke="#475569" stroke-width="1.5" class="interactive-node"/>
-                                <text x="395" y="252" fill="#334155" font-family="Inter" font-size="10" text-anchor="middle" font-weight="semibold">Dış Sistemler</text>
-
-                                <rect x="195" y="25" width="110" height="46" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5" class="interactive-node"/>
-                                <text x="250" y="52" fill="#64748B" font-family="Inter" font-size="10" text-anchor="middle" font-weight="medium">Önceki Aksiyonlar</text>
-
-                                <rect x="195" y="265" width="110" height="46" rx="6" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5" class="interactive-node"/>
-                                <text x="250" y="292" fill="#64748B" font-family="Inter" font-size="10" text-anchor="middle" font-weight="medium">Kurumsal Hafıza</text>
-                            </svg>
-                        </div>
+        <!-- SLIDE 3 -->
+        <div class="slide" id="slide-3">
+            <div class="slide-header">
+                <span class="brand-badge">Ziraat Bankası // Stratejik Dönüşüm</span>
+                <h1>Gerçek Problem: Context Orchestration</h1>
+                <div class="slide-subtitle">Büyük dil modelleri tek başına kurumsal hafıza işlevi göremez; orkestrasyon altyapısı şarttır.</div>
+            </div>
+            <div class="slide-body">
+                <div class="text-panel">
+                    <ul>
+                        <li>Aynı mesaj farklı bağlamlarda (context) tamamen farklı anlamlar taşıyabilir.</li>
+                        <li>Kurumsal kararlar yalnızca statik prompt mühendisliği ile üretilemez.</li>
+                        <li>Bağlamın dinamik ve sürekli olarak güncellenmesi zorunludur.</li>
+                        <li>Operasyonel hafıza (operational memory) kararlılık için kritiktir.</li>
+                    </ul>
+                    <div style="margin-top:15px; font-size:12px; color:#555555; font-weight:600;">
+                        Deepin yaklaşımı: context orchestration • knowledge connectivity • operational memory • governed tool access
                     </div>
                 </div>
-
-                <div class="flex justify-between items-center border-t border-slate-200 pt-4 mt-auto">
-                    <span class="text-sm font-mono text-blue-600 font-medium">Sistem Mimarisi: Büyük dil modelleri tek başına yeterli değildir, kurumsal bağlam altyapısıyla beslenmelidir.</span>
-                    <span class="text-sm font-mono text-slate-500">03 / 08</span>
+                <div class="visual-panel">
+                    <div class="context-network">
+                        <svg class="network-bg-lines">
+                            <line x1="50%" y1="50%" x2="15%" y2="15%" stroke="#dddddd" stroke-width="1" />
+                            <line x1="50%" y1="50%" x2="50%" y2="12%" stroke="#dddddd" stroke-width="1" />
+                            <line x1="50%" y1="50%" x2="75%" y2="15%" stroke="#dddddd" stroke-width="1" />
+                            <line x1="50%" y1="50%" x2="10%" y2="45%" stroke="#dddddd" stroke-width="1" />
+                            <line x1="50%" y1="50%" x2="80%" y2="45%" stroke="#dddddd" stroke-width="1" />
+                            <line x1="50%" y1="50%" x2="12%" y2="85%" stroke="#dddddd" stroke-width="1" />
+                            <line x1="50%" y1="50%" x2="50%" y2="90%" stroke="#dddddd" stroke-width="1" />
+                            <line x1="50%" y1="50%" x2="78%" y2="85%" stroke="#dddddd" stroke-width="1" />
+                        </svg>
+                        <div class="center-node">Operational<br>Context</div>
+                        <div class="satellite-node sn1">Müşteri Geçmişi</div>
+                        <div class="satellite-node sn2">Transaction History</div>
+                        <div class="satellite-node sn3">Regülasyonlar</div>
+                        <div class="satellite-node sn4">Fraud Sinyalleri</div>
+                        <div class="satellite-node sn5">Dokümanlar</div>
+                        <div class="satellite-node sn6">Workflow State</div>
+                        <div class="satellite-node sn7">İnsan Kararları</div>
+                        <div class="satellite-node sn8">Dış Servisler</div>
+                    </div>
                 </div>
             </div>
+            <div class="slide-footer">
+                <div class="punchline">“Enterprise AI başarısı modelden çok context orchestration kalitesine bağlıdır.”</div>
+                <div class="footer-meta">Slayt 3 / 8</div>
+            </div>
+        </div>
 
-            <!-- SLAYT 4: ÇOKLU ETMEN SİSTEMLERİ -->
-            <div class="slide-card" id="slide-3">
-                <div>
-                    <span class="text-sm font-mono text-blue-600 font-semibold tracking-wider uppercase">// BÖLÜM 04: DAĞITIK ORKESTRASYON</span>
-                    <h1 class="text-5xl font-bold tracking-tight mt-2 text-slate-900">Kurumsal Problemler Dağıtıktır</h1>
-                    <p class="text-slate-600 mt-3 text-lg max-w-4xl">Karmaşık bankacılık süreçleri tek bir devasa yapı yerine, kendi alanlarında uzmanlaşmış ve ortak semantik bağlamı paylaşan mikro etmenler tarafından çözülür.</p>
+        <!-- SLIDE 4 -->
+        <div class="slide" id="slide-4">
+            <div class="slide-header">
+                <span class="brand-badge">Ziraat Bankası // Stratejik Dönüşüm</span>
+                <h1>Kurumsal Problemler Dağıtıktır</h1>
+                <div class="slide-subtitle">Büyük ve kompleks bankacılık süreçleri tek bir monolitik etmen yapısı ile yönetilemez.</div>
+            </div>
+            <div class="slide-body">
+                <div class="text-panel">
+                    <ul>
+                        <li>Tek bir etmen tüm geniş bankacılık operasyonunu yönetmekte yetersiz kalır.</li>
+                        <li>Uzmanlaşmış mikro etmenler daha kontrollü bir orkestrasyon (orchestration) sağlar.</li>
+                        <li>Çoklu etmen (multi-agent) mimarisi kurumsal yönetim ve governance sınırlarını netleştirir.</li>
+                        <li>Etmenler arası iletişimde anlamsal tutarlılık (semantic consistency) kritik öneme sahiptir.</li>
+                        <li>İnsan-etmen ve etmen-etmen etkileşimleri ortak bir semantik katman gerektirir.</li>
+                    </ul>
                 </div>
-
-                <div class="grid grid-cols-12 gap-12 my-auto items-center">
-                    <!-- Sol: Semantik Grafik Çizimi -->
-                    <div class="col-span-7">
-                        <div class="border border-slate-200 rounded-xl p-6 bg-slate-50">
-                            <svg viewBox="0 0 600 280" class="w-full h-auto">
-                                <rect x="200" y="110" width="200" height="60" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" class="interactive-node"/>
-                                <text x="300" y="138" fill="#1E3A8A" font-family="JetBrains Mono" font-size="11" text-anchor="middle" font-weight="bold">ORKESTRASYON</text>
-                                <text x="300" y="152" fill="#2563EB" font-family="JetBrains Mono" font-size="9.5" text-anchor="middle" font-weight="bold">MERKEZİ ETMEN</text>
-
-                                <!-- Uzman Etmenler -->
-                                <rect x="20" y="30" width="140" height="52" rx="6" fill="#FFFFFF" stroke="#475569" stroke-width="1.5" class="interactive-node"/>
-                                <text x="90" y="55" fill="#1E293B" font-family="Inter" font-size="11" text-anchor="middle" font-weight="bold">Risk Etmeni</text>
-                                <text x="90" y="67" fill="#64748B" font-family="JetBrains Mono" font-size="8" text-anchor="middle">PROSEDÜR KONTROL</text>
-
-                                <rect x="440" y="30" width="140" height="52" rx="6" fill="#FFFFFF" stroke="#475569" stroke-width="1.5" class="interactive-node"/>
-                                <text x="510" y="55" fill="#1E293B" font-family="Inter" font-size="11" text-anchor="middle" font-weight="bold">Uyum Etmeni</text>
-                                <text x="510" y="67" fill="#64748B" font-family="JetBrains Mono" font-size="8" text-anchor="middle">MEVZUAT DENETİMİ</text>
-
-                                <rect x="20" y="200" width="140" height="52" rx="6" fill="#FFFFFF" stroke="#475569" stroke-width="1.5" class="interactive-node"/>
-                                <text x="90" y="225" fill="#1E293B" font-family="Inter" font-size="11" text-anchor="middle" font-weight="bold">Sahtecilik Etmeni</text>
-                                <text x="90" y="237" fill="#64748B" font-family="JetBrains Mono" font-size="8" text-anchor="middle">ANOMALİ TESPİTİ</text>
-
-                                <rect x="440" y="200" width="140" height="52" rx="6" fill="#FFFFFF" stroke="#475569" stroke-width="1.5" class="interactive-node"/>
-                                <text x="510" y="225" fill="#1E293B" font-family="Inter" font-size="11" text-anchor="middle" font-weight="bold">Belge Etmeni</text>
-                                <text x="510" y="237" fill="#64748B" font-family="JetBrains Mono" font-size="8" text-anchor="middle">ANLAMSAL VERİ KAZIMA</text>
-
-                                <g stroke="#2563EB" stroke-width="1.5" stroke-dasharray="4 3">
-                                    <line x1="160" y1="65" x2="210" y2="115" />
-                                    <line x1="440" y1="65" x2="390" y2="115" />
-                                    <line x1="160" y1="215" x2="210" y2="165" />
-                                    <line x1="440" y1="215" x2="390" y2="165" />
-                                </g>
-                            </svg>
-                        </div>
+                <div class="visual-panel">
+                    <div class="ma-grid">
+                        <div class="ma-box-shared">Ortak Semantik Context Katmanı</div>
+                        <div class="ma-box"><div class="ma-box-title">Intake Agent</div><span style="color:#666;">Talep Analizi</span></div>
+                        <div class="ma-box"><div class="ma-box-title">Fraud Agent</div><span style="color:#666;">Risk Skorlama</span></div>
+                        <div class="ma-box"><div class="ma-box-title">Policy Agent</div><span style="color:#666;">Mevzuat Kontrol</span></div>
+                        <div class="ma-box"><div class="ma-box-title">Evidence Agent</div><span style="color:#666;">Kanıt Toplama</span></div>
+                        <div class="ma-box"><div class="ma-box-title">Workflow Agent</div><span style="color:#666;">Süreç Takibi</span></div>
+                        <div class="ma-box"><div class="ma-box-title">Decision Agent</div><span style="color:#666;">Karar Destek</span></div>
+                        <div class="ma-box-human">Human Approval Layer (İnsan Onay Katmanı)</div>
                     </div>
-
-                    <!-- Sağ: Metin Alanı -->
-                    <div class="col-span-5 space-y-5">
-                        <h3 class="text-2xl font-bold text-slate-900">Ortak Semantik Bütünlük</h3>
-                        <p class="text-base text-slate-600 leading-relaxed">Gerek İnsan ↔ Etmen gerekse Etmen ↔ Etmen arasındaki tüm iletişim katmanları, teknik veri transferinin ötesinde ortak bir iş mantığı ve semantik anlam taşımak zorundadır.</p>
-                        
-                        <div class="border border-red-200 bg-red-50/50 rounded-xl p-5">
-                            <span class="text-sm font-mono text-red-600 font-bold uppercase">// Kritik Sistem Riski</span>
-                            <p class="text-sm text-red-950 mt-1.5 leading-relaxed font-medium">Süreçler arasında anlamsal tutarlılık (semantic consistency) sağlanmadığı takdirde, dağıtık orkestrasyon hızla sistemsel kaosa dönüşür.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex justify-between items-center border-t border-slate-200 pt-4 mt-auto">
-                    <span class="text-base font-mono text-red-600 font-bold uppercase tracking-wider">"Semantik bütünlük yoksa, orkestrasyon kaos doğurur."</span>
-                    <span class="text-sm font-mono text-slate-500">04 / 08</span>
                 </div>
             </div>
+            <div class="slide-footer">
+                <div class="punchline">“Semantic consistency olmadan orchestration kaosa dönüşür.”</div>
+                <div class="footer-meta">Slayt 4 / 8</div>
+            </div>
+        </div>
 
-            <!-- SLAYT 5: RPA vs YETENEK KULLANIMI (TAMAMEN OPTİMİZE EDİLMİŞ TABLO) -->
-            <div class="slide-card" id="slide-4">
-                <div>
-                    <span class="text-sm font-mono text-blue-600 font-semibold tracking-wider uppercase">// BÖLÜM 05: TEKNOLOJİK KIYASLAMA</span>
-                    <h1 class="text-5xl font-bold tracking-tight mt-2 text-slate-900">Arayüz Otomasyonu vs Yetenek Tabanlı Etmenler</h1>
-                    <p class="text-slate-600 mt-2 text-base">Geleneksel RPA yaklaşımı ile modern fonksiyon/araç çağıran etmen mimarisinin yapısal karşılaştırması.</p>
-                </div>
-
-                <!-- Tablo Bölümü: Genişletilmiş ve Okunaklı -->
-                <div class="my-auto overflow-hidden border border-slate-200 rounded-xl shadow-sm">
-                    <table class="w-full text-left border-collapse bg-white">
+        <!-- SLIDE 5 -->
+        <div class="slide" id="slide-5">
+            <div class="slide-header">
+                <span class="brand-badge">Ziraat Bankası // Stratejik Dönüşüm</span>
+                <h1>UI Otomasyonu vs Capability Tabanlı Etmenler</h1>
+                <div class="slide-subtitle">Ekran ara yüzlerine bağımlı kalmak yerine yerleşik sistem servislerini native olarak çağırmak.</div>
+            </div>
+            <div class="slide-body" style="flex-direction: column; justify-content: center;">
+                <div class="full-width-panel">
+                    <table class="comp-table">
                         <thead>
-                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-800 font-mono text-xs uppercase tracking-wider">
-                                <th class="p-4 font-bold">Mimari Boyut</th>
-                                <th class="p-4 font-bold text-red-600 bg-red-50/30">RPA / UI Otomasyonu</th>
-                                <th class="p-4 font-bold text-emerald-700 bg-emerald-50/30">Araç Kullanımı / Fonksiyon Çağırma</th>
+                            <tr>
+                                <th style="width: 50%;">RPA / UI Automation</th>
+                                <th style="width: 50%;">Tool Use / Function Calling</th>
                             </tr>
                         </thead>
-                        <tbody class="text-slate-700 text-sm divide-y divide-slate-100">
+                        <tbody>
                             <tr>
-                                <td class="p-3 font-semibold text-slate-900">Etileşim Modeli</td>
-                                <td class="p-3 bg-red-50/10">Ekran piksellerini ve arayüzü taklit eder</td>
-                                <td class="p-3 bg-emerald-50/10 font-medium text-emerald-900">Doğrudan kurumsal yetenekleri ve servisleri çağırır</td>
+                                <td>Ekran tıklar ve arayüzü taklit eder.</td>
+                                <td>Doğrudan Capability (Sistem Yeteneği) çağırır.</td>
                             </tr>
                             <tr>
-                                <td class="p-3 font-semibold text-slate-900">Değişiklik Direnci</td>
-                                <td class="p-3 bg-red-50/10 text-red-700">Arayüz (UI) güncellendiğinde süreç çöker</td>
-                                <td class="p-3 bg-emerald-50/10 font-medium text-emerald-900">Decoupled API sözleşmeleri sayesinde tamamen kararlıdır</td>
+                                <td>UI değişimlerine karşı son derece hassas ve kırılgandır.</td>
+                                <td>API/Servis tabanlı olduğundan daha stabil entegrasyon sunar.</td>
                             </tr>
                             <tr>
-                                <td class="p-3 font-semibold text-slate-900">Süreç Algısı</td>
-                                <td class="p-3 bg-red-50/10">İnsan hareketlerini mekanik olarak yineler</td>
-                                <td class="p-3 bg-emerald-50/10 font-medium text-emerald-900">Operasyonel iş mantığını ve veri şemalarını anlar</td>
+                                <td>Yalnızca insan davranışını taklit eder.</td>
+                                <td>Operasyonu ve arka plandaki veriyi anlamlandırır.</td>
                             </tr>
                             <tr>
-                                <td class="p-3 font-semibold text-slate-900">Bağlam Yönetimi</td>
-                                <td class="p-3 bg-red-50/10">Sadece o anki ekran verisiyle kısıtlıdır</td>
-                                <td class="p-3 bg-emerald-50/10 font-medium text-emerald-900">Sürekli güncellenen ortak semantik bağlamı paylaşır</td>
+                                <td>Lokal ve izole akışlarda sıkışır.</td>
+                                <td>Uçtan uca Enterprise Orchestration imkanı tanır.</td>
                             </tr>
                             <tr>
-                                <td class="p-3 font-semibold text-slate-900">Ölçeklenebilirlik</td>
-                                <td class="p-3 bg-red-50/10">Lisans ve sanal makine (VM) bağımlılığı yüksektir</td>
-                                <td class="p-3 bg-emerald-50/10 font-medium text-emerald-900">Modüler, dağıtık ve bulut yerel (cloud-native) mimari</td>
+                                <td>Context (bağlam) yönetimi oldukça sınırlıdır.</td>
+                                <td>Paylaşımlı bir semantik bağlam (Shared Semantic Context) kullanır.</td>
                             </tr>
                             <tr>
-                                <td class="p-3 font-semibold text-slate-900">Denetlenebilirlik</td>
-                                <td class="p-3 bg-red-50/10">Ekran logları ile sınırlı, izlenebilirliği zayıftır</td>
-                                <td class="p-3 bg-emerald-50/10 font-medium text-emerald-900">Adım adım akıl yürütme (traceability) günlükleri sunar</td>
+                                <td>Session bağımlılığı yüksektir, kaynak tüketir.</td>
+                                <td>Service-native yaklaşım sayesinde esnektir.</td>
+                            </tr>
+                            <tr>
+                                <td>Arayüz değiştikçe bakım (maintenance) maliyeti artar.</td>
+                                <td>Modüler ve sürdürülebilir bir mimari sağlar.</td>
+                            </tr>
+                            <tr>
+                                <td>Sürecin neden işletildiğine dair izlenebilirlik (explainability) zayıftır.</td>
+                                <td>Adım adım denetlenebilir ve izlenebilir execution sunar.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="margin-top: 12px; font-size: 12px; color: #666666; font-style: italic;">
+                        * UI otomasyonu bazı legacy sistemlerde hâlâ değerli olabilir; ancak modern kurumsal mimarilerin merkezinde doğrudan capability erişimi bulunur.
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div class="punchline">“Tıklama anlam değildir.”</div>
+                <div class="footer-meta">Slayt 5 / 8</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6 -->
+        <div class="slide" id="slide-6">
+            <div class="slide-header">
+                <span class="brand-badge">Ziraat Bankası // Stratejik Dönüşüm</span>
+                <h1>Governed Agent Architecture</h1>
+                <div class="slide-subtitle">Güvenli, izlenebilir ve kurumsal politikalara tam uyumlu katmanlı etmen mimarisi.</div>
+            </div>
+            <div class="slide-body">
+                <div class="text-panel">
+                    <ul>
+                        <li>LLM sistem içinde yalnızca bir yorumlama ve reasoning (akıl yürütme) katmanı olarak konumlanır.</li>
+                        <li>Planner katmanı, kontrol edilebilir ve öngörülebilir bir orkestrasyon sağlar.</li>
+                        <li>Policy katmanı, yürütme (execution) sınırlarını net olarak çizer.</li>
+                        <li>Denetlenebilirlik (auditability) ve açıklanabilirlik merkezi önemdedir.</li>
+                        <li>Tüm dış araç erişimleri sıkı bir governance modeli altında çalışmalıdır; Secure Tool Gateway yaklaşımı bu yüzden kritiktir.</li>
+                    </ul>
+                </div>
+                <div class="visual-panel">
+                    <div class="layer-stack">
+                        <div class="layer-item layer-item-dark">1. Human Supervision & Approval Layer</div>
+                        <div class="layer-item">2. Policy Control Layer (Kurumsal Politikalar & Sınırlar)</div>
+                        <div class="layer-item">3. Planner & Orchestration Engine (Planlama)</div>
+                        <div class="layer-item">4. Specialized Agents (Uzman Etmen Katmanı)</div>
+                        <div class="layer-item">5. Secure Tool Gateway (Güvenli Araç Geçidi)</div>
+                        <div class="layer-infra-grid">
+                            <div class="infra-item">Audit & Obs</div>
+                            <div class="infra-item">Knowledge Graph</div>
+                            <div class="infra-item">Vector Infra</div>
+                        </div>
+                        <div class="layer-item" style="background:#f9f9f9; border:1px dashed #666;">6. Knowledge & Context Infrastructure</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div class="punchline">“LLM sistemin tamamı değil, governed architecture içindeki bir bileşendir.”</div>
+                <div class="footer-meta">Slayt 6 / 8</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7 -->
+        <div class="slide" id="slide-7">
+            <div class="slide-header">
+                <span class="brand-badge">Ziraat Bankası // Stratejik Dönüşüm</span>
+                <h1>Controlled AI Autonomy</h1>
+                <div class="slide-subtitle">Finansal risklerin bertaraf edilmesi için hibrit ve kademeli otonomi modeli.</div>
+            </div>
+            <div class="slide-body">
+                <div class="text-panel">
+                    <ul>
+                        <li>Tüm bankacılık operasyonlarının ilk günden tam otonom olması gerekmez ve risklidir.</li>
+                        <li>Kritik finansal aksiyonlar ve fon hareketleri mutlaka insan onayı altında kalmalıdır.</li>
+                        <li>Güven sağlandıkça otonomi seviyeleri kontrollü ve geriye dönük denetlenebilir şekilde artırılabilir.</li>
+                        <li>İnsan-in-the-loop (insan kontrolünde döngü) yaklaşımı bankacılık regülasyonları için temel gereksinimdir.</li>
+                    </ul>
+                </div>
+                <div class="visual-panel">
+                    <table class="comp-table">
+                        <thead>
+                            <tr>
+                                <th>Operasyon Katmanı</th>
+                                <th>Otonomi Seviyesi</th>
+                                <th>Kontrol Tipi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Retrieval</strong> (Bilgi Getirimi)</td>
+                                <td>Tam Otonom</td>
+                                <td style="color:#666;">Sistem Kontrolü</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Evidence Analysis</strong> (Analiz)</td>
+                                <td>Otonom</td>
+                                <td style="color:#666;">Policy Denetimi</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Recommendation</strong> (Öneri)</td>
+                                <td>Otonom</td>
+                                <td style="color:#666;">Model Denetimi</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Financial Actions</strong> (Para Çıkışı)</td>
+                                <td style="font-weight:bold;">İnsan Onayı</td>
+                                <td style="font-weight:bold; color:#111;">MFA / İnsan İmza</td>
+                            </tr>
+                            <tr>
+                                <td><strong>External Communication</strong> (Dış Mesaj)</td>
+                                <td>Governed Approval</td>
+                                <td style="color:#666;">Filtre & Onay</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
-                <div class="flex justify-between items-center border-t border-slate-200 pt-3 mt-auto">
-                    <div class="flex gap-8">
-                        <span class="text-lg font-mono text-red-600 font-bold uppercase">"Klikler anlam ifade etmez."</span>
-                        <span class="text-sm font-medium text-slate-500">Not: Kullanıcı arayüzü otomasyonu, API desteği bulunmayan eski (legacy) sistemler için geçici bir köprü olarak kalmalıdır.</span>
-                    </div>
-                    <span class="text-sm font-mono text-slate-500">05 / 08</span>
-                </div>
             </div>
+            <div class="slide-footer">
+                <div class="punchline">“Enterprise AI kontrollü otonomi ile ilerlemelidir.”</div>
+                <div class="footer-meta">Slayt 7 / 8</div>
+            </div>
+        </div>
 
-            <!-- SLAYT 6: YÖNETİLEN ETMEN MİMARİSİ -->
-            <div class="slide-card" id="slide-5">
-                <div>
-                    <span class="text-sm font-mono text-blue-600 font-semibold tracking-wider uppercase">// BÖLÜM 06: REFERANS MİMARİ</span>
-                    <h1 class="text-5xl font-bold tracking-tight mt-2 text-slate-900">Yönetilen Etmen Mimarisi</h1>
-                    <p class="text-slate-600 mt-3 text-lg max-w-4xl">Yapay zeka modellerinin kurumsal regülasyonlar, güvenlik sınırları ve mutlak kontrol mekanizmaları altında çalışmasını sağlayan çok katmanlı referans mimari.</p>
+        <!-- SLIDE 8 -->
+        <div class="slide" id="slide-8">
+            <div class="slide-header">
+                <span class="brand-badge">Ziraat Bankası // Stratejik Dönüşüm</span>
+                <h1>UI’lardan Capability Network’lerine</h1>
+                <div class="slide-subtitle">Yapay zeka teknolojilerini tekil arayüz özelliklerinden, kurumsal temel altyapı katmanına taşımak.</div>
+            </div>
+            <div class="slide-body">
+                <div class="text-panel">
+                    <ul>
+                        <li>Geleceğin kurumsal mimarileri ekran merkezli değil, servis yeteneği (capability) merkezli olacak.</li>
+                        <li>AI yapısı basit bir "feature" seviyesinden kritik "infrastructure" seviyesine taşınmaktadır.</li>
+                        <li>Shared orchestration (paylaşımlı orkestrasyon) enterprise ölçeğinde yüksek tekrar kullanılabilirlik sağlar.</li>
+                        <li>Merkezi governance ve context yönetimi artık opsiyon değil, temel altyapı haline gelmektedir.</li>
+                        <li>Bankacılık güvenlik standartları gereği veri sızıntısını önleyen on-prem controlled execution vazgeçilmezdir.</li>
+                    </ul>
                 </div>
-
-                <div class="grid grid-cols-12 gap-12 my-auto items-center">
-                    <!-- Sol: Katman Yapısı -->
-                    <div class="col-span-8 space-y-3.5">
-                        <div class="border border-blue-200 bg-blue-50/40 p-4 rounded-xl flex justify-between items-center">
-                            <div class="flex items-center gap-4">
-                                <span class="font-mono text-sm text-blue-600 font-bold">KATMAN 1</span>
-                                <span class="text-base font-bold text-slate-900">İnsan Onay & Gözetim Katmanı (Human-in-the-Loop)</span>
+                <div class="visual-panel">
+                    <div class="cap-container">
+                        <div class="cap-block">
+                            <div class="cap-block-title">Mevcut Durum</div>
+                            <div style="color:#666; line-height:1.4;">
+                                • İzole uygulamalar<br>
+                                • Ayrık ve kopuk workflow'lar<br>
+                                • Tekrarlanan operasyonel eforlar<br>
+                                • Ekran bağımlı akışlar
                             </div>
-                            <span class="text-xs font-mono bg-blue-100 text-blue-700 px-3 py-1 rounded font-bold uppercase">ÜST DENETİM</span>
                         </div>
-
-                        <div class="border border-slate-200 bg-slate-50 p-4 rounded-xl flex justify-between items-center">
-                            <div class="flex items-center gap-4">
-                                <span class="font-mono text-sm text-slate-500 font-bold">KATMAN 2</span>
-                                <span class="text-base font-bold text-slate-800">Deterministik Sınır Güvenliği (Guardrails & Şemalar)</span>
+                        <div class="cap-block" style="border-color:#111111;">
+                            <div class="cap-block-title" style="border-bottom-color:#111111; font-weight:bold;">Gelecek Mimarisi</div>
+                            <div style="line-height:1.4;">
+                                • Shared Orchestration<br>
+                                • Reusable AI Capabilities<br>
+                                • Connected Intelligence
                             </div>
-                            <span class="text-xs font-mono bg-slate-200 text-slate-700 px-3 py-1 rounded font-bold uppercase">MUTLAK SINIR</span>
-                        </div>
-
-                        <div class="border border-slate-200 bg-slate-50 p-4 rounded-xl flex justify-between items-center">
-                            <div class="flex items-center gap-4">
-                                <span class="font-mono text-sm text-slate-500 font-bold">KATMAN 3</span>
-                                <span class="text-base font-bold text-slate-800">Bilişsel Planlama & Karar Motoru (LLM Katmanı)</span>
+                            <div class="cap-net-visual">
+                                <span class="cap-node cap-node-core">Core Context</span>
+                                <span class="cap-node">API Net</span>
+                                <span class="cap-node">Etmen</span>
+                                <span class="cap-node">Uyum</span>
                             </div>
-                            <span class="text-xs font-mono bg-slate-200 text-slate-700 px-3 py-1 rounded font-bold uppercase">AKIL YÜRÜTME</span>
-                        </div>
-
-                        <div class="border border-slate-200 bg-slate-50 p-4 rounded-xl flex justify-between items-center">
-                            <div class="flex items-center gap-4">
-                                <span class="font-mono text-sm text-slate-500 font-bold">KATMAN 4</span>
-                                <span class="text-base font-bold text-slate-800">Yetenek Entegrasyon & API Geçidi (Araç Havuzu)</span>
-                            </div>
-                            <span class="text-xs font-mono bg-slate-200 text-slate-700 px-3 py-1 rounded font-bold uppercase">YÜRÜTME</span>
-                        </div>
-
-                        <div class="border border-slate-200 bg-slate-50 p-4 rounded-xl flex justify-between items-center">
-                            <div class="flex items-center gap-4">
-                                <span class="font-mono text-sm text-slate-500 font-bold">KATMAN 5</span>
-                                <span class="text-base font-bold text-slate-800">Kurumsal Bilgi Deposu & Politikalar (RAG / Veritabanı)</span>
-                            </div>
-                            <span class="text-xs font-mono bg-slate-200 text-slate-600 px-3 py-1 rounded font-bold uppercase">VERİ / BELGE</span>
                         </div>
                     </div>
-
-                    <!-- Sağ: Açıklama -->
-                    <div class="col-span-4 space-y-6">
-                        <div>
-                            <h4 class="text-xl font-bold text-slate-900">// LLM Tek Başına Sistem Değildir</h4>
-                            <p class="text-sm text-slate-600 mt-2 leading-relaxed">Büyük dil modelleri kurumsal uygulamanın kendisi olamaz; o yalnızca mimari mimari kurallar içerisinde görev yapan bir akıl yürütme bileşenidir.</p>
-                        </div>
-                        <div class="space-y-3 border-l-2 border-slate-300 pl-4 text-sm text-slate-600">
-                            <div><strong class="text-slate-900">Açıklanabilirlik:</strong> Gerçekleştirilen her kararın arkasındaki gerekçeler adım adım denetlenebilir durumdadır.</div>
-                            <div><strong class="text-slate-900">Politika Bilinci:</strong> Etmenler, bankacılık regülasyon sınırlarının dışına asla çıkamaz.</div>
-                        </div>
+                    <div class="boundary-box" style="position:absolute; bottom:12px; left:20px; right:20px; font-size:10px;">
+                        ON-PREM ENTERPRISE BOUNDARY (ZİRAAT BANKASI GÜVENLİ ALANI)
                     </div>
-                </div>
-
-                <div class="flex justify-between items-center border-t border-slate-200 pt-4 mt-auto">
-                    <span class="text-sm font-mono text-slate-500">Güvenlik İlkesi: Kurumsal BT mimarilerinde yapay zeka entegrasyonu Sıfır-Güven (Zero-Trust) kuralları ile çevrelenmelidir.</span>
-                    <span class="text-sm font-mono text-slate-500">06 / 08</span>
                 </div>
             </div>
-
-            <!-- SLAYT 7: STRATEJİK HEDEF -->
-            <div class="slide-card" id="slide-6">
-                <div>
-                    <span class="text-sm font-mono text-blue-600 font-semibold tracking-wider uppercase">// BÖLÜM 07: VİZYON VE HEDEF</span>
-                    <h1 class="text-5xl font-bold tracking-tight mt-2 text-slate-900">Arayüzlerden Yetenek Ağlarına</h1>
-                    <p class="text-slate-600 mt-3 text-lg max-w-4xl">Geleceğin bankacılık altyapısı, insanların ekranlar arasında mekik dokuduğu bağımsız silolar yerine semantik olarak koordine edilmiş yetenek ağlarından oluşacaktır.</p>
-                </div>
-
-                <div class="my-auto grid grid-cols-12 gap-12 items-center">
-                    <div class="col-span-5 space-y-4">
-                        <span class="text-xs font-mono text-blue-600 font-bold uppercase">// Yeni Paradigma</span>
-                        <h2 class="text-3xl font-bold text-slate-900 leading-tight">Geleceğin Yetenek Matrisi</h2>
-                        <p class="text-base text-slate-600 leading-relaxed">Uygulamaların izole kutular halinde var olduğu ve insanın arayüzleri kullanarak veri taşıdığı dönem kapanıyor. Yönetilen etmenler, kurumsal yetenekleri anlamsal bir düzlemde uçtan uca otomatik olarak koordine ediyor.</p>
-                    </div>
-
-                    <!-- CAD Ağ Şeması -->
-                    <div class="col-span-7 border border-slate-200 bg-slate-50 p-6 rounded-xl">
-                        <svg viewBox="0 0 500 220" class="w-full h-auto">
-                            <!-- Eski Yapı -->
-                            <g>
-                                <rect x="25" y="30" width="115" height="36" rx="4" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5" />
-                                <text x="82.5" y="52" fill="#475569" font-family="Inter" font-size="9" text-anchor="middle" font-weight="medium">İzole Uygulama</text>
-
-                                <rect x="25" y="80" width="115" height="36" rx="4" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5" />
-                                <text x="82.5" y="102" fill="#475569" font-family="Inter" font-size="9" text-anchor="middle" font-weight="medium">İzole Uygulama</text>
-
-                                <rect x="25" y="130" width="115" height="36" rx="4" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5" />
-                                <text x="82.5" y="152" fill="#475569" font-family="Inter" font-size="9" text-anchor="middle" font-weight="medium">İzole Uygulama</text>
-
-                                <text x="82.5" y="195" fill="#EF4444" font-family="JetBrains Mono" font-size="10" text-anchor="middle" font-weight="bold">ARAYÜZ SİLOLARI</text>
-                            </g>
-
-                            <g stroke="#2563EB" stroke-width="1.5" fill="none">
-                                <path d="M 165,100 C 205,80 235,120 275,100" stroke-dasharray="4 2"/>
-                                <polygon points="275,100 267,95 269,105" fill="#2563EB"/>
-                            </g>
-
-                            <!-- Yeni Network Yapısı -->
-                            <g>
-                                <circle cx="340" cy="50" r="14" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5" />
-                                <circle cx="440" cy="60" r="14" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5" />
-                                <circle cx="380" cy="110" r="18" fill="#FFFFFF" stroke="#10B981" stroke-width="2.5" />
-                                <circle cx="330" cy="160" r="14" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5" />
-                                <circle cx="430" cy="150" r="14" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.5" />
-
-                                <g stroke="#64748B" stroke-width="1.2">
-                                    <line x1="340" y1="50" x2="380" y2="110" />
-                                    <line x1="440" y1="60" x2="380" y2="110" />
-                                    <line x1="330" y1="160" x2="380" y2="110" />
-                                    <line x1="430" y1="150" x2="380" y2="110" />
-                                    <line x1="340" y1="50" x2="440" y2="60" />
-                                    <line x1="330" y1="160" x2="430" y2="150" />
-                                </g>
-
-                                <text x="380" y="195" fill="#10B981" font-family="JetBrains Mono" font-size="10" text-anchor="middle" font-weight="bold">SEMANTİK YETENEK AĞI</text>
-                            </g>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="border-t border-slate-200 pt-4 mt-auto">
-                    <p class="text-base font-medium text-center text-slate-800 italic">"Kurumsal yapay zekanın geleceği daha akıllı arayüzler tasarlamak değildir. Arka plandaki kurumsal kabiliyetleri semantik olarak koordine etmektir."</p>
+            <div class="slide-footer">
+                <div class="punchline">“Deepin, AI’ı bir feature olarak değil, kurumsal operasyon altyapısı olarak konumlandırır.”</div>
+                <div class="footer-meta" style="text-align:right;">
+                    <strong>Enterprise Agent Operating Layer</strong><br>
+                    <span style="font-size:9px; color:#999;">Slayt 8 / 8</span>
                 </div>
             </div>
+        </div>
 
-            <!-- SLAYT 8: YENİ EKLENEN REFERANSLAR VE PROJELER SLAYTI -->
-            <div class="slide-card" id="slide-7">
-                <div>
-                    <span class="text-sm font-mono text-emerald-600 font-semibold tracking-wider uppercase">// BÖLÜM 08: SAHADA KANITLANMIŞ GÜVEN</span>
-                    <h1 class="text-5xl font-bold tracking-tight mt-2 text-slate-900">Kurumsal Başarı Hikayeleri & Referanslar</h1>
-                    <p class="text-slate-600 mt-3 text-lg max-w-4xl">Geliştirdiğimiz anlamsal anlama ve yönetilen etmen yeteneklerinin kritik kurumsal operasyonlarda, bankacılık ve enerji sektörlerindeki canlı uygulamaları.</p>
-                </div>
-
-                <!-- Referans Kartları Matrisi -->
-                <div class="my-auto grid grid-cols-12 gap-6">
-                    
-                    <!-- Proje 1 -->
-                    <div class="col-span-4 border border-slate-200 bg-white p-5 rounded-xl shadow-sm">
-                        <div class="flex justify-between items-start border-b border-slate-100 pb-3 mb-3">
-                            <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2.5 py-1 rounded font-bold uppercase">BANKACILIK / YAPAY ZEKA</span>
-                            <span class="text-xs font-mono text-slate-400">CANLI SİSTEM</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900">İş Bankası — Maxi</h3>
-                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">Gelişmiş anlamsal anlama ve entegrasyon yetenekleriyle müşteri taleplerini doğrudan servis seviyesinde orkestre eden kurumsal dijital asistan altyapısı.</p>
-                    </div>
-
-                    <!-- Proje 2 -->
-                    <div class="col-span-4 border border-slate-200 bg-white p-5 rounded-xl shadow-sm">
-                        <div class="flex justify-between items-start border-b border-slate-100 pb-3 mb-3">
-                            <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2.5 py-1 rounded font-bold uppercase">BANKACILIK / BİLGİ SEKTÖRÜ</span>
-                            <span class="text-xs font-mono text-slate-400">BİLİŞSEL KATMAN</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900">İş Bankası — Bilge</h3>
-                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">Kurumsal bilgi dağarcığını ve regülasyon dökümanlarını semantik bağlam motoruyla işleyerek iç operasyonlara rehberlik eden karar destek sistemi.</p>
-                    </div>
-
-                    <!-- Proje 3 -->
-                    <div class="col-span-4 border border-slate-200 bg-white p-5 rounded-xl shadow-sm">
-                        <div class="flex justify-between items-start border-b border-slate-100 pb-3 mb-3">
-                            <span class="text-xs font-mono bg-amber-50 text-amber-800 px-2.5 py-1 rounded font-bold uppercase">OPERASYON / OPERASYONEL</span>
-                            <span class="text-xs font-mono text-slate-400">YÜKSEK TRAFİK</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900">Sabiha Gökçen — Savvy</h3>
-                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">Havalimanı operasyonel süreçlerini, anlık operasyonel bağlamı ve dış sistem API'lerini gerçek zamanlı takip ederek koordine eden akıllı yönetim mekanizması.</p>
-                    </div>
-
-                    <!-- Proje 4 -->
-                    <div class="col-span-6 border border-slate-200 bg-white p-5 rounded-xl shadow-sm">
-                        <div class="flex justify-between items-start border-b border-slate-100 pb-3 mb-3">
-                            <span class="text-xs font-mono bg-emerald-50 text-emerald-800 px-2.5 py-1 rounded font-bold uppercase">ENERJİ Sektörü / WHATSAPP OTOMASYONU</span>
-                            <span class="text-xs font-mono text-slate-400">MİKRO SERVİS</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900">Gediz-Aydem Enerji — WhatsApp Etmen Sistemi</h3>
-                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">Bölgesel enerji dağıtım ağındaki milyonlarca abonenin arıza, fatura ve başvuru süreçlerini, karmaşık arka plan iş akışlarına ve fonksiyon çağrılarına yönlendiren kararlı kanal mimarisi.</p>
-                    </div>
-
-                    <!-- Proje 5 -->
-                    <div class="col-span-6 border border-slate-200 bg-white p-5 rounded-xl shadow-sm">
-                        <div class="flex justify-between items-start border-b border-slate-100 pb-3 mb-3">
-                            <span class="text-xs font-mono bg-purple-50 text-purple-800 px-2.5 py-1 rounded font-bold uppercase">SİGORTACILIK / RADİKAL OTOMASYON</span>
-                            <span class="text-xs font-mono text-slate-400">ÇOKLU ETMEN</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900">Anadolu Sigorta — Aslı</h3>
-                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">Hasar, poliçe ve provizyon süreçlerini hasar tespit algoritmaları ve belge inceleme etmenleri (OCR) vasıtasıyla semantik düzeyde işleyip sonuçlandıran kurumsal etmen ağı.</p>
-                    </div>
-
-                </div>
-
-                <div class="flex justify-between items-center border-t border-slate-200 pt-4 mt-auto">
-                    <span class="text-sm font-mono text-emerald-600 font-bold">"Teoride kurgulanan mimari, ülkenin en büyük finans, enerji ve lojistik altyapılarında her gün binlerce işlemi başarıyla yürütmektedir."</span>
-                    <span class="text-sm font-mono text-slate-500">08 / 08</span>
-                </div>
-            </div>
-
-        </main>
-
-        <!-- ALT MENÜ KONTROLLERİ -->
-        <footer class="flex justify-between items-center border-t border-slate-300 pt-4 z-50">
-            <div class="flex items-center gap-2">
-                <button onclick="changeSlide(-1)" class="w-12 h-12 border border-slate-300 bg-white rounded-xl flex items-center justify-center hover:bg-slate-50 text-slate-600 hover:text-slate-900 shadow-sm transition">
-                    <i class="fa-solid fa-arrow-left text-sm"></i>
-                </button>
-                <button onclick="changeSlide(1)" class="w-12 h-12 border border-slate-300 bg-white rounded-xl flex items-center justify-center hover:bg-slate-50 text-slate-600 hover:text-slate-900 shadow-sm transition">
-                    <i class="fa-solid fa-arrow-right text-sm"></i>
-                </button>
-            </div>
-
-            <div class="flex items-center gap-4">
-                <span class="text-sm font-mono text-slate-500 font-semibold" id="slide-num-indicator">SLAYT 1 / 8</span>
-                <div class="flex gap-2" id="slide-dot-container"></div>
-            </div>
-
-            <div class="flex items-center gap-4">
-                <span class="text-xs font-mono text-slate-400 uppercase">YÖNLENDİRME: [←] GERİ [→] İLERİ / KLAVYE AKTİF</span>
-                <button onclick="toggleFullscreen()" class="w-12 h-12 border border-slate-300 bg-white rounded-xl flex items-center justify-center hover:bg-slate-50 text-slate-600 hover:text-slate-900 shadow-sm transition" title="Tam Ekran">
-                    <i class="fa-solid fa-expand text-sm"></i>
-                </button>
-            </div>
-        </footer>
     </div>
 
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="presentation-progress"></div>
+    </div>
+
+    <div class="controls-hint">İlerlemek için Sağ Ok / Boşluk Tuşu, geri gitmek için Sol Ok tuşunu kullanın.</div>
+
     <script>
-        const totalSlides = 8;
-        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        let currentSlideIndex = 0;
+        const totalSlides = slides.length;
+        const progressBar = document.getElementById('presentation-progress');
 
-        const dotContainer = document.getElementById('slide-dot-container');
-        for (let i = 0; i < totalSlides; i++) {
-            const dot = document.createElement('div');
-            dot.className = `h-2 w-5 rounded transition-all duration-300 ${i === 0 ? 'bg-blue-600' : 'bg-slate-300'}`;
-            dot.id = `slide-dot-${i}`;
-            dotContainer.appendChild(dot);
+        function updateSlides() {
+            slides.forEach((slide, index) => {
+                if (index === currentSlideIndex) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+            const progressPercentage = ((currentSlideIndex + 1) / totalSlides) * 100;
+            progressBar.style.width = progressPercentage + '%';
         }
 
-        function updateSlideUI() {
-            for (let i = 0; i < totalSlides; i++) {
-                const slide = document.getElementById(`slide-${i}`);
-                const dot = document.getElementById(`slide-dot-${i}`);
-                if (slide) {
-                    if (i === currentSlide) {
-                        slide.classList.add('active');
-                    } else {
-                        slide.classList.remove('active');
-                    }
-                }
-                if (dot) {
-                    if (i === currentSlide) {
-                        dot.className = 'h-2 w-8 rounded bg-blue-600 transition-all duration-300';
-                    } else {
-                        dot.className = 'h-2 w-4 rounded bg-slate-300 transition-all duration-300';
-                    }
-                }
+        function nextSlide() {
+            if (currentSlideIndex < totalSlides - 1) {
+                currentSlideIndex++;
+                updateSlides();
             }
-            document.getElementById('slide-num-indicator').innerText = `SLAYT ${currentSlide + 1} / ${totalSlides}`;
         }
 
-        function changeSlide(direction) {
-            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
-            updateSlideUI();
+        function prevSlide() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                updateSlides();
+            }
         }
 
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'ArrowRight' || event.key === ' ') {
-                changeSlide(1);
-            } else if (event.key === 'ArrowLeft') {
-                changeSlide(-1);
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.code === 'Space') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
             }
         });
 
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.log(`Tam ekran hatası: ${err.message}`);
-                });
-            } else {
-                document.exitFullscreen();
-            }
-        }
+        updateSlides();
     </script>
 </body>
 </html>
-
-```
