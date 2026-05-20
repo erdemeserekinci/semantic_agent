@@ -251,22 +251,37 @@
     top: 50%; left: 50%; transform: translate(-50%, -50%);
     white-space: nowrap; pointer-events: none; user-select: none;
   }
-  .conclusion-inner { position: relative; max-width: 680px; margin: auto; }
+  .conclusion-inner { position: relative; max-width: 780px; margin: auto; }
   .conclusion h2 {
     font-family: var(--serif); font-size: clamp(2.5rem, 5vw, 4.5rem);
-    line-height: 1.1; margin-bottom: 2rem;
+    line-height: 1.1; margin-bottom: 1.5rem;
   }
-  .conclusion p { font-size: 1.05rem; color: rgba(245,243,238,0.65); line-height: 1.8; margin-bottom: 1.25rem; }
-  .conclusion-list {
-    display: flex; flex-wrap: wrap; gap: 0.75rem;
-    justify-content: center; margin-top: 3rem;
+  .conclusion-lead { font-size: 1.1rem; color: rgba(245,243,238,0.5); line-height: 1.8; margin-bottom: 1rem; }
+  .conclusion-statement {
+    font-family: var(--serif); font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+    color: rgba(245,243,238,0.92); line-height: 1.45; margin: 2.5rem 0;
+    border-left: 3px solid var(--accent); padding-left: 1.5rem; text-align: left;
   }
-  .conclusion-tag {
-    font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.1em;
-    text-transform: uppercase; padding: 0.5rem 1.25rem;
-    border: 1px solid rgba(245,243,238,0.25); border-radius: 100px;
-    color: rgba(245,243,238,0.65);
+  .conclusion-divider { width: 40px; height: 2px; background: rgba(245,243,238,0.15); margin: 2.5rem auto; }
+  .bottleneck-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: rgba(245,243,238,0.08); border: 1px solid rgba(245,243,238,0.08);
+    border-radius: 10px; overflow: hidden; margin: 2.5rem 0; text-align: left;
   }
+  .bottleneck-item { padding: 1.5rem 1.75rem; background: rgba(245,243,238,0.03); transition: background 0.25s; }
+  .bottleneck-item:hover { background: rgba(245,243,238,0.07); }
+  .bottleneck-num {
+    font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem;
+  }
+  .bottleneck-title { font-family: var(--serif); font-size: 1.2rem; color: rgba(245,243,238,0.92); margin-bottom: 0.4rem; line-height: 1.2; }
+  .bottleneck-desc { font-size: 0.88rem; color: rgba(245,243,238,0.45); line-height: 1.65; }
+  .conclusion-final {
+    font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgba(245,243,238,0.3); margin-top: 3rem; text-align: center;
+  }
+  .conclusion-final strong { color: rgba(245,243,238,0.75); letter-spacing: 0.14em; }
+  @media (max-width: 600px) { .bottleneck-grid { grid-template-columns: 1fr; } }
 
   footer {
     padding: 2.5rem 4vw; border-top: 1px solid var(--line);
@@ -479,7 +494,7 @@
       </div>
     </div>
 
-    <p class="reveal">A planner acts as a temporal stability layer: preserving world-state consistency, tracking long-term goals, validating transitions, managing dependencies, and continuously verifying progress.</p>
+    <p class="reveal">A planner acts as a temporal stability layer: preserving world-state consistency, tracking long-term goals, validating transitions, managing dependencies, and continuously verifying progress. As task horizons grow, planning stops being a simple optimization problem and becomes a consistency infrastructure problem. However, achieving this consistency requires systems to manage not only temporal coherence but also the complex rules and thousands of constraints of the operational environment.</p>
   </div>
 </section>
 
@@ -547,7 +562,7 @@
       </div>
     </div>
 
-    <p class="reveal">Reliable agent systems increasingly require explicit constraint engines, symbolic validation, solver integration, and formal transition checking. In this model, planning becomes continuous constraint verification.</p>
+    <p class="reveal">Reliable agent systems increasingly require explicit constraint engines, symbolic validation, solver integration, and formal transition checking. With the planning infrastructure in place, planning is not merely task sequencing. Planning becomes continuous constraint verification. However, this challenge exponentially increases when multiple autonomous actors are added to the system, transforming continuous constraint verification into a systemic coordination problem.</p>
   </div>
 </section>
 
@@ -596,7 +611,7 @@
       </div>
     </div>
 
-    <p class="reveal">A planner provides delegation authority, dependency ordering, synchronization, and global task coordination. Planning becomes the mechanism that preserves system-wide coherence across multiple autonomous actors.</p>
+    <p class="reveal">A planner provides delegation authority, dependency ordering, synchronization, and global task coordination. Within this coherent architecture, planning is not simply task decomposition. It becomes the mechanism that preserves system-wide coherence across multiple autonomous actors. However, sustaining this organizational coordination and long-term consistency clashes with a fundamental infrastructural weakness of current agent systems: the memory architecture.</p>
   </div>
 </section>
 
@@ -642,7 +657,7 @@
       </div>
     </div>
 
-    <p class="reveal">Without semantic grounding, agent systems may misunderstand organizational context, ignore hidden dependencies, miss relational risk signals, or produce inconsistent decisions across connected entities. Planning increasingly requires structured semantic layers: knowledge graphs, entity relationships, operational ontologies, and graph-based reasoning.</p>
+    <p class="reveal">Without semantic grounding, agent systems may misunderstand organizational context, ignore hidden dependencies, miss relational risk signals, or produce inconsistent decisions across connected entities. Planning increasingly requires structured semantic layers: knowledge graphs, entity relationships, operational ontologies, and graph-based reasoning. Consequently planning is no longer driven only by prompts. It becomes grounded in the actual operational structure of the organization itself.</p>
   </div>
 </section>
 
@@ -692,7 +707,7 @@
       <p>A system may produce plausible outputs while still breaking organizational policy, violating dependencies, or hallucinating successful completion.</p>
     </div>
 
-    <p class="reveal">This problem becomes increasingly dangerous in finance, healthcare, energy, and regulated enterprise operations, where correctness is not optional. Reliable agent architectures increasingly require formal validators, constraint propagation, solver integration, policy engines, and execution verification layers.</p>
+    <p class="reveal">This problem becomes increasingly dangerous in finance, healthcare, energy, and regulated enterprise operations, where correctness is not optional. Reliable agent architectures increasingly require formal validators, constraint propagation, solver integration, policy engines, and execution verification layers. Under a verification-first paradigm, planning is not only about deciding what to do next. It is about continuously verifying whether execution remains valid throughout the entire process.</p>
   </div>
 </section>
 
@@ -738,7 +753,7 @@
       </div>
     </div>
 
-    <p class="reveal">Without organizational reasoning, autonomous systems may violate authority boundaries, bypass approval flows, create conflicting actions, or generate operational inconsistencies between departments and actors. Planning must also reason about organizational roles, authority models, delegation rules and institutional constraints.</p>
+    <p class="reveal">Without organizational reasoning, autonomous systems may violate authority boundaries, bypass approval flows, create conflicting actions, or generate operational inconsistencies between departments and actors. This problem becomes increasingly severe in regulated enterprise environments where organizational structure itself is part of compliance. Planning can no longer focus only on tasks and actions — it must also reason about organizational roles, authority models, delegation rules and institutional constraints. To support organizational reasoning, planning becomes not only operational coordination, but organizational coordination.</p>
   </div>
 </section>
 
@@ -788,7 +803,7 @@
       <p>The problem is not only remembering information. The problem is maintaining operational continuity across time.</p>
     </div>
 
-    <p class="reveal">Memory can no longer remain a passive storage layer. It must become an active operational structure. Planning and memory become deeply interconnected infrastructure layers rather than separate components.</p>
+    <p class="reveal">Memory can no longer remain a passive storage layer. It must become an active operational structure. A planner acts as a structured memory consumer capable of maintaining persistent world-state, tracking long-term objectives, preserving execution history, and synchronizing evolving context over time. As an active operational structure, planning and memory become deeply interconnected infrastructure layers rather than separate components.</p>
   </div>
 </section>
 
@@ -796,17 +811,56 @@
 <section class="conclusion" id="final">
   <div class="conclusion-inner">
     <h2 class="reveal">The Real Bottleneck</h2>
-    <p class="reveal">The central challenge of agentic AI is often framed as an intelligence problem. Can models reason better? Can they generate better plans? Can they become more autonomous?</p>
-    <p class="reveal">But as agent systems move from demos into real operational environments, a different reality emerges. Modern AI systems can already generate impressive local behavior. What they still struggle to maintain is global coherence over time.</p>
-    <p class="reveal">The missing layer is not another workflow engine or orchestration framework. The missing layer is <strong>planning infrastructure</strong>.</p>
-    <div class="conclusion-list reveal">
-      <span class="conclusion-tag">Consistency</span>
-      <span class="conclusion-tag">Verification</span>
-      <span class="conclusion-tag">Coordination</span>
-      <span class="conclusion-tag">Constraint Management</span>
-      <span class="conclusion-tag">Organizational Reasoning</span>
-      <span class="conclusion-tag">Long-Term Stability</span>
+    <p class="conclusion-lead reveal">The central challenge of agentic AI is routinely framed as an intelligence problem — better reasoning, better plans, more autonomy. But that framing misses the point.</p>
+
+    <blockquote class="conclusion-statement reveal">
+      Modern AI systems can already generate impressive local behavior.<br>
+      What they still fail to maintain is <em>global coherence over time.</em>
+    </blockquote>
+
+    <p class="conclusion-lead reveal">Once agent systems leave controlled demos and enter real operational environments, the bottlenecks are not cognitive. They are structural. Seven failure modes, one root cause:</p>
+
+    <div class="conclusion-divider"></div>
+
+    <div class="bottleneck-grid reveal">
+      <div class="bottleneck-item">
+        <div class="bottleneck-num">01 — Temporal Consistency</div>
+        <div class="bottleneck-title">Long-Horizon Stability</div>
+        <div class="bottleneck-desc">Execution chains drift. Errors compound. Goals erode. A system that cannot remain coherent over hundreds of steps is not operationally reliable — regardless of how well it reasons locally.</div>
+      </div>
+      <div class="bottleneck-item">
+        <div class="bottleneck-num">02 — Rule Density</div>
+        <div class="bottleneck-title">Constraint Explosion</div>
+        <div class="bottleneck-desc">At scale, probabilistic memory cannot hold thousands of overlapping rules. Constraints must be enforced structurally — not recalled statistically.</div>
+      </div>
+      <div class="bottleneck-item">
+        <div class="bottleneck-num">03 — Scale Complexity</div>
+        <div class="bottleneck-title">Coordination Collapse</div>
+        <div class="bottleneck-desc">More agents means more entropy, not more intelligence. Without explicit coordination infrastructure, multi-agent systems become operationally unstable as they grow.</div>
+      </div>
+      <div class="bottleneck-item">
+        <div class="bottleneck-num">04 — Structural Blindness</div>
+        <div class="bottleneck-title">Semantic Grounding</div>
+        <div class="bottleneck-desc">Enterprise decisions are graph problems, not language problems. An agent that cannot reason over entity relationships and ownership structures will consistently misread operational reality.</div>
+      </div>
+      <div class="bottleneck-item">
+        <div class="bottleneck-num">05 — Output ≠ Correctness</div>
+        <div class="bottleneck-title">Verification Gap</div>
+        <div class="bottleneck-desc">Generating a plausible response is not the same as producing a valid one. In finance, healthcare, or regulated operations — the difference is not academic, it is consequential.</div>
+      </div>
+      <div class="bottleneck-item">
+        <div class="bottleneck-num">06 — Authority Awareness</div>
+        <div class="bottleneck-title">Organizational Reasoning</div>
+        <div class="bottleneck-desc">Tasks in organizations are defined not just by what must be done, but by who is permitted to do it, under which conditions, and with whose approval. Agents that ignore this create compliance risk.</div>
+      </div>
     </div>
+
+    <div class="conclusion-divider"></div>
+
+    <p class="conclusion-final reveal">
+      The missing layer is not another workflow engine or orchestration framework.<br><br>
+      <strong>The missing layer is planning infrastructure.</strong>
+    </p>
   </div>
 </section>
 
