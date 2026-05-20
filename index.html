@@ -1,921 +1,955 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Ziraat Bankası - Kurumsal Etmen (Agent) Mimarisi Sunumu</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #ffffff;
-            color: #111111;
-            overflow: hidden;
-            width: 100vw;
-            height: 100vh;
-        }
-        .slide-container {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-        .slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            padding: 5% 6%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            background-color: #ffffff;
-        }
-        .slide.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        .slide-header {
-            margin-bottom: 20px;
-        }
-        .brand-badge {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #888888;
-            margin-bottom: 8px;
-            display: inline-block;
-        }
-        h1 {
-            font-size: 34px;
-            font-weight: 700;
-            color: #111111;
-            line-height: 1.2;
-            letter-spacing: -0.5px;
-        }
-        .slide-subtitle {
-            font-size: 15px;
-            color: #555555;
-            margin-top: 6px;
-            font-weight: 400;
-        }
-        .slide-body {
-            flex: 1;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            gap: 40px;
-            margin-top: 10px;
-            margin-bottom: 20px;
-            min-height: 0;
-        }
-        .text-panel {
-            flex: 1;
-            max-width: 50%;
-        }
-        .visual-panel {
-            flex: 1;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #fafafa;
-            border: 1px solid #eaeaea;
-            border-radius: 4px;
-            padding: 20px;
-            min-height: 320px;
-            position: relative;
-        }
-        .full-width-panel {
-            flex: 1;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        ul {
-            list-style: none;
-        }
-        li {
-            font-size: 16px;
-            line-height: 1.6;
-            color: #333333;
-            margin-bottom: 14px;
-            position: relative;
-            padding-left: 20px;
-        }
-        li::before {
-            content: "—";
-            position: absolute;
-            left: 0;
-            color: #888888;
-        }
-        .slide-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            border-top: 1px solid #eeeeee;
-            padding-top: 15px;
-        }
-        .punchline {
-            font-size: 15px;
-            font-weight: 600;
-            color: #111111;
-            border-left: 3px solid #111111;
-            padding-left: 10px;
-        }
-        .footer-meta {
-            font-size: 11px;
-            color: #999999;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .diag-s1-container {
-            display: flex;
-            width: 100%;
-            justify-content: space-around;
-            align-items: center;
-            font-size: 12px;
-        }
-        .diag-s1-col {
-            width: 42%;
-            text-align: center;
-        }
-        .diag-s1-title {
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #555555;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .diag-s1-box {
-            border: 1px solid #dddddd;
-            background: #ffffff;
-            padding: 10px;
-            margin-bottom: 8px;
-            border-radius: 2px;
-        }
-        .diag-s1-arrow {
-            color: #999999;
-            font-size: 18px;
-            margin: 10px 0;
-        }
-        .diag-s1-badge-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-        }
-        .diag-s1-badge {
-            background: #111111;
-            color: #ffffff;
-            padding: 8px;
-            font-weight: 500;
-            border-radius: 2px;
-        }
-        .timeline-container {
-            display: flex;
-            width: 100%;
-            justify-content: space-between;
-            position: relative;
-            padding: 20px 0;
-        }
-        .timeline-line {
-            position: absolute;
-            top: 50px;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background-color: #cccccc;
-            z-index: 1;
-        }
-        .timeline-node {
-            position: relative;
-            z-index: 2;
-            width: 18%;
-            background: #fafafa;
-            text-align: center;
-        }
-        .timeline-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #ffffff;
-            border: 1px solid #111111;
-            margin: 0 auto 15px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .timeline-node.active-node .timeline-icon {
-            background: #111111;
-            color: #ffffff;
-        }
-        .timeline-title {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-        .timeline-desc {
-            font-size: 11px;
-            color: #666666;
-            line-height: 1.3;
-        }
-        .context-network {
-            position: relative;
-            width: 100%;
-            height: 280px;
-        }
-        .center-node {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #111111;
-            color: #ffffff;
-            padding: 12px 20px;
-            font-weight: bold;
-            font-size: 14px;
-            border-radius: 2px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            z-index: 10;
-            text-align: center;
-        }
-        .satellite-node {
-            position: absolute;
-            background: #ffffff;
-            border: 1px solid #cccccc;
-            padding: 6px 10px;
-            font-size: 11px;
-            font-weight: 500;
-            border-radius: 2px;
-        }
-        .sn1 { top: 15%; left: 15%; }
-        .sn2 { top: 12%; left: 50%; transform: translateX(-50%); }
-        .sn3 { top: 15%; left: 75%; }
-        .sn4 { top: 45%; left: 10%; }
-        .sn5 { top: 45%; left: 80%; }
-        .sn6 { bottom: 15%; left: 12%; }
-        .sn7 { bottom: 10%; left: 50%; transform: translateX(-50%); }
-        .sn8 { bottom: 15%; left: 78%; }
-        .network-bg-lines {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
-        .ma-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            width: 100%;
-            font-size: 11px;
-        }
-        .ma-box {
-            border: 1px solid #dddddd;
-            background: #ffffff;
-            padding: 10px;
-            text-align: center;
-            border-radius: 2px;
-        }
-        .ma-box-title {
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-        .ma-box-shared {
-            grid-column: span 3;
-            background: #f1f1f1;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 8px;
-            border: 1px dashed #999999;
-        }
-        .ma-box-human {
-            grid-column: span 3;
-            background: #111111;
-            color: #ffffff;
-            font-weight: 600;
-            padding: 8px;
-        }
-        .comp-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-            text-align: left;
-            background: #ffffff;
-        }
-        .comp-table th {
-            background: #111111;
-            color: #ffffff;
-            font-weight: 600;
-            padding: 8px 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .comp-table td {
-            padding: 7px 12px;
-            border-bottom: 1px solid #eeeeee;
-            color: #333333;
-        }
-        .comp-table tr:nth-child(even) {
-            background: #fafafa;
-        }
-        .layer-stack {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            gap: 6px;
-            font-size: 11px;
-        }
-        .layer-item {
-            background: #ffffff;
-            border: 1px solid #111111;
-            padding: 8px;
-            text-align: center;
-            font-weight: 600;
-            position: relative;
-        }
-        .layer-item-dark {
-            background: #111111;
-            color: #ffffff;
-        }
-        .layer-infra-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-        }
-        .infra-item {
-            background: #f1f1f1;
-            border: 1px solid #cccccc;
-            padding: 6px;
-            text-align: center;
-            font-size: 10px;
-        }
-        .cap-container {
-            display: flex;
-            width: 100%;
-            justify-content: space-between;
-            font-size: 11px;
-        }
-        .cap-block {
-            width: 46%;
-            border: 1px solid #e0e0e0;
-            padding: 12px;
-            background: #ffffff;
-        }
-        .cap-block-title {
-            font-weight: 600;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #111111;
-            padding-bottom: 4px;
-            text-transform: uppercase;
-        }
-        .cap-net-visual {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 15px;
-        }
-        .cap-node {
-            background: #f5f5f5;
-            border: 1px solid #cccccc;
-            padding: 4px 8px;
-            border-radius: 2px;
-        }
-        .cap-node-core {
-            background: #111111;
-            color: #ffffff;
-            border: 1px solid #111111;
-        }
-        .boundary-box {
-            margin-top: 10px;
-            border: 1px dashed #999999;
-            padding: 6px;
-            text-align: center;
-            font-weight: 500;
-            background: #fafafa;
-        }
-        .progress-bar-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: #eeeeee;
-            z-index: 100;
-        }
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: #111111;
-            transition: width 0.2s ease;
-        }
-        .controls-hint {
-            position: fixed;
-            bottom: 12px;
-            right: 15px;
-            font-size: 10px;
-            color: #999999;
-            z-index: 100;
-            pointer-events: none;
-        }
-        @media print {
-            body {
-                overflow: visible;
-                height: auto;
-                width: auto;
-                background: #ffffff;
-            }
-            .slide-container {
-                position: static;
-                height: auto;
-                width: auto;
-            }
-            .slide {
-                position: relative;
-                opacity: 1 !important;
-                visibility: visible !important;
-                page-break-after: always;
-                height: 100vh;
-                top: auto;
-                left: auto;
-            }
-            .progress-bar-container, .controls-hint {
-                display: none;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Missing Layer in Modern AI Agents</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0f0e0c;
+    --ink-muted: #4a4845;
+    --ink-faint: #9a9690;
+    --surface: #f5f3ee;
+    --surface-2: #ede9e2;
+    --surface-3: #e2ddd4;
+    --accent: #c8401a;
+    --accent-2: #1a3c8c;
+    --line: rgba(15,14,12,0.12);
+    --mono: 'DM Mono', monospace;
+    --serif: 'DM Serif Display', serif;
+    --sans: 'Syne', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── PROGRESS BAR ── */
+  #progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 0%;
+    background: var(--accent);
+    z-index: 9999;
+    transition: width 0.1s linear;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 4vw;
+    background: rgba(245,243,238,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    padding: 8rem 4vw 5rem;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 59px,
+      var(--line) 60px
+    );
+    pointer-events: none;
+  }
+
+  .hero-text { position: relative; }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2rem;
+  }
+
+  .hero-eyebrow span {
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 5.5vw, 5.5rem);
+    line-height: 1.06;
+    color: var(--ink);
+    margin-bottom: 2.5rem;
+    max-width: 14ch;
+  }
+
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 2.5rem;
+  }
+
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .hero-meta-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .hero-meta-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .hero-right {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding-left: 4rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.05rem;
+    color: var(--ink-muted);
+    line-height: 1.7;
+    max-width: 38ch;
+    text-align: right;
+    margin-bottom: 2rem;
+  }
+
+  .hero-big-number {
+    font-family: var(--serif);
+    font-size: clamp(5rem, 14vw, 14rem);
+    line-height: 0.85;
+    color: var(--surface-3);
+    position: absolute;
+    right: -2vw;
+    bottom: -2rem;
+    z-index: -1;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* ── INTRO BAND ── */
+  .intro-band {
+    background: var(--ink);
+    color: var(--surface);
+    padding: 5rem 4vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .intro-band p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: rgba(245,243,238,0.75);
+  }
+
+  .intro-band p + p { margin-top: 1.25rem; }
+
+  .intro-pull {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    line-height: 1.25;
+    color: var(--surface);
+    border-left: 3px solid var(--accent);
+    padding-left: 2rem;
+  }
+
+  /* ── SECTION LAYOUT ── */
+  .section {
+    padding: 6rem 4vw;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .section.alt-bg { background: var(--surface-2); }
+
+  .section-aside {
+    position: sticky;
+    top: 7rem;
+  }
+
+  .section-number {
+    font-family: var(--serif);
+    font-size: 5rem;
+    line-height: 1;
+    color: var(--surface-3);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-tag {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .section-body {}
+
+  h2.section-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 1.75rem;
+  }
+
+  .section-body p {
+    color: var(--ink-muted);
+    margin-bottom: 1.25rem;
+    font-size: 1.02rem;
+  }
+
+  /* ── CALLOUT BOXES ── */
+  .callout {
+    background: var(--surface-3);
+    border-left: 3px solid var(--accent);
+    padding: 1.5rem 1.75rem;
+    margin: 2rem 0;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .callout p {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: var(--ink) !important;
+    margin: 0 !important;
+  }
+
+  /* ── CONTRAST PAIRS ── */
+  .contrast-pair {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    background: var(--surface-3);
+    padding: 1.5rem;
+    border-radius: 8px;
+  }
+
+  .contrast-item {
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border-radius: 6px;
+  }
+
+  .contrast-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.5rem;
+  }
+
+  .contrast-text {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+
+  .contrast-item.accent-side {
+    border-left: 3px solid var(--accent-2);
+  }
+
+  .contrast-vs {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    text-align: center;
+    writing-mode: vertical-rl;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── FAILURE LIST ── */
+  .failure-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+
+  .failure-item {
+    background: var(--surface);
+    padding: 1.25rem 1.5rem;
+  }
+
+  .failure-item .label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .failure-item .desc {
+    font-size: 0.88rem;
+    color: var(--ink-muted);
+    line-height: 1.55;
+  }
+
+  /* ── SCALE BLOCK ── */
+  .scale-block {
+    margin: 2rem 0;
+  }
+
+  .scale-row {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .scale-num {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ink-faint);
+    min-width: 5ch;
+  }
+
+  .scale-bar {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--surface-3);
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .scale-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--accent);
+  }
+
+  .scale-label {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    min-width: 18ch;
+  }
+
+  /* ── FINAL / CONCLUSION ── */
+  .conclusion {
+    background: var(--ink);
+    color: var(--surface);
+    padding: 8rem 4vw;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .conclusion::before {
+    content: 'PLAN';
+    position: absolute;
+    font-family: var(--serif);
+    font-size: 28vw;
+    color: rgba(255,255,255,0.03);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .conclusion-inner { position: relative; max-width: 680px; margin: auto; }
+
+  .conclusion h2 {
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.1;
+    margin-bottom: 2rem;
+  }
+
+  .conclusion p {
+    font-size: 1.05rem;
+    color: rgba(245,243,238,0.65);
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+  }
+
+  .conclusion-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-top: 3rem;
+  }
+
+  .conclusion-tag {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.5rem 1.25rem;
+    border: 1px solid rgba(245,243,238,0.25);
+    border-radius: 100px;
+    color: rgba(245,243,238,0.65);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 2.5rem 4vw;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ── TOC SIDEBAR ── */
+  .toc-sidebar {
+    position: fixed;
+    left: 2vw;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    z-index: 50;
+  }
+
+  .toc-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--surface-3);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    border: 1px solid var(--line);
+    position: relative;
+  }
+
+  .toc-dot.active {
+    background: var(--accent);
+    transform: scale(1.4);
+    border-color: var(--accent);
+  }
+
+  .toc-dot:hover::after {
+    content: attr(data-label);
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--ink);
+    color: var(--surface);
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 10rem; }
+    .hero-right { align-items: flex-start; padding-left: 0; margin-top: 3rem; }
+    .hero-subtitle { text-align: left; }
+    .intro-band { grid-template-columns: 1fr; }
+    .section { grid-template-columns: 1fr; gap: 1.5rem; }
+    .section-aside { position: static; }
+    .failure-grid { grid-template-columns: 1fr 1fr; }
+    .toc-sidebar { display: none; }
+    .contrast-pair { grid-template-columns: 1fr; }
+    .contrast-vs { writing-mode: horizontal-tb; }
+  }
+
+  @media (max-width: 600px) {
+    .failure-grid { grid-template-columns: 1fr; }
+    .hero-meta { flex-direction: column; gap: 1rem; }
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
 </head>
 <body>
 
-    <div class="slide-container">
+<div id="progress"></div>
 
-        <!-- SLIDE 1 -->
-        <div class="slide active" id="slide-1">
-            <div class="slide-header">
-                <span class="brand-badge">Ziraat Bankası // Stratejik Dönüşüm</span>
-                <h1>Kurumsal Problemin Yapısı Değişti</h1>
-                <div class="slide-subtitle">Modern operasyonlar yalnızca ekran otomasyonu ile yönetilemeyecek kadar karmaşık hale geldi.</div>
-            </div>
-            <div class="slide-body">
-                <div class="text-panel">
-                    <ul>
-                        <li>Geleneksel otomasyon insan hareketlerini taklit etmeye odaklanıyordu.</li>
-                        <li>Modern operasyonlar çok daha dağıtık ve dinamik hale geldi.</li>
-                        <li>Kurumsal AI yalnızca workflow değil context yönetmek zorunda.</li>
-                        <li>Operasyonel kararlar artık çok katmanlı veri ve anlam gerektiriyor.</li>
-                    </ul>
-                </div>
-                <div class="visual-panel">
-                    <div class="diag-s1-container">
-                        <div class="diag-s1-col">
-                            <div class="diag-s1-title">Geleneksel (UI)</div>
-                            <div class="diag-s1-box">Ekran A</div>
-                            <div class="diag-s1-arrow">↓ Tıklama</div>
-                            <div class="diag-s1-box">Ekran B</div>
-                            <div class="diag-s1-arrow">↓ Tıklama</div>
-                            <div class="diag-s1-box">Taklitçi Robot</div>
-                        </div>
-                        <div style="font-size: 20px; color: #cccccc;">→</div>
-                        <div class="diag-s1-col">
-                            <div class="diag-s1-title">Modern (Etmen)</div>
-                            <div class="diag-s1-badge-container">
-                                <div class="diag-s1-badge">Etmen</div>
-                                <div class="diag-s1-badge">API</div>
-                                <div class="diag-s1-badge">Tool</div>
-                                <div class="diag-s1-badge">Servis</div>
-                            </div>
-                            <div class="diag-s1-box" style="margin-top:10px; background:#f5f5f5;">Policy Katmanı</div>
-                            <div class="diag-s1-box" style="background:#f5f5f5;">Context Katmanı</div>
-                            <div class="diag-s1-box" style="background:#f5f5f5;">Knowledge Graph</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="slide-footer">
-                <div class="punchline">“UI yalnızca sistemin görünen yüzeyidir.”</div>
-                <div class="footer-meta">Slayt 1 / 8</div>
-            </div>
-        </div>
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Agentic AI Research</a>
+  <ul class="nav-links">
+    <li><a href="#stability">Stability</a></li>
+    <li><a href="#constraints">Constraints</a></li>
+    <li><a href="#coordination">Coordination</a></li>
+    <li><a href="#final">Conclusion</a></li>
+  </ul>
+</nav>
 
-        <!-- SLIDE 2 -->
-        <div class="slide" id="slide-2">
-            <div class="slide-header">
-                <span class="brand-badge">Ziraat Bankası // Stratejik Dönüşüm</span>
-                <h1>Etmen Sistemlerinin Evrimi</h1>
-                <div class="slide-subtitle">Sistemler salt metin üretiminden regüle edilmiş operasyonel zekaya doğru ilerliyor.</div>
-            </div>
-            <div class="slide-body" style="flex-direction: column; justify-content: center;">
-                <div class="full-width-panel" style="margin-bottom: 30px;">
-                    <ul>
-                        <li>Etmen (agent) sistemleri sohbet üretiminden operasyonel koordinasyona evriliyor.</li>
-                        <li>Modern etmen sistemleri ekran yerine doğrudan sistem yeteneklerini (capability) kullanıyor.</li>
-                        <li>Memory, orchestration ve context yönetimi mimarinin merkezine yerleşiyor.</li>
-                    </ul>
-                </div>
-                <div class="timeline-container">
-                    <div class="timeline-line"></div>
-                    <div class="timeline-node">
-                        <div class="timeline-icon">1</div>
-                        <div class="timeline-title">Conversational AI</div>
-                        <div class="timeline-desc">Konuşma odaklı sistemler</div>
-                    </div>
-                    <div class="timeline-node">
-                        <div class="timeline-icon">2</div>
-                        <div class="timeline-title">RPA</div>
-                        <div class="timeline-desc">UI tabanlı otomasyon</div>
-                    </div>
-                    <div class="timeline-node">
-                        <div class="timeline-icon">3</div>
-                        <div class="timeline-title">Tool-Enabled AI</div>
-                        <div class="timeline-desc">Function calling ve yetenek erişimi</div>
-                    </div>
-                    <div class="timeline-node">
-                        <div class="timeline-icon">4</div>
-                        <div class="timeline-title">Multi-Agent</div>
-                        <div class="timeline-desc">Uzmanlaşmış koordinasyon (Risk, Fraud, Uyum)</div>
-                    </div>
-                    <div class="timeline-node active-node">
-                        <div class="timeline-icon">5</div>
-                        <div class="timeline-title">Governed Enterprise</div>
-                        <div class="timeline-desc">Governed operational intelligence</div>
-                    </div>
-                </div>
-            </div>
-            <div class="slide-footer">
-                <div class="punchline">“Kurumsal AI, sohbetten operasyonel koordinasyona evriliyor.”</div>
-                <div class="footer-meta">Slayt 2 / 8</div>
-            </div>
-        </div>
+<!-- TOC DOTS -->
+<div class="toc-sidebar" id="toc">
+  <div class="toc-dot active" data-label="Hero" data-target="hero"></div>
+  <div class="toc-dot" data-label="Long-Horizon Stability" data-target="stability"></div>
+  <div class="toc-dot" data-label="Constraint Explosion" data-target="constraints"></div>
+  <div class="toc-dot" data-label="Multi-Agent Coordination" data-target="coordination"></div>
+  <div class="toc-dot" data-label="Semantic Grounding" data-target="semantic"></div>
+  <div class="toc-dot" data-label="Verification Gap" data-target="verification"></div>
+  <div class="toc-dot" data-label="Organizational Reasoning" data-target="org"></div>
+  <div class="toc-dot" data-label="Memory Architecture" data-target="memory"></div>
+  <div class="toc-dot" data-label="Conclusion" data-target="final"></div>
+</div>
 
-        <!-- SLIDE 3 -->
-        <div class="slide" id="slide-3">
-            <div class="slide-header">
-                <span class="brand-badge">Ziraat Bankası // Stratejik Dönüşüm</span>
-                <h1>Gerçek Problem: Context Orchestration</h1>
-                <div class="slide-subtitle">Büyük dil modelleri tek başına kurumsal hafıza işlevi göremez; orkestrasyon altyapısı şarttır.</div>
-            </div>
-            <div class="slide-body">
-                <div class="text-panel">
-                    <ul>
-                        <li>Aynı mesaj farklı bağlamlarda (context) tamamen farklı anlamlar taşıyabilir.</li>
-                        <li>Kurumsal kararlar yalnızca statik prompt mühendisliği ile üretilemez.</li>
-                        <li>Bağlamın dinamik ve sürekli olarak güncellenmesi zorunludur.</li>
-                        <li>Operasyonel hafıza (operational memory) kararlılık için kritiktir.</li>
-                    </ul>
-                    <div style="margin-top:15px; font-size:12px; color:#555555; font-weight:600;">
-                        Deepin yaklaşımı: context orchestration • knowledge connectivity • operational memory • governed tool access
-                    </div>
-                </div>
-                <div class="visual-panel">
-                    <div class="context-network">
-                        <svg class="network-bg-lines">
-                            <line x1="50%" y1="50%" x2="15%" y2="15%" stroke="#dddddd" stroke-width="1" />
-                            <line x1="50%" y1="50%" x2="50%" y2="12%" stroke="#dddddd" stroke-width="1" />
-                            <line x1="50%" y1="50%" x2="75%" y2="15%" stroke="#dddddd" stroke-width="1" />
-                            <line x1="50%" y1="50%" x2="10%" y2="45%" stroke="#dddddd" stroke-width="1" />
-                            <line x1="50%" y1="50%" x2="80%" y2="45%" stroke="#dddddd" stroke-width="1" />
-                            <line x1="50%" y1="50%" x2="12%" y2="85%" stroke="#dddddd" stroke-width="1" />
-                            <line x1="50%" y1="50%" x2="50%" y2="90%" stroke="#dddddd" stroke-width="1" />
-                            <line x1="50%" y1="50%" x2="78%" y2="85%" stroke="#dddddd" stroke-width="1" />
-                        </svg>
-                        <div class="center-node">Operational<br>Context</div>
-                        <div class="satellite-node sn1">Müşteri Geçmişi</div>
-                        <div class="satellite-node sn2">Transaction History</div>
-                        <div class="satellite-node sn3">Regülasyonlar</div>
-                        <div class="satellite-node sn4">Fraud Sinyalleri</div>
-                        <div class="satellite-node sn5">Dokümanlar</div>
-                        <div class="satellite-node sn6">Workflow State</div>
-                        <div class="satellite-node sn7">İnsan Kararları</div>
-                        <div class="satellite-node sn8">Dış Servisler</div>
-                    </div>
-                </div>
-            </div>
-            <div class="slide-footer">
-                <div class="punchline">“Enterprise AI başarısı modelden çok context orchestration kalitesine bağlıdır.”</div>
-                <div class="footer-meta">Slayt 3 / 8</div>
-            </div>
-        </div>
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow"><span></span>Essay · Agentic AI</div>
+    <h1 class="hero-title">The <em>Missing Layer</em> in Modern AI Agents</h1>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Topic</span>
+        <span class="hero-meta-value">Planning Infrastructure</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Sections</span>
+        <span class="hero-meta-value">7 Failure Modes</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Domain</span>
+        <span class="hero-meta-value">Enterprise AI</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <p class="hero-subtitle">Long-horizon stability, constraint reasoning and organizational intelligence in the age of agentic AI.</p>
+    <div class="hero-big-number">7</div>
+  </div>
+</section>
 
-        <!-- SLIDE 4 -->
-        <div class="slide" id="slide-4">
-            <div class="slide-header">
-                <span class="brand-badge">Ziraat Bankası // Stratejik Dönüşüm</span>
-                <h1>Kurumsal Problemler Dağıtıktır</h1>
-                <div class="slide-subtitle">Büyük ve kompleks bankacılık süreçleri tek bir monolitik etmen yapısı ile yönetilemez.</div>
-            </div>
-            <div class="slide-body">
-                <div class="text-panel">
-                    <ul>
-                        <li>Tek bir etmen tüm geniş bankacılık operasyonunu yönetmekte yetersiz kalır.</li>
-                        <li>Uzmanlaşmış mikro etmenler daha kontrollü bir orkestrasyon (orchestration) sağlar.</li>
-                        <li>Çoklu etmen (multi-agent) mimarisi kurumsal yönetim ve governance sınırlarını netleştirir.</li>
-                        <li>Etmenler arası iletişimde anlamsal tutarlılık (semantic consistency) kritik öneme sahiptir.</li>
-                        <li>İnsan-etmen ve etmen-etmen etkileşimleri ortak bir semantik katman gerektirir.</li>
-                    </ul>
-                </div>
-                <div class="visual-panel">
-                    <div class="ma-grid">
-                        <div class="ma-box-shared">Ortak Semantik Context Katmanı</div>
-                        <div class="ma-box"><div class="ma-box-title">Intake Agent</div><span style="color:#666;">Talep Analizi</span></div>
-                        <div class="ma-box"><div class="ma-box-title">Fraud Agent</div><span style="color:#666;">Risk Skorlama</span></div>
-                        <div class="ma-box"><div class="ma-box-title">Policy Agent</div><span style="color:#666;">Mevzuat Kontrol</span></div>
-                        <div class="ma-box"><div class="ma-box-title">Evidence Agent</div><span style="color:#666;">Kanıt Toplama</span></div>
-                        <div class="ma-box"><div class="ma-box-title">Workflow Agent</div><span style="color:#666;">Süreç Takibi</span></div>
-                        <div class="ma-box"><div class="ma-box-title">Decision Agent</div><span style="color:#666;">Karar Destek</span></div>
-                        <div class="ma-box-human">Human Approval Layer (İnsan Onay Katmanı)</div>
-                    </div>
-                </div>
-            </div>
-            <div class="slide-footer">
-                <div class="punchline">“Semantic consistency olmadan orchestration kaosa dönüşür.”</div>
-                <div class="footer-meta">Slayt 4 / 8</div>
-            </div>
-        </div>
+<!-- INTRO BAND -->
+<section class="intro-band">
+  <div class="reveal">
+    <p>For the last two years, the AI industry has been obsessed with one question: <em>How intelligent can AI agents become?</em> Large language models can now write code, use tools, browse the web, execute workflows, and increasingly operate autonomously.</p>
+    <p>At first glance, this appears to be an intelligence problem. Can models become smart enough to replace human operators? But once these systems leave controlled demos and enter real operational environments, a different reality emerges.</p>
+    <p>The main failure mode of modern agents is often not insufficient intelligence. It is the inability to maintain consistency over time.</p>
+  </div>
+  <blockquote class="intro-pull reveal">
+    A chatbot answers a question. An autonomous agent must survive a process. And that difference changes everything.
+  </blockquote>
+</section>
 
-        <!-- SLIDE 5 -->
-        <div class="slide" id="slide-5">
-            <div class="slide-header">
-                <span class="brand-badge">Ziraat Bankası // Stratejik Dönüşüm</span>
-                <h1>UI Otomasyonu vs Capability Tabanlı Etmenler</h1>
-                <div class="slide-subtitle">Ekran ara yüzlerine bağımlı kalmak yerine yerleşik sistem servislerini native olarak çağırmak.</div>
-            </div>
-            <div class="slide-body" style="flex-direction: column; justify-content: center;">
-                <div class="full-width-panel">
-                    <table class="comp-table">
-                        <thead>
-                            <tr>
-                                <th style="width: 50%;">RPA / UI Automation</th>
-                                <th style="width: 50%;">Tool Use / Function Calling</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Ekran tıklar ve arayüzü taklit eder.</td>
-                                <td>Doğrudan Capability (Sistem Yeteneği) çağırır.</td>
-                            </tr>
-                            <tr>
-                                <td>UI değişimlerine karşı son derece hassas ve kırılgandır.</td>
-                                <td>API/Servis tabanlı olduğundan daha stabil entegrasyon sunar.</td>
-                            </tr>
-                            <tr>
-                                <td>Yalnızca insan davranışını taklit eder.</td>
-                                <td>Operasyonu ve arka plandaki veriyi anlamlandırır.</td>
-                            </tr>
-                            <tr>
-                                <td>Lokal ve izole akışlarda sıkışır.</td>
-                                <td>Uçtan uca Enterprise Orchestration imkanı tanır.</td>
-                            </tr>
-                            <tr>
-                                <td>Context (bağlam) yönetimi oldukça sınırlıdır.</td>
-                                <td>Paylaşımlı bir semantik bağlam (Shared Semantic Context) kullanır.</td>
-                            </tr>
-                            <tr>
-                                <td>Session bağımlılığı yüksektir, kaynak tüketir.</td>
-                                <td>Service-native yaklaşım sayesinde esnektir.</td>
-                            </tr>
-                            <tr>
-                                <td>Arayüz değiştikçe bakım (maintenance) maliyeti artar.</td>
-                                <td>Modüler ve sürdürülebilir bir mimari sağlar.</td>
-                            </tr>
-                            <tr>
-                                <td>Sürecin neden işletildiğine dair izlenebilirlik (explainability) zayıftır.</td>
-                                <td>Adım adım denetlenebilir ve izlenebilir execution sunar.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div style="margin-top: 12px; font-size: 12px; color: #666666; font-style: italic;">
-                        * UI otomasyonu bazı legacy sistemlerde hâlâ değerli olabilir; ancak modern kurumsal mimarilerin merkezinde doğrudan capability erişimi bulunur.
-                    </div>
-                </div>
-            </div>
-            <div class="slide-footer">
-                <div class="punchline">“Tıklama anlam değildir.”</div>
-                <div class="footer-meta">Slayt 5 / 8</div>
-            </div>
-        </div>
+<!-- SECTION 1: Long-Horizon Stability -->
+<section class="section" id="stability">
+  <div class="section-aside">
+    <span class="section-number">01</span>
+    <span class="section-tag">Long-Horizon Stability</span>
+  </div>
+  <div class="section-body">
+    <h2 class="section-title reveal">Temporal Consistency Over Time</h2>
+    <p class="reveal">Modern AI systems are no longer limited to single-step interactions. In benchmarks such as SWE-Bench, WebArena, OSWorld, and autonomous coding environments, agents may execute hundreds of sequential actions before reaching a goal.</p>
 
-        <!-- SLIDE 6 -->
-        <div class="slide" id="slide-6">
-            <div class="slide-header">
-                <span class="brand-badge">Ziraat Bankası // Stratejik Dönüşüm</span>
-                <h1>Governed Agent Architecture</h1>
-                <div class="slide-subtitle">Güvenli, izlenebilir ve kurumsal politikalara tam uyumlu katmanlı etmen mimarisi.</div>
-            </div>
-            <div class="slide-body">
-                <div class="text-panel">
-                    <ul>
-                        <li>LLM sistem içinde yalnızca bir yorumlama ve reasoning (akıl yürütme) katmanı olarak konumlanır.</li>
-                        <li>Planner katmanı, kontrol edilebilir ve öngörülebilir bir orkestrasyon sağlar.</li>
-                        <li>Policy katmanı, yürütme (execution) sınırlarını net olarak çizer.</li>
-                        <li>Denetlenebilirlik (auditability) ve açıklanabilirlik merkezi önemdedir.</li>
-                        <li>Tüm dış araç erişimleri sıkı bir governance modeli altında çalışmalıdır; Secure Tool Gateway yaklaşımı bu yüzden kritiktir.</li>
-                    </ul>
-                </div>
-                <div class="visual-panel">
-                    <div class="layer-stack">
-                        <div class="layer-item layer-item-dark">1. Human Supervision & Approval Layer</div>
-                        <div class="layer-item">2. Policy Control Layer (Kurumsal Politikalar & Sınırlar)</div>
-                        <div class="layer-item">3. Planner & Orchestration Engine (Planlama)</div>
-                        <div class="layer-item">4. Specialized Agents (Uzman Etmen Katmanı)</div>
-                        <div class="layer-item">5. Secure Tool Gateway (Güvenli Araç Geçidi)</div>
-                        <div class="layer-infra-grid">
-                            <div class="infra-item">Audit & Obs</div>
-                            <div class="infra-item">Knowledge Graph</div>
-                            <div class="infra-item">Vector Infra</div>
-                        </div>
-                        <div class="layer-item" style="background:#f9f9f9; border:1px dashed #666;">6. Knowledge & Context Infrastructure</div>
-                    </div>
-                </div>
-            </div>
-            <div class="slide-footer">
-                <div class="punchline">“LLM sistemin tamamı değil, governed architecture içindeki bir bileşendir.”</div>
-                <div class="footer-meta">Slayt 6 / 8</div>
-            </div>
-        </div>
-
-        <!-- SLIDE 7 -->
-        <div class="slide" id="slide-7">
-            <div class="slide-header">
-                <span class="brand-badge">Ziraat Bankası // Stratejik Dönüşüm</span>
-                <h1>Controlled AI Autonomy</h1>
-                <div class="slide-subtitle">Finansal risklerin bertaraf edilmesi için hibrit ve kademeli otonomi modeli.</div>
-            </div>
-            <div class="slide-body">
-                <div class="text-panel">
-                    <ul>
-                        <li>Tüm bankacılık operasyonlarının ilk günden tam otonom olması gerekmez ve risklidir.</li>
-                        <li>Kritik finansal aksiyonlar ve fon hareketleri mutlaka insan onayı altında kalmalıdır.</li>
-                        <li>Güven sağlandıkça otonomi seviyeleri kontrollü ve geriye dönük denetlenebilir şekilde artırılabilir.</li>
-                        <li>İnsan-in-the-loop (insan kontrolünde döngü) yaklaşımı bankacılık regülasyonları için temel gereksinimdir.</li>
-                    </ul>
-                </div>
-                <div class="visual-panel">
-                    <table class="comp-table">
-                        <thead>
-                            <tr>
-                                <th>Operasyon Katmanı</th>
-                                <th>Otonomi Seviyesi</th>
-                                <th>Kontrol Tipi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Retrieval</strong> (Bilgi Getirimi)</td>
-                                <td>Tam Otonom</td>
-                                <td style="color:#666;">Sistem Kontrolü</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Evidence Analysis</strong> (Analiz)</td>
-                                <td>Otonom</td>
-                                <td style="color:#666;">Policy Denetimi</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Recommendation</strong> (Öneri)</td>
-                                <td>Otonom</td>
-                                <td style="color:#666;">Model Denetimi</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Financial Actions</strong> (Para Çıkışı)</td>
-                                <td style="font-weight:bold;">İnsan Onayı</td>
-                                <td style="font-weight:bold; color:#111;">MFA / İnsan İmza</td>
-                            </tr>
-                            <tr>
-                                <td><strong>External Communication</strong> (Dış Mesaj)</td>
-                                <td>Governed Approval</td>
-                                <td style="color:#666;">Filtre & Onay</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="slide-footer">
-                <div class="punchline">“Enterprise AI kontrollü otonomi ile ilerlemelidir.”</div>
-                <div class="footer-meta">Slayt 7 / 8</div>
-            </div>
-        </div>
-
-        <!-- SLIDE 8 -->
-        <div class="slide" id="slide-8">
-            <div class="slide-header">
-                <span class="brand-badge">Ziraat Bankası // Stratejik Dönüşüm</span>
-                <h1>UI’lardan Capability Network’lerine</h1>
-                <div class="slide-subtitle">Yapay zeka teknolojilerini tekil arayüz özelliklerinden, kurumsal temel altyapı katmanına taşımak.</div>
-            </div>
-            <div class="slide-body">
-                <div class="text-panel">
-                    <ul>
-                        <li>Geleceğin kurumsal mimarileri ekran merkezli değil, servis yeteneği (capability) merkezli olacak.</li>
-                        <li>AI yapısı basit bir "feature" seviyesinden kritik "infrastructure" seviyesine taşınmaktadır.</li>
-                        <li>Shared orchestration (paylaşımlı orkestrasyon) enterprise ölçeğinde yüksek tekrar kullanılabilirlik sağlar.</li>
-                        <li>Merkezi governance ve context yönetimi artık opsiyon değil, temel altyapı haline gelmektedir.</li>
-                        <li>Bankacılık güvenlik standartları gereği veri sızıntısını önleyen on-prem controlled execution vazgeçilmezdir.</li>
-                    </ul>
-                </div>
-                <div class="visual-panel">
-                    <div class="cap-container">
-                        <div class="cap-block">
-                            <div class="cap-block-title">Mevcut Durum</div>
-                            <div style="color:#666; line-height:1.4;">
-                                • İzole uygulamalar<br>
-                                • Ayrık ve kopuk workflow'lar<br>
-                                • Tekrarlanan operasyonel eforlar<br>
-                                • Ekran bağımlı akışlar
-                            </div>
-                        </div>
-                        <div class="cap-block" style="border-color:#111111;">
-                            <div class="cap-block-title" style="border-bottom-color:#111111; font-weight:bold;">Gelecek Mimarisi</div>
-                            <div style="line-height:1.4;">
-                                • Shared Orchestration<br>
-                                • Reusable AI Capabilities<br>
-                                • Connected Intelligence
-                            </div>
-                            <div class="cap-net-visual">
-                                <span class="cap-node cap-node-core">Core Context</span>
-                                <span class="cap-node">API Net</span>
-                                <span class="cap-node">Etmen</span>
-                                <span class="cap-node">Uyum</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="boundary-box" style="position:absolute; bottom:12px; left:20px; right:20px; font-size:10px;">
-                        ON-PREM ENTERPRISE BOUNDARY (ZİRAAT BANKASI GÜVENLİ ALANI)
-                    </div>
-                </div>
-            </div>
-            <div class="slide-footer">
-                <div class="punchline">“Deepin, AI’ı bir feature olarak değil, kurumsal operasyon altyapısı olarak konumlandırır.”</div>
-                <div class="footer-meta" style="text-align:right;">
-                    <strong>Enterprise Agent Operating Layer</strong><br>
-                    <span style="font-size:9px; color:#999;">Slayt 8 / 8</span>
-                </div>
-            </div>
-        </div>
-
+    <div class="contrast-pair reveal">
+      <div class="contrast-item">
+        <div class="contrast-label">Old Challenge</div>
+        <div class="contrast-text">"Can the model generate a plausible next step?"</div>
+      </div>
+      <div class="contrast-vs">vs</div>
+      <div class="contrast-item accent-side">
+        <div class="contrast-label">New Challenge</div>
+        <div class="contrast-text">"Can the system remain coherent over time?"</div>
+      </div>
     </div>
 
-    <div class="progress-bar-container">
-        <div class="progress-bar" id="presentation-progress"></div>
+    <p class="reveal">As execution chains grow longer, several critical failure modes emerge:</p>
+
+    <div class="failure-grid reveal">
+      <div class="failure-item">
+        <div class="label">Error Propagation</div>
+        <div class="desc">A small reasoning mistake early in execution compounds across dozens of later steps, drifting far from the original objective.</div>
+      </div>
+      <div class="failure-item">
+        <div class="label">State Drift</div>
+        <div class="desc">Divergence grows between the agent's internal understanding and actual world state as environments continuously change.</div>
+      </div>
+      <div class="failure-item">
+        <div class="label">Goal Drift</div>
+        <div class="desc">Agents over-focus on sub-tasks and lose alignment with the original objective, terminating prematurely or looping.</div>
+      </div>
+      <div class="failure-item">
+        <div class="label">Context Exhaustion</div>
+        <div class="desc">Token usage explodes as execution history grows, important details are compressed or lost.</div>
+      </div>
+      <div class="failure-item">
+        <div class="label">Hallucinated Completion</div>
+        <div class="desc">Systems falsely conclude a task is complete without verifying the actual outcome against intended goals.</div>
+      </div>
+      <div class="failure-item">
+        <div class="label">Coordination Collapse</div>
+        <div class="desc">Multi-step processes break down when inter-agent dependencies are not tracked explicitly across time.</div>
+      </div>
     </div>
 
-    <div class="controls-hint">İlerlemek için Sağ Ok / Boşluk Tuşu, geri gitmek için Sol Ok tuşunu kullanın.</div>
+    <div class="callout reveal">
+      <p>Long-horizon execution is not primarily an intelligence problem. It is a temporal consistency problem.</p>
+    </div>
 
-    <script>
-        const slides = document.querySelectorAll('.slide');
-        let currentSlideIndex = 0;
-        const totalSlides = slides.length;
-        const progressBar = document.getElementById('presentation-progress');
+    <p class="reveal">A planner acts as a temporal stability layer responsible for preserving world-state consistency, tracking long-term goals, validating transitions, managing dependencies, and continuously verifying progress. As task horizons grow, planning becomes a consistency infrastructure problem.</p>
+  </div>
+</section>
 
-        function updateSlides() {
-            slides.forEach((slide, index) => {
-                if (index === currentSlideIndex) {
-                    slide.classList.add('active');
-                } else {
-                    slide.classList.remove('active');
-                }
-            });
-            const progressPercentage = ((currentSlideIndex + 1) / totalSlides) * 100;
-            progressBar.style.width = progressPercentage + '%';
-        }
+<!-- SECTION 2: Constraint Explosion -->
+<section class="section alt-bg" id="constraints">
+  <div class="section-aside">
+    <span class="section-number">02</span>
+    <span class="section-tag">Constraint Explosion</span>
+  </div>
+  <div class="section-body">
+    <h2 class="section-title reveal">When Implicit Memory Fails</h2>
+    <p class="reveal">One of the biggest weaknesses of modern agent systems is constraint explosion. Most LLM-based agents try to "remember" constraints implicitly inside the model context. This may work for simple workflows. Real enterprise environments are different.</p>
 
-        function nextSlide() {
-            if (currentSlideIndex < totalSlides - 1) {
-                currentSlideIndex++;
-                updateSlides();
-            }
-        }
+    <p class="reveal">Operational processes often involve thousands of constraints simultaneously — AML rules, KYC procedures, approval hierarchies, sanction restrictions, authority matrices, internal policies, and temporal dependencies.</p>
 
-        function prevSlide() {
-            if (currentSlideIndex > 0) {
-                currentSlideIndex--;
-                updateSlides();
-            }
-        }
+    <div class="scale-block reveal">
+      <div class="scale-row">
+        <span class="scale-num">10</span>
+        <div class="scale-bar"><div class="scale-fill" style="width:10%"></div></div>
+        <span class="scale-label">Manageable</span>
+      </div>
+      <div class="scale-row">
+        <span class="scale-num">100</span>
+        <div class="scale-bar"><div class="scale-fill" style="width:50%"></div></div>
+        <span class="scale-label">Unstable</span>
+      </div>
+      <div class="scale-row">
+        <span class="scale-num">1,000</span>
+        <div class="scale-bar"><div class="scale-fill" style="width:100%"></div></div>
+        <span class="scale-label" style="color: var(--accent); font-weight:600;">Hallucination Cascade</span>
+      </div>
+    </div>
 
-        window.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowRight' || e.key === ' ' || e.code === 'Space') {
-                e.preventDefault();
-                nextSlide();
-            } else if (e.key === 'ArrowLeft') {
-                e.preventDefault();
-                prevSlide();
-            }
-        });
+    <div class="callout reveal">
+      <p>The challenge is not only remembering constraints. It is maintaining consistency between them.</p>
+    </div>
 
-        updateSlides();
-    </script>
+    <div class="contrast-pair reveal">
+      <div class="contrast-item">
+        <div class="contrast-label">Current State</div>
+        <div class="contrast-text">Generating actions</div>
+      </div>
+      <div class="contrast-vs">vs</div>
+      <div class="contrast-item accent-side">
+        <div class="contrast-label">What's Needed</div>
+        <div class="contrast-text">Validating actions</div>
+      </div>
+    </div>
+
+    <p class="reveal">Reliable agent systems increasingly require explicit constraint engines, symbolic validation, solver integration, and formal transition checking. In this model, planning becomes continuous constraint verification.</p>
+  </div>
+</section>
+
+<!-- SECTION 3: Multi-Agent Coordination -->
+<section class="section" id="coordination">
+  <div class="section-aside">
+    <span class="section-number">03</span>
+    <span class="section-tag">Multi-Agent Coordination</span>
+  </div>
+  <div class="section-body">
+    <h2 class="section-title reveal">More Agents, More Entropy</h2>
+    <p class="reveal">One of the most common assumptions in modern AI is that adding more agents automatically creates more intelligence. In practice, the opposite often happens. As the number of agents grows, coordination complexity increases rapidly — conflicting goals, duplicated work, inconsistent state updates, circular delegation, deadlocks, and race conditions begin to emerge.</p>
+
+    <div class="callout reveal">
+      <p>More agents do not automatically create more intelligence. They often create more coordination entropy.</p>
+    </div>
+
+    <p class="reveal">Without an explicit planning layer, systems struggle to synchronize execution, enforce role boundaries, manage dependencies, and maintain coherent organizational behavior.</p>
+
+    <p class="reveal">A planner provides delegation authority, dependency ordering, synchronization, and global task coordination. In this model, planning is not simply task decomposition. It becomes the mechanism that preserves system-wide coherence across multiple autonomous actors.</p>
+  </div>
+</section>
+
+<!-- SECTION 4: Semantic Grounding -->
+<section class="section alt-bg" id="semantic">
+  <div class="section-aside">
+    <span class="section-number">04</span>
+    <span class="section-tag">Semantic Grounding</span>
+  </div>
+  <div class="section-body">
+    <h2 class="section-title reveal">Words vs. Structures</h2>
+    <p class="reveal">Modern language models reason primarily over words. Organizations operate over structures. Real enterprise environments are built on entities, relationships, obligations, ownership structures, authority chains, and operational dependencies.</p>
+
+    <p class="reveal">For example, the question <em>"Is this company risky?"</em> is rarely a pure language problem. It is often a graph problem involving shareholder networks, historical events, regulatory relationships, connected organizations, and executive connections.</p>
+
+    <div class="contrast-pair reveal">
+      <div class="contrast-item">
+        <div class="contrast-label">LLMs Excel At</div>
+        <div class="contrast-text">Language understanding</div>
+      </div>
+      <div class="contrast-vs">vs</div>
+      <div class="contrast-item accent-side">
+        <div class="contrast-label">Organizations Need</div>
+        <div class="contrast-text">Operational understanding</div>
+      </div>
+    </div>
+
+    <p class="reveal">Without semantic grounding, agent systems may misunderstand organizational context, ignore hidden dependencies, miss relational risk signals, or produce inconsistent decisions across connected entities. This is why planning increasingly requires structured semantic layers such as knowledge graphs, entity relationships, operational ontologies, and graph-based reasoning.</p>
+  </div>
+</section>
+
+<!-- SECTION 5: Verification Gap -->
+<section class="section" id="verification">
+  <div class="section-aside">
+    <span class="section-number">05</span>
+    <span class="section-tag">Verification Gap</span>
+  </div>
+  <div class="section-body">
+    <h2 class="section-title reveal">Generation Is Not Enough</h2>
+    <p class="reveal">One of the most critical weaknesses of modern agent systems is the verification gap. LLMs are highly effective at generating actions, responses and plans. But generation alone is not enough.</p>
+
+    <p class="reveal">Most systems still lack reliable mechanisms for determining whether an action is actually valid, whether constraints were violated, whether the goal was truly achieved, or whether the resulting state remains operationally consistent.</p>
+
+    <div class="callout reveal">
+      <p>A system may produce plausible outputs while still breaking organizational policy, violating dependencies, creating invalid transitions or hallucinating successful completion.</p>
+    </div>
+
+    <p class="reveal">This problem becomes increasingly dangerous in finance, healthcare, energy, and regulated enterprise operations, where correctness is not optional. Reliable agent architectures increasingly require formal validators, constraint propagation, solver integration, policy engines, and execution verification layers.</p>
+  </div>
+</section>
+
+<!-- SECTION 6: Organizational Reasoning -->
+<section class="section alt-bg" id="org">
+  <div class="section-aside">
+    <span class="section-number">06</span>
+    <span class="section-tag">Organizational Reasoning</span>
+  </div>
+  <div class="section-body">
+    <h2 class="section-title reveal">Individuals vs. Institutions</h2>
+    <p class="reveal">Most modern agent systems reason like individuals. Real organizations do not operate that way. Enterprise environments are structured around roles, authority boundaries, delegation chains, obligations, escalation mechanisms, and approval hierarchies.</p>
+
+    <p class="reveal">A task is often not defined only by "What should be done?" but also by who is allowed to do it, under which conditions, in which order, and with whose approval.</p>
+
+    <div class="contrast-pair reveal">
+      <div class="contrast-item">
+        <div class="contrast-label">Modern Agents</div>
+        <div class="contrast-text">Reason like individuals</div>
+      </div>
+      <div class="contrast-vs">vs</div>
+      <div class="contrast-item accent-side">
+        <div class="contrast-label">Organizations</div>
+        <div class="contrast-text">Operate through roles and constraints</div>
+      </div>
+    </div>
+
+    <p class="reveal">Without organizational reasoning, autonomous systems may violate authority boundaries, bypass approval flows, create conflicting actions, or generate operational inconsistencies between departments and actors. Planning must also reason about organizational roles, authority models, delegation rules and institutional constraints.</p>
+  </div>
+</section>
+
+<!-- SECTION 7: Memory Architecture -->
+<section class="section" id="memory">
+  <div class="section-aside">
+    <span class="section-number">07</span>
+    <span class="section-tag">Memory Architecture</span>
+  </div>
+  <div class="section-body">
+    <h2 class="section-title reveal">Beyond Retrieval</h2>
+    <p class="reveal">Most modern agent systems treat memory as a retrieval problem. In practice, memory is far more complex. Long-running autonomous systems must manage multiple forms of memory simultaneously — episodic memory, semantic memory, procedural memory, and world-state memory.</p>
+
+    <p class="reveal">However, many current architectures rely primarily on vector databases, similarity search, and compressed prompt history. A system may retrieve relevant information while still losing temporal consistency, forgetting previous commitments, repeating actions, or operating on outdated world assumptions.</p>
+
+    <div class="contrast-pair reveal">
+      <div class="contrast-item">
+        <div class="contrast-label">Current Approach</div>
+        <div class="contrast-text">Memory retrieval</div>
+      </div>
+      <div class="contrast-vs">vs</div>
+      <div class="contrast-item accent-side">
+        <div class="contrast-label">What's Needed</div>
+        <div class="contrast-text">State continuity</div>
+      </div>
+    </div>
+
+    <div class="callout reveal">
+      <p>The problem is not only remembering information. The problem is maintaining operational continuity across time.</p>
+    </div>
+
+    <p class="reveal">Memory can no longer remain a passive storage layer. It must become an active operational structure. Planning and memory become deeply interconnected infrastructure layers rather than separate components.</p>
+  </div>
+</section>
+
+<!-- CONCLUSION -->
+<section class="conclusion" id="final">
+  <div class="conclusion-inner">
+    <h2 class="reveal">The Real Bottleneck</h2>
+    <p class="reveal">The central challenge of agentic AI is often framed as an intelligence problem. Can models reason better? Can they generate better plans? Can they become more autonomous?</p>
+    <p class="reveal">But as agent systems move from demos into real operational environments, a different reality emerges. Modern AI systems can already generate impressive local behavior. What they still struggle to maintain is global coherence over time.</p>
+    <p class="reveal">The missing layer is not another workflow engine or orchestration framework. The missing layer is <strong>planning infrastructure</strong>.</p>
+    <div class="conclusion-list reveal">
+      <span class="conclusion-tag">Consistency</span>
+      <span class="conclusion-tag">Verification</span>
+      <span class="conclusion-tag">Coordination</span>
+      <span class="conclusion-tag">Constraint Management</span>
+      <span class="conclusion-tag">Organizational Reasoning</span>
+      <span class="conclusion-tag">Long-Term Stability</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Agentic AI · Planning Infrastructure</p>
+  <p>The Missing Layer in Modern AI Agents</p>
+</footer>
+
+<script>
+// Progress bar
+const progress = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  progress.style.width = (scrollTop / docHeight * 100) + '%';
+});
+
+// Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), 80);
+    }
+  });
+}, { threshold: 0.12 });
+reveals.forEach(el => observer.observe(el));
+
+// TOC dots
+const sections = ['hero','stability','constraints','coordination','semantic','verification','org','memory','final'];
+const dots = document.querySelectorAll('.toc-dot');
+const tocObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      const idx = sections.indexOf(id);
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }
+  });
+}, { threshold: 0.4 });
+sections.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) tocObserver.observe(el);
+});
+
+dots.forEach((dot, i) => {
+  dot.addEventListener('click', () => {
+    const target = document.getElementById(sections[i]);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
 </body>
 </html>
